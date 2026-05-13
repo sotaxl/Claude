@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overscroll-behavior: none;
+  background: #1a1a1a;
+  color: #e8e3d8;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+/* iOS safe area support */
+.safe-top    { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 2px; }
+
+/* Prose for Claude responses */
+.prose-claude p { margin: 0.5em 0; }
+.prose-claude code {
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+  font-family: "SF Mono", Menlo, Monaco, monospace;
+}
+.prose-claude pre {
+  background: #111;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 0.75em 0;
+}
+.prose-claude pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.82em;
+}
+.prose-claude ul, .prose-claude ol { padding-left: 1.5em; margin: 0.5em 0; }
+.prose-claude li { margin: 0.2em 0; }
+.prose-claude strong { color: #f0ebe0; }
+.prose-claude h1,.prose-claude h2,.prose-claude h3 { color: #f0ebe0; font-weight: 600; margin: 0.8em 0 0.3em; }
+
+/* Textarea auto-resize feel */
+textarea { resize: none; }
+
+/* Prevent zoom on input focus (iOS) */
+input, textarea, select { font-size: 16px !important; }
