@@ -1,6 +1,6 @@
 import {
   pgTable, text, timestamp, integer, boolean, pgEnum,
-  primaryKey, index, uniqueIndex,
+  primaryKey, index, uniqueIndex, real, jsonb,
 } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm"
 import { nanoid } from "nanoid"
@@ -147,3 +147,42 @@ export type NewClient = typeof clients.$inferInsert
 export type Project = typeof projects.$inferSelect
 export type NewProject = typeof projects.$inferInsert
 export type Activity = typeof activities.$inferSelect
+
+// ─── Autonomous SaaS OS ───────────────────────────────────────────────────────
+export const autonomousPortfolio = pgTable("autonomous_portfolio", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  targetMarket: text("target_market").notNull(),
+  revenue: real("revenue").notNull().default(0),
+  growth: real("growth").notNull().default(0),
+  churn: real("churn").notNull().default(0),
+  score: real("score").notNull().default(0),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+}, (t) => ({
+  scoreIdx: index("portfolio_score_idx").on(t.score),
+}))
+
+export const autonomousAnalytics = pgTable("autonomous_analytics", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  totalRevenue: real("total_revenue").notNull(),
+  productCount: integer("product_count").notNull(),
+  strategy: jsonb("strategy"),
+  topAction: jsonb("top_action"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+})
+
+export const autonomousSystemLog = pgTable("autonomous_system_log", {
+  id: text("id").primaryKey().$defaultFn(() => nanoid()),
+  level: text("level").notNull(),
+  message: text("message").notNull(),
+  data: jsonb("data"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+}, (t) => ({
+  createdAtIdx: index("system_log_created_at_idx").on(t.createdAt),
+}))
+
+export type AutonomousProduct = typeof autonomousPortfolio.$inferSelect
+export type NewAutonomousProduct = typeof autonomousPortfolio.$inferInsert
+export type AutonomousAnalytics = typeof autonomousAnalytics.$inferSelect
