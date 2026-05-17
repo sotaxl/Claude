@@ -9,8 +9,7 @@ import { eq } from "drizzle-orm"
 import bcrypt from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
-  // @ts-expect-error DrizzleAdapter type mismatch between auth.js versions
-  adapter: DrizzleAdapter(db),
+  adapter: DrizzleAdapter(db) as any,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
