@@ -1,96 +1,96 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, CSSProperties, ReactNode } from "react";
+import { useState, useCallback, CSSProperties, ReactNode } from "react";
 
-// ─── macOS Liquid Glass + Quiet Luxury design tokens ─────────
-const G = {
-  bgGradient: "radial-gradient(ellipse 80% 60% at 15% 10%, rgba(216,204,248,0.45) 0%, transparent 55%), radial-gradient(ellipse 60% 80% at 85% 90%, rgba(196,220,255,0.35) 0%, transparent 55%), radial-gradient(ellipse 70% 70% at 50% 50%, rgba(240,238,255,1) 0%, rgba(235,240,250,1) 100%)",
+// ─── macOS 26 Tahoe — Liquid Glass design system ──────────────
+const T = {
+  // Animated fluid background layers
+  bgBase: "#0A0E1A",
 
-  // Glass layers
-  glass:        "rgba(255,255,255,0.68)",
-  glassStrong:  "rgba(255,255,255,0.82)",
-  glassSubtle:  "rgba(255,255,255,0.42)",
-  glassDark:    "rgba(255,255,255,0.22)",
-  glassNavbar:  "rgba(246,244,252,0.88)",
-  glassInput:   "rgba(255,255,255,0.55)",
+  // Glass surfaces — dark glass for Tahoe style
+  glass1:  "rgba(255,255,255,0.10)",
+  glass2:  "rgba(255,255,255,0.14)",
+  glass3:  "rgba(255,255,255,0.18)",
+  glassHover: "rgba(255,255,255,0.20)",
+  navGlass: "rgba(12,16,32,0.72)",
 
-  // Borders
-  borderShine:  "rgba(255,255,255,0.95)",
-  borderMid:    "rgba(0,0,0,0.07)",
-  borderSubtle: "rgba(0,0,0,0.045)",
-  borderStrong: "rgba(0,0,0,0.10)",
+  // Borders — bright hairlines on dark glass
+  border1: "rgba(255,255,255,0.18)",
+  border2: "rgba(255,255,255,0.10)",
+  borderGlow: "rgba(255,255,255,0.28)",
 
-  // Ink
-  ink:     "#1A1825",
-  inkMid:  "#3A3858",
-  inkSub:  "#6A6888",
-  inkDim:  "#9A98B8",
-  inkFaint:"#C4C2DC",
+  // Text
+  textPrimary:   "rgba(255,255,255,0.96)",
+  textSecondary: "rgba(255,255,255,0.65)",
+  textMuted:     "rgba(255,255,255,0.38)",
+  textDim:       "rgba(255,255,255,0.22)",
 
-  // Quiet luxury palette
-  violet:      "#8165B4",
-  violetSoft:  "rgba(129,101,180,0.14)",
-  gold:        "#B8986A",
-  goldSoft:    "rgba(184,152,106,0.13)",
-  sage:        "#5E9070",
-  sageSoft:    "rgba(94,144,112,0.13)",
-  rose:        "#BE6878",
-  roseSoft:    "rgba(190,104,120,0.13)",
-  sky:         "#5080BE",
-  skySoft:     "rgba(80,128,190,0.13)",
-  ember:       "#C06850",
-  emberSoft:   "rgba(192,104,80,0.13)",
+  // Apple system colors (Tahoe palette)
+  blue:    "#0A84FF",
+  teal:    "#5AC8FA",
+  mint:    "#30D158",
+  purple:  "#BF5AF2",
+  pink:    "#FF375F",
+  orange:  "#FF9F0A",
+  indigo:  "#5E5CE6",
+  cyan:    "#32ADE6",
 
-  // Elevation shadows — glass-realistic
-  s0: "0 1px 2px rgba(0,0,0,0.04)",
-  s1: "0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)",
-  s2: "0 4px 20px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)",
-  s3: "0 12px 40px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.85)",
-  s4: "0 24px 64px rgba(0,0,0,0.11), 0 4px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.85)",
+  // Shadows with color
+  shadowSm:  "0 2px 12px rgba(0,0,0,0.4)",
+  shadowMd:  "0 8px 32px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.18)",
+  shadowLg:  "0 20px 60px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.20)",
+  shadowGlow:"0 0 40px rgba(10,132,255,0.25)",
+
+  // Border radius — everything curved
+  r1: "14px",
+  r2: "20px",
+  r3: "28px",
+  r4: "36px",
+  pill: "100px",
 };
 
-const FONT       = "-apple-system, 'SF Pro Display', BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
+const FONT = "-apple-system, 'SF Pro Display', BlinkMacSystemFont, 'Helvetica Neue', sans-serif";
 const FONT_ROUND = "-apple-system, 'SF Pro Rounded', BlinkMacSystemFont, sans-serif";
 
 // ─── Genre + Platform data ────────────────────────────────────
 const GENRES = [
-  { id:"parody",    label:"Parody",    color:"#D05555", bg:"rgba(208,85,85,0.10)",    emoji:"🎭" },
-  { id:"comedy",    label:"Comedy",    color:"#C07830", bg:"rgba(192,120,48,0.10)",   emoji:"😂" },
-  { id:"political", label:"Political", color:"#4878B4", bg:"rgba(72,120,180,0.10)",   emoji:"🏛" },
-  { id:"drama",     label:"Drama",     color:"#8862B8", bg:"rgba(136,98,184,0.10)",   emoji:"🎬" },
-  { id:"horror",    label:"Horror",    color:"#B83838", bg:"rgba(184,56,56,0.10)",    emoji:"👻" },
-  { id:"romance",   label:"Romance",   color:"#BE6878", bg:"rgba(190,104,120,0.10)",  emoji:"💕" },
-  { id:"action",    label:"Action",    color:"#B89030", bg:"rgba(184,144,48,0.10)",   emoji:"💥" },
-  { id:"scifi",     label:"Sci-Fi",    color:"#4890B4", bg:"rgba(72,144,180,0.10)",   emoji:"🚀" },
-  { id:"satire",    label:"Satire",    color:"#5E9070", bg:"rgba(94,144,112,0.10)",   emoji:"🗞" },
-  { id:"thriller",  label:"Thriller",  color:"#B06848", bg:"rgba(176,104,72,0.10)",   emoji:"🔪" },
+  { id:"parody",    label:"Parody",    color:"#FF375F", glow:"rgba(255,55,95,0.3)",   emoji:"🎭" },
+  { id:"comedy",    label:"Comedy",    color:"#FF9F0A", glow:"rgba(255,159,10,0.3)",  emoji:"😂" },
+  { id:"political", label:"Political", color:"#0A84FF", glow:"rgba(10,132,255,0.3)",  emoji:"🏛" },
+  { id:"drama",     label:"Drama",     color:"#BF5AF2", glow:"rgba(191,90,242,0.3)",  emoji:"🎬" },
+  { id:"horror",    label:"Horror",    color:"#FF453A", glow:"rgba(255,69,58,0.3)",   emoji:"👻" },
+  { id:"romance",   label:"Romance",   color:"#FF6B8A", glow:"rgba(255,107,138,0.3)", emoji:"💕" },
+  { id:"action",    label:"Action",    color:"#FFD60A", glow:"rgba(255,214,10,0.3)",  emoji:"💥" },
+  { id:"scifi",     label:"Sci-Fi",    color:"#5AC8FA", glow:"rgba(90,200,250,0.3)",  emoji:"🚀" },
+  { id:"satire",    label:"Satire",    color:"#30D158", glow:"rgba(48,209,88,0.3)",   emoji:"🗞" },
+  { id:"thriller",  label:"Thriller",  color:"#FF9F0A", glow:"rgba(255,159,10,0.3)",  emoji:"🔪" },
 ];
 
 const PLATFORMS = [
-  { id:"tiktok", label:"TikTok",   icon:"♪", maxSecs:60 },
-  { id:"reels",  label:"Reels",    icon:"◉", maxSecs:45 },
-  { id:"shorts", label:"Shorts",   icon:"▶", maxSecs:60 },
+  { id:"tiktok", label:"TikTok",  icon:"♪", maxSecs:60 },
+  { id:"reels",  label:"Reels",   icon:"◉", maxSecs:45 },
+  { id:"shorts", label:"Shorts",  icon:"▶", maxSecs:60 },
 ];
 
 const ALGO_GOALS = [
-  { key:"retention",    label:"Watch Time",     icon:"◷", color:"#5E9070", desc:"Hooks that prevent scroll-off" },
-  { key:"comments",     label:"Comments",       icon:"◌", color:"#C07830", desc:"Lines that beg for a reply" },
-  { key:"shares",       label:"Shares",         icon:"↗", color:"#4878B4", desc:"Moments people forward" },
-  { key:"profileVisit", label:"Profile Visits", icon:"◈", color:"#8862B8", desc:"Curiosity that drives clicks" },
-  { key:"saves",        label:"Saves",          icon:"◇", color:"#BE6878", desc:"Reference worth bookmarking" },
-  { key:"rewatch",      label:"Rewatch",        icon:"↺", color:"#B83838", desc:"Hidden details rewarding return" },
+  { key:"retention",    label:"Watch Time",     icon:"◷", color:"#30D158" },
+  { key:"comments",     label:"Comments",       icon:"◌", color:"#FF9F0A" },
+  { key:"shares",       label:"Shares",         icon:"↗", color:"#0A84FF" },
+  { key:"profileVisit", label:"Profile Visits", icon:"◈", color:"#BF5AF2" },
+  { key:"saves",        label:"Saves",          icon:"◇", color:"#FF375F" },
+  { key:"rewatch",      label:"Rewatch",        icon:"↺", color:"#5AC8FA" },
 ];
 
-const SCENE_TYPE_META: Record<string, { color: string; bg: string; dot: string }> = {
-  HOOK:       { color:"#C05050", bg:"rgba(192,80,80,0.08)",    dot:"#C05050" },
-  SETUP:      { color:"#B07830", bg:"rgba(176,120,48,0.08)",   dot:"#B07830" },
-  BUILD:      { color:"#9090A0", bg:"rgba(144,144,160,0.08)",  dot:"#9090A0" },
-  ESCALATE:   { color:"#B06848", bg:"rgba(176,104,72,0.08)",   dot:"#B06848" },
-  TWIST:      { color:"#8862B8", bg:"rgba(136,98,184,0.08)",   dot:"#8862B8" },
-  PUNCHLINE:  { color:"#C05050", bg:"rgba(192,80,80,0.08)",    dot:"#C05050" },
-  CALLBACK:   { color:"#4878B4", bg:"rgba(72,120,180,0.08)",   dot:"#4878B4" },
-  CLIFFHANGER:{ color:"#B83838", bg:"rgba(184,56,56,0.08)",    dot:"#B83838" },
-  OUTRO:      { color:"#5E9070", bg:"rgba(94,144,112,0.08)",   dot:"#5E9070" },
+const SCENE_COLORS: Record<string, { color: string; glow: string }> = {
+  HOOK:       { color:"#FF375F", glow:"rgba(255,55,95,0.4)" },
+  SETUP:      { color:"#FF9F0A", glow:"rgba(255,159,10,0.4)" },
+  BUILD:      { color:"#5AC8FA", glow:"rgba(90,200,250,0.4)" },
+  ESCALATE:   { color:"#FF9F0A", glow:"rgba(255,159,10,0.4)" },
+  TWIST:      { color:"#BF5AF2", glow:"rgba(191,90,242,0.4)" },
+  PUNCHLINE:  { color:"#FF375F", glow:"rgba(255,55,95,0.4)" },
+  CALLBACK:   { color:"#0A84FF", glow:"rgba(10,132,255,0.4)" },
+  CLIFFHANGER:{ color:"#FF453A", glow:"rgba(255,69,58,0.4)" },
+  OUTRO:      { color:"#30D158", glow:"rgba(48,209,88,0.4)" },
 };
 
 // ─── API ──────────────────────────────────────────────────────
@@ -116,22 +116,16 @@ async function claude(system: string, user: string, search = false): Promise<any
 function enhanceScenePrompt(raw: string, scene: any, episode: any, genre: string, algoGoals: string[]) {
   if (!raw.trim()) return "";
   return `ENHANCEMENT ENGINE OUTPUT — execute every layer in order.
-
 FOUNDATION: Episode "${episode.episodeTitle}" — genre: ${genre}, arc: ${episode.overallStorybeatSummary}. Scene ${scene.id} (${scene.type}) titled "${scene.title}". Story role: ${scene.storyRole}. Master style: ${episode.stylePrompt}.
-
 CREATOR DIRECTION: "${raw}" — Establish emotional/narrative intent first. Translate to visual action, dialogue shift, and caption update that all reinforce intention without breaking arc position.
-
-ALGORITHM LAYER: Goals: ${algoGoals.join(", ")}. Each change must serve at least one goal. Explain in algoTactic which goal and how.
-
+ALGORITHM LAYER: Goals: ${algoGoals.join(", ")}. Each change must serve at least one goal.
 CONTINUITY CONSTRAINT: Don't change scene entry/exit conditions — only transform the middle.
-
-OUTPUT: A single regenerated scene JSON object executing all of the above simultaneously.`;
+OUTPUT: A single regenerated scene JSON object.`;
 }
 
 // ─── Main Component ───────────────────────────────────────────
 export default function EpisodeStudio() {
   const [tab,           setTab]          = useState<"setup"|"timeline"|"algo"|"export">("setup");
-  const [prevTab,       setPrevTab]      = useState<string>("setup");
   const [tabTransition, setTabTransition]= useState(false);
   const [genre,         setGenre]        = useState("parody");
   const [platform,      setPlatform]     = useState("tiktok");
@@ -151,519 +145,350 @@ export default function EpisodeStudio() {
   const switchTab = (next: "setup"|"timeline"|"algo"|"export") => {
     if (next === tab) return;
     setTabTransition(true);
-    setPrevTab(tab);
-    setTimeout(() => { setTab(next); setTabTransition(false); }, 160);
+    setTimeout(() => { setTab(next); setTabTransition(false); }, 150);
   };
 
-  // ── Generate full episode ──────────────────────────────────
   const generateEpisode = async () => {
     if (!topic.trim()) return;
     setError(null); setLoading("episode"); setEpisode(null); setScenes([]); setAlgoLayer(null);
     const prevContext = prevEpisodes.length
-      ? `PREVIOUS EPISODES:\n${prevEpisodes.map((e, i) => `EP${i + 1}: ${e}`).join("\n")}\nContinue the story. Reference past events. Reward loyal viewers with callbacks.`
+      ? `PREVIOUS EPISODES:\n${prevEpisodes.map((e, i) => `EP${i + 1}: ${e}`).join("\n")}\nContinue the story. Reference past events.`
       : "";
     try {
       const result = await claude(
-        `You are a viral animated short-form content director and algorithm strategist. Respond ONLY with valid JSON — no markdown, no backticks, no preamble.`,
+        `You are a viral animated short-form content director. Respond ONLY with valid JSON — no markdown, no backticks.`,
         `Build a complete episode production package.
-
 TOPIC: ${topic}
 GENRE: ${genre} | PLATFORM: ${platform} (max ${p.maxSecs}s)
 ALGORITHM GOALS: ${algoGoals.join(", ")}
 EPISODE NUMBER: ${prevEpisodes.length + 1}
 ${prevContext}
-
-INSTRUCTION: Before generating any scene, establish the complete story arc. Every scene must know its position in the emotional journey. Algorithm goals must be baked into scene design — not added as afterthoughts.
-
 Return ONLY this JSON:
 {
-  "episodeTitle": "...",
-  "episodeNumber": ${prevEpisodes.length + 1},
-  "logline": "One punchy sentence",
-  "overallStorybeatSummary": "Full arc: setup → escalation → twist → resolution",
-  "emotionalJourney": "The feeling progression a viewer experiences start to finish",
-  "toneNotes": "How ${genre} shapes every scene's delivery",
-  "stylePrompt": "Master Midjourney/DALL-E style descriptor — character design, palette, lighting, art direction",
-  "totalDuration": "e.g. 54s",
-  "arcBreakdown": { "act1End": 2, "act2End": 5, "act3Start": 6 },
-  "scenes": [
-    {
-      "id": 1, "type": "HOOK", "title": "Scene name", "duration": "5s",
-      "arcPosition": "Opening — establishes world and raises immediate question",
-      "storyRole": "Why this scene must exist and what it sets up",
-      "visual": "Exactly what the viewer sees",
-      "dialogue": "Exact spoken words or [silence]",
-      "caption": "On-screen text optimised for engagement",
-      "imagePrompt": "Complete Midjourney prompt — include master style, mood, composition, characters",
-      "animationNote": "Kling/Runway motion direction",
-      "voiceNote": "ElevenLabs tone, pace, emotion",
-      "algoTactic": "The specific algorithm mechanism planted here and which goal it serves",
-      "engagementHook": "The exact psychological trigger in this scene"
-    }
-  ],
-  "hashtags": ["#tag"],
-  "postingStrategy": "Platform-specific timing and framing",
-  "seriesHook": "What unresolved thread keeps viewers coming back for episode ${prevEpisodes.length + 2}"
+  "episodeTitle":"...","episodeNumber":${prevEpisodes.length+1},"logline":"...","overallStorybeatSummary":"...","emotionalJourney":"...","toneNotes":"...","stylePrompt":"...","totalDuration":"...","arcBreakdown":{"act1End":2,"act2End":5,"act3Start":6},
+  "scenes":[{"id":1,"type":"HOOK","title":"...","duration":"5s","arcPosition":"...","storyRole":"...","visual":"...","dialogue":"...","caption":"...","imagePrompt":"...","animationNote":"...","voiceNote":"...","algoTactic":"...","engagementHook":"..."}],
+  "hashtags":["#tag"],"postingStrategy":"...","seriesHook":"..."
 }
-
-Generate 7-9 scenes. Build real tension. Make the TWIST unexpected. End with the OUTRO creating desire for the next episode.`,
-        true
+Generate 7-9 scenes. Build real tension. Make TWIST unexpected.`, true
       );
       setEpisode(result);
       setScenes(result.scenes || []);
       switchTab("timeline");
-    } catch {
-      setError("Episode generation failed — please try again.");
-    }
+    } catch { setError("Episode generation failed — please try again."); }
     setLoading(null);
   };
 
-  // ── Regenerate single scene ────────────────────────────────
   const regenScene = useCallback(async (idx: number, customPrompt: string) => {
     const sc = scenes[idx];
     setLoading(`scene-${idx}`);
     try {
       const enhanced = customPrompt
         ? enhanceScenePrompt(customPrompt, sc, episode, genre, algoGoals)
-        : `Regenerate scene ${sc.id} with fresh creative energy. Keep arc position and story role identical. Improve dialogue punchiness and visual distinctiveness. Serve algorithm goals: ${algoGoals.join(", ")}.`;
+        : `Regenerate scene ${sc.id} with fresh energy. Keep arc position identical. Serve algorithm goals: ${algoGoals.join(", ")}.`;
       const result = await claude(
-        `You are a scene director for viral animated content. Respond ONLY with a single valid JSON object — no markdown, no wrapping array.`,
+        `You are a scene director for viral animated content. Respond ONLY with a single valid JSON object.`,
         `${enhanced}
-
 MASTER STYLE: ${episode.stylePrompt}
-FULL ARC: ${episode.overallStorybeatSummary}
 SCENE POSITION: Scene ${sc.id} of ${scenes.length} — type: ${sc.type}
-PREVIOUS: ${idx > 0 ? `Scene ${scenes[idx-1].id} ends with: ${scenes[idx-1].visual}` : "This is the opening scene."}
-NEXT: ${idx < scenes.length-1 ? `Scene ${scenes[idx+1].id} begins: ${scenes[idx+1].visual}` : "This is the final scene."}
-
-Return ONLY this JSON:
-{
-  "id": ${sc.id}, "type": "${sc.type}", "title": "...", "duration": "${sc.duration}",
-  "arcPosition": "...", "storyRole": "...", "visual": "...", "dialogue": "...",
-  "caption": "...", "imagePrompt": "Full prompt including master style",
-  "animationNote": "...", "voiceNote": "...", "algoTactic": "...", "engagementHook": "..."
-}`
+PREVIOUS: ${idx > 0 ? `Scene ${scenes[idx-1].id} ends: ${scenes[idx-1].visual}` : "Opening scene."}
+NEXT: ${idx < scenes.length-1 ? `Scene ${scenes[idx+1].id} begins: ${scenes[idx+1].visual}` : "Final scene."}
+Return ONLY: {"id":${sc.id},"type":"${sc.type}","title":"...","duration":"${sc.duration}","arcPosition":"...","storyRole":"...","visual":"...","dialogue":"...","caption":"...","imagePrompt":"...","animationNote":"...","voiceNote":"...","algoTactic":"...","engagementHook":"..."}`
       );
       setScenes(prev => { const n = [...prev]; n[idx] = result; return n; });
-    } catch {
-      setError(`Scene ${sc.id} regeneration failed.`);
-    }
+    } catch { setError(`Scene ${sc.id} regen failed.`); }
     setLoading(null);
   }, [scenes, episode, genre, algoGoals]);
 
-  // ── Generate algo analysis ─────────────────────────────────
   const generateAlgo = async () => {
     if (!episode) return;
     setLoading("algo"); setError(null);
     try {
       const result = await claude(
-        `You are a platform algorithm analyst and behavioural psychologist specialising in short-form video. Respond ONLY with valid JSON.`,
-        `Perform a deep algorithmic dissection of this episode.
-
+        `You are a platform algorithm analyst. Respond ONLY with valid JSON.`,
+        `Analyse this episode algorithmically.
 EPISODE: "${episode.episodeTitle}" — ${genre} — ${platform}
 GOALS: ${algoGoals.join(", ")}
-SCENES: ${JSON.stringify(scenes.map(s => ({ id:s.id, type:s.type, title:s.title, dialogue:s.dialogue, algoTactic:s.algoTactic, engagementHook:s.engagementHook })))}
-
+SCENES: ${JSON.stringify(scenes.map(s => ({ id:s.id,type:s.type,title:s.title,dialogue:s.dialogue,algoTactic:s.algoTactic,engagementHook:s.engagementHook })))}
 Return ONLY JSON:
-{
-  "overallScore": 82,
-  "viralProbability": "67%",
-  "platformFit": "How well this matches ${platform} algorithm patterns right now",
-  "retentionCurve": [{ "sceneId":1, "predictedRetention":95, "dropRisk":"low", "tactic":"why viewers stay" }],
-  "engagementBreakdown": [{ "metric":"comments", "sceneId":2, "trigger":"exact moment", "psychologicalMechanism":"why this works", "expectedLift":"+38%", "optimisedLine":"improved version" }],
-  "hiddenOptimisations": [{ "type":"Rewatch Loop", "sceneId":3, "description":"planted detail that rewards second viewing", "howToAmplify":"..." }],
-  "profileVisitMoments": [{ "sceneId":1, "mechanism":"what makes them visit your profile", "suggestion":"..." }],
-  "shareableMoment": { "sceneId":4, "reason":"why this gets forwarded", "optimisation":"..." },
-  "saveMechanism": { "sceneId":2, "reason":"why this gets bookmarked", "suggestion":"..." },
-  "captionUpgrades": [{ "sceneId":1, "original":"...", "upgraded":"...", "reason":"..." }],
-  "commentSeedLines": ["A line to add in caption that plants a discussion topic"],
-  "firstThreeSeconds": { "currentHook": "...", "strengthScore": 8, "upgrade": "stronger version" },
-  "bestPostTime": "Day + time + reasoning for ${platform}",
-  "seriesRetentionStrategy": "How to tease next episode without spoiling",
-  "weakestScene": { "sceneId":3, "issue":"...", "fix":"..." }
-}`
+{"overallScore":82,"viralProbability":"67%","platformFit":"...","retentionCurve":[{"sceneId":1,"predictedRetention":95,"dropRisk":"low","tactic":"..."}],"engagementBreakdown":[{"metric":"comments","sceneId":2,"trigger":"...","psychologicalMechanism":"...","expectedLift":"+38%","optimisedLine":"..."}],"hiddenOptimisations":[{"type":"Rewatch Loop","sceneId":3,"description":"...","howToAmplify":"..."}],"profileVisitMoments":[{"sceneId":1,"mechanism":"...","suggestion":"..."}],"shareableMoment":{"sceneId":4,"reason":"...","optimisation":"..."},"saveMechanism":{"sceneId":2,"reason":"...","suggestion":"..."},"captionUpgrades":[{"sceneId":1,"original":"...","upgraded":"...","reason":"..."}],"commentSeedLines":["..."],"firstThreeSeconds":{"currentHook":"...","strengthScore":8,"upgrade":"..."},"bestPostTime":"...","seriesRetentionStrategy":"...","weakestScene":{"sceneId":3,"issue":"...","fix":"..."}}`
       );
       setAlgoLayer(result);
       switchTab("algo");
-    } catch {
-      setError("Algorithm analysis failed.");
-    }
+    } catch { setError("Algorithm analysis failed."); }
     setLoading(null);
   };
 
-  // ── Export ─────────────────────────────────────────────────
   const exportTxt = () => {
     if (!episode) return;
-    const lines = [
-      `EPISODE ${episode.episodeNumber}: ${episode.episodeTitle}`,
-      `${platform.toUpperCase()} · ${genre.toUpperCase()} · ${episode.totalDuration}`,
-      ``,
-      `LOGLINE: ${episode.logline}`,
-      `ARC: ${episode.overallStorybeatSummary}`,
-      `EMOTIONAL JOURNEY: ${episode.emotionalJourney}`,
-      `SERIES HOOK: ${episode.seriesHook}`,
-      ``,
-      `━━━ MASTER STYLE PROMPT ━━━`,
-      episode.stylePrompt,
-      ``,
-      `━━━ SCENES ━━━`,
-      ...scenes.map(s => [
-        ``,
-        `[SCENE ${s.id} · ${s.type} · ${s.duration}] ${s.title}`,
-        `Arc Position:  ${s.arcPosition}`,
-        `Story Role:    ${s.storyRole}`,
-        `Visual:        ${s.visual}`,
-        `Dialogue:      ${s.dialogue}`,
-        `Caption:       ${s.caption}`,
-        `Image Prompt:  ${s.imagePrompt}`,
-        `Animation:     ${s.animationNote}`,
-        `Voice:         ${s.voiceNote}`,
-        `Algo Tactic:   ${s.algoTactic}`,
-        `Eng. Hook:     ${s.engagementHook}`,
-      ].join("\n")),
-      ``,
-      `━━━ DISTRIBUTION ━━━`,
-      `Hashtags: ${episode.hashtags?.join(" ")}`,
-      `Strategy: ${episode.postingStrategy}`,
-      algoLayer ? [``, `━━━ ALGORITHM SCORE ━━━`, `Score: ${algoLayer.overallScore}/100 · Viral: ${algoLayer.viralProbability}`, algoLayer.platformFit, `Best Post Time: ${algoLayer.bestPostTime}`].join("\n") : "",
-    ].filter(v => v !== null && v !== undefined).join("\n");
-
-    const blob = new Blob([lines], { type: "text/plain" });
+    const lines = [`EPISODE ${episode.episodeNumber}: ${episode.episodeTitle}`,`${platform.toUpperCase()} · ${genre.toUpperCase()} · ${episode.totalDuration}`,"",`LOGLINE: ${episode.logline}`,`ARC: ${episode.overallStorybeatSummary}`,`EMOTIONAL JOURNEY: ${episode.emotionalJourney}`,`SERIES HOOK: ${episode.seriesHook}`,"","━━━ MASTER STYLE PROMPT ━━━",episode.stylePrompt,"","━━━ SCENES ━━━",...scenes.map(s=>[`\n[SCENE ${s.id} · ${s.type} · ${s.duration}] ${s.title}`,`Visual: ${s.visual}`,`Dialogue: ${s.dialogue}`,`Caption: ${s.caption}`,`Image Prompt: ${s.imagePrompt}`,`Animation: ${s.animationNote}`,`Voice: ${s.voiceNote}`,`Algo: ${s.algoTactic}`].join("\n")),"","━━━ DISTRIBUTION ━━━",`Hashtags: ${episode.hashtags?.join(" ")}`,`Strategy: ${episode.postingStrategy}`].join("\n");
+    const blob = new Blob([lines], { type:"text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `ep${episode.episodeNumber}_${episode.episodeTitle.replace(/\s+/g, "_")}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const a = document.createElement("a"); a.href=url; a.download=`ep${episode.episodeNumber}_${episode.episodeTitle.replace(/\s+/g,"_")}.txt`; a.click(); URL.revokeObjectURL(url);
   };
 
   const loadSequel = () => {
     if (!episode) return;
-    const summary = `"${episode.episodeTitle}": ${episode.overallStorybeatSummary} Series hook: ${episode.seriesHook}. Key scenes: ${scenes.map(s => `${s.type}(${s.title})`).join(", ")}.`;
+    const summary = `"${episode.episodeTitle}": ${episode.overallStorybeatSummary} Hook: ${episode.seriesHook}. Scenes: ${scenes.map(s=>`${s.type}(${s.title})`).join(", ")}.`;
     setPrevEpisodes(p => [...p, summary]);
     setEp2Draft(summary);
-    setEpisode(null); setScenes([]); setAlgoLayer(null);
-    setTopic(""); switchTab("setup");
+    setEpisode(null); setScenes([]); setAlgoLayer(null); setTopic(""); switchTab("setup");
   };
 
   // ── Render ─────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100vh", background: G.bgGradient, fontFamily: FONT, color: G.ink, overflowX: "hidden" }}>
-      <Style />
+    <div style={{ minHeight:"100vh", background:T.bgBase, fontFamily:FONT, color:T.textPrimary, overflowX:"hidden", position:"relative" }}>
+      <TahoeStyles accentColor={g.color} accentGlow={g.glow} />
+
+      {/* ── Animated fluid background ── */}
+      <div className="fluid-bg" />
 
       {/* ── Navbar ── */}
       <nav style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: G.glassNavbar,
-        backdropFilter: "blur(28px) saturate(200%)",
-        WebkitBackdropFilter: "blur(28px) saturate(200%)",
-        borderBottom: `1px solid ${G.borderSubtle}`,
-        boxShadow: "0 1px 0 rgba(0,0,0,0.04), 0 4px 24px rgba(0,0,0,0.05)",
-        padding: "0 28px",
-        height: 52,
-        display: "flex",
-        alignItems: "center",
-        gap: 0,
+        position:"sticky", top:0, zIndex:100,
+        background:T.navGlass,
+        backdropFilter:"blur(48px) saturate(200%)",
+        WebkitBackdropFilter:"blur(48px) saturate(200%)",
+        borderBottom:`1px solid ${T.border2}`,
+        boxShadow:"0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4)",
+        padding:"0 24px", height:56,
+        display:"flex", alignItems:"center", gap:0,
       }}>
         {/* Wordmark */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 28 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10, marginRight:24 }}>
           <div style={{
-            width: 24, height: 24, borderRadius: 7,
-            background: `linear-gradient(135deg, ${g.color}, ${g.color}88)`,
-            boxShadow: `0 2px 8px ${g.color}40`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 12, transition: "all 0.3s ease",
-          }}>
-            {g.emoji}
-          </div>
-          <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em", color: G.ink }}>
-            Episode Studio
-          </span>
+            width:32, height:32, borderRadius:10,
+            background:`linear-gradient(135deg, ${g.color}, ${g.color}88)`,
+            boxShadow:`0 4px 16px ${g.glow}, inset 0 1px 0 rgba(255,255,255,0.3)`,
+            display:"flex", alignItems:"center", justifyContent:"center",
+            fontSize:16, transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+          }}>{g.emoji}</div>
+          <span style={{ fontSize:15, fontWeight:600, letterSpacing:"-0.02em", color:T.textPrimary }}>Episode Studio</span>
         </div>
 
-        {/* Tab pill selector */}
+        {/* Pill tab selector */}
         <div style={{
-          display: "flex", alignItems: "center",
-          background: G.glassSubtle,
-          backdropFilter: "blur(8px)",
-          borderRadius: 10,
-          padding: "3px",
-          gap: 0,
-          border: `1px solid ${G.borderMid}`,
-          boxShadow: G.s0,
+          display:"flex", alignItems:"center",
+          background:"rgba(255,255,255,0.08)",
+          borderRadius:T.pill, padding:"4px",
+          border:`1px solid ${T.border2}`,
         }}>
-          {([
-            ["setup",    "Setup",     "◈"],
-            ["timeline", "Timeline",  "▤"],
-            ["algo",     "Algorithm", "◑"],
-            ["export",   "Export",    "↑"],
-          ] as const).map(([id, lbl, icon]) => (
-            <button key={id} onClick={() => switchTab(id)} className="tab-pill" style={{
-              height: 28, padding: "0 14px",
-              background: tab === id ? G.glassStrong : "transparent",
-              border: "none",
-              borderRadius: 7,
-              color: tab === id ? G.ink : G.inkDim,
-              fontSize: 12,
-              fontWeight: tab === id ? 500 : 400,
-              letterSpacing: "-0.01em",
-              cursor: "pointer",
-              transition: "all 0.18s ease",
-              boxShadow: tab === id ? G.s1 : "none",
-              fontFamily: FONT,
-              display: "flex", alignItems: "center", gap: 5,
+          {([ ["setup","Setup","◈"], ["timeline","Timeline","▤"], ["algo","Algorithm","◑"], ["export","Export","↑"] ] as const).map(([id,lbl,icon]) => (
+            <button key={id} onClick={() => switchTab(id)} style={{
+              height:32, padding:"0 16px",
+              background: tab===id ? `linear-gradient(135deg, ${g.color}CC, ${g.color}88)` : "transparent",
+              border:"none", borderRadius:T.pill,
+              color: tab===id ? "#fff" : T.textMuted,
+              fontSize:12, fontWeight: tab===id ? 600 : 400,
+              letterSpacing:"-0.01em", cursor:"pointer",
+              transition:"all 0.2s ease",
+              boxShadow: tab===id ? `0 2px 12px ${g.glow}, inset 0 1px 0 rgba(255,255,255,0.25)` : "none",
+              fontFamily:FONT,
+              display:"flex", alignItems:"center", gap:5,
             }}>
-              <span style={{ fontSize: 10, opacity: 0.7 }}>{icon}</span>
-              {lbl}
+              <span style={{ fontSize:10, opacity:0.8 }}>{icon}</span>{lbl}
             </button>
           ))}
         </div>
 
-        {/* Loading indicator */}
+        {/* Loading */}
         {loading && (
-          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
-            <div className="spinner" style={{
-              width: 14, height: 14, borderRadius: "50%",
-              border: `1.5px solid ${G.borderMid}`,
-              borderTopColor: g.color,
-            }} />
-            <span style={{ fontSize: 11, color: G.inkSub, letterSpacing: "-0.01em" }}>
-              {loading === "episode" ? "Generating episode…"
-                : loading === "algo" ? "Analysing algorithm…"
-                : "Regenerating scene…"}
+          <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:8 }}>
+            <div className="spin" style={{ width:14, height:14, borderRadius:"50%", border:`2px solid rgba(255,255,255,0.15)`, borderTopColor:g.color }} />
+            <span style={{ fontSize:12, color:T.textMuted }}>
+              {loading==="episode"?"Generating episode…":loading==="algo"?"Analysing…":"Regenerating…"}
             </span>
           </div>
         )}
 
-        {/* Error toast */}
+        {/* Error */}
         {error && (
-          <div style={{
-            marginLeft: loading ? 12 : "auto",
-            display: "flex", alignItems: "center", gap: 8,
-            background: "rgba(192,80,80,0.08)",
-            border: "1px solid rgba(192,80,80,0.18)",
-            borderRadius: 8, padding: "5px 10px 5px 8px",
-          }}>
-            <span style={{ fontSize: 10, color: "#C05050" }}>⚠</span>
-            <span style={{ fontSize: 11, color: "#A04040" }}>{error}</span>
-            <button onClick={() => setError(null)} style={{ background: "none", border: "none", color: "#A04040", cursor: "pointer", fontSize: 13, lineHeight: 1, padding: 0, marginLeft: 2 }}>×</button>
+          <div style={{ marginLeft:loading?"12px":"auto", display:"flex", alignItems:"center", gap:8, background:"rgba(255,55,95,0.15)", border:"1px solid rgba(255,55,95,0.3)", borderRadius:T.pill, padding:"5px 12px 5px 10px" }}>
+            <span style={{ fontSize:11, color:T.pink }}>⚠ {error}</span>
+            <button onClick={()=>setError(null)} style={{ background:"none",border:"none",color:T.pink,cursor:"pointer",fontSize:14,lineHeight:1,padding:0 }}>×</button>
           </div>
         )}
       </nav>
 
-      {/* ── Page content with transition ── */}
-      <div className={tabTransition ? "tab-exit" : "tab-enter"} style={{ minHeight: "calc(100vh - 52px)" }}>
+      {/* ── Page content ── */}
+      <div className={tabTransition?"tab-exit":"tab-enter"} style={{ minHeight:"calc(100vh - 56px)" }}>
 
         {/* ── SETUP ── */}
-        {tab === "setup" && (
-          <div style={{ maxWidth: 780, margin: "0 auto", padding: "36px 24px" }}>
+        {tab==="setup" && (
+          <div style={{ maxWidth:800, margin:"0 auto", padding:"36px 24px" }}>
 
-            {/* Series context banner */}
             {prevEpisodes.length > 0 && (
-              <GlassCard style={{ marginBottom: 20, borderLeft: `3px solid ${G.sage}`, padding: "16px 20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <TahoeCard style={{ marginBottom:20, borderLeft:`3px solid ${T.mint}` }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
                   <div>
-                    <Label color={G.sage} style={{ marginBottom: 6 }}>Continuing Series — Episode {prevEpisodes.length + 1}</Label>
-                    {prevEpisodes.map((e, i) => (
-                      <div key={i} style={{ fontSize: 12, color: G.inkSub, lineHeight: 1.6, marginTop: 3 }}>
-                        <span style={{ color: G.inkFaint, fontSize: 11 }}>EP{i + 1}  </span>{e}
+                    <PillLabel color={T.mint} style={{ marginBottom:8 }}>Continuing Series — Episode {prevEpisodes.length + 1}</PillLabel>
+                    {prevEpisodes.map((e,i)=>(
+                      <div key={i} style={{ fontSize:12, color:T.textMuted, lineHeight:1.6, marginTop:3 }}>
+                        <span style={{ color:T.textDim }}>EP{i+1}  </span>{e}
                       </div>
                     ))}
                   </div>
-                  <GhostBtn onClick={() => { setPrevEpisodes([]); setEp2Draft(""); }} style={{ fontSize: 11, padding: "4px 10px" }}>
-                    Clear history
-                  </GhostBtn>
+                  <TahoeBtn onClick={()=>{ setPrevEpisodes([]); setEp2Draft(""); }} small>Clear</TahoeBtn>
                 </div>
-              </GlassCard>
+              </TahoeCard>
             )}
 
-            {/* Topic input */}
-            <GlassCard style={{ marginBottom: 20, padding: "24px 28px" }}>
-              <Label style={{ marginBottom: 10 }}>What's this episode about?</Label>
+            {/* Topic */}
+            <TahoeCard style={{ marginBottom:20, padding:"28px 32px" }}>
+              <PillLabel style={{ marginBottom:12 }}>What's this episode about?</PillLabel>
               <textarea
                 value={topic}
-                onChange={e => setTopic(e.target.value)}
+                onChange={e=>setTopic(e.target.value)}
                 rows={3}
-                placeholder="e.g. 'White Lotus Season 3 dinner scene parody' — or — 'US election debate reimagined as a cooking show'"
-                className="glass-input"
+                placeholder={"e.g. 'White Lotus Season 3 dinner scene parody' or 'US election debate reimagined as a cooking show'"}
+                className="tahoe-input"
                 style={{
-                  width: "100%", resize: "vertical",
-                  background: G.glassInput,
-                  backdropFilter: "blur(8px)",
-                  border: `1px solid ${G.borderMid}`,
-                  borderRadius: 12,
-                  color: G.ink, fontSize: 14, lineHeight: 1.65,
-                  padding: "14px 16px",
-                  outline: "none",
-                  fontFamily: FONT,
-                  transition: "border-color 0.2s, box-shadow 0.2s",
-                  boxShadow: G.s0,
+                  width:"100%", resize:"vertical",
+                  background:"rgba(255,255,255,0.07)",
+                  border:`1px solid ${T.border2}`,
+                  borderRadius:T.r2,
+                  color:T.textPrimary, fontSize:14, lineHeight:1.65,
+                  padding:"16px 18px", outline:"none", fontFamily:FONT,
+                  transition:"border-color 0.2s, box-shadow 0.2s",
                 }}
-                onFocus={e => { e.target.style.borderColor = g.color + "80"; e.target.style.boxShadow = `0 0 0 3px ${g.color}18`; }}
-                onBlur={e => { e.target.style.borderColor = G.borderMid; e.target.style.boxShadow = G.s0; }}
+                onFocus={e=>{ e.target.style.borderColor=g.color+"80"; e.target.style.boxShadow=`0 0 0 4px ${g.glow}`; }}
+                onBlur={e=>{ e.target.style.borderColor=T.border2; e.target.style.boxShadow="none"; }}
               />
-            </GlassCard>
+            </TahoeCard>
 
-            {/* Genre + Platform row */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 }}>
               {/* Genre */}
-              <GlassCard style={{ padding: "20px 20px" }}>
-                <Label style={{ marginBottom: 12 }}>Genre</Label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {GENRES.map(gn => (
-                    <button key={gn.id} onClick={() => setGenre(gn.id)} className="genre-chip" style={{
-                      padding: "6px 12px", borderRadius: 8, fontSize: 12,
-                      cursor: "pointer", fontFamily: FONT,
-                      border: genre === gn.id ? `1px solid ${gn.color}60` : `1px solid ${G.borderMid}`,
-                      background: genre === gn.id ? gn.bg : "rgba(255,255,255,0.4)",
-                      color: genre === gn.id ? gn.color : G.inkSub,
-                      transition: "all 0.15s ease",
-                      fontWeight: genre === gn.id ? 500 : 400,
+              <TahoeCard style={{ padding:"24px 24px" }}>
+                <PillLabel style={{ marginBottom:14 }}>Genre</PillLabel>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
+                  {GENRES.map(gn=>(
+                    <button key={gn.id} onClick={()=>setGenre(gn.id)} className="tahoe-chip" style={{
+                      padding:"7px 14px", borderRadius:T.pill, fontSize:12, cursor:"pointer", fontFamily:FONT,
+                      border:`1px solid ${genre===gn.id ? gn.color+"60" : T.border2}`,
+                      background: genre===gn.id ? `${gn.color}20` : "rgba(255,255,255,0.06)",
+                      color: genre===gn.id ? gn.color : T.textMuted,
+                      transition:"all 0.18s ease", fontWeight: genre===gn.id ? 600 : 400,
+                      boxShadow: genre===gn.id ? `0 0 16px ${gn.glow}` : "none",
                     }}>
-                      <span style={{ marginRight: 4, fontSize: 11 }}>{gn.emoji}</span>{gn.label}
+                      <span style={{ marginRight:5 }}>{gn.emoji}</span>{gn.label}
                     </button>
                   ))}
                 </div>
-              </GlassCard>
+              </TahoeCard>
 
-              {/* Platform + Goals */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                <GlassCard style={{ padding: "20px 20px" }}>
-                  <Label style={{ marginBottom: 10 }}>Platform</Label>
-                  <div style={{ display: "flex", gap: 6 }}>
-                    {PLATFORMS.map(pl => (
-                      <button key={pl.id} onClick={() => setPlatform(pl.id)} className="genre-chip" style={{
-                        flex: 1, padding: "8px 0", borderRadius: 8, fontSize: 12,
-                        cursor: "pointer", fontFamily: FONT,
-                        border: platform === pl.id ? `1px solid ${g.color}60` : `1px solid ${G.borderMid}`,
-                        background: platform === pl.id ? g.bg : "rgba(255,255,255,0.4)",
-                        color: platform === pl.id ? g.color : G.inkSub,
-                        transition: "all 0.15s ease",
-                        fontWeight: platform === pl.id ? 500 : 400,
-                        display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+              <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+                {/* Platform */}
+                <TahoeCard style={{ padding:"22px 24px" }}>
+                  <PillLabel style={{ marginBottom:12 }}>Platform</PillLabel>
+                  <div style={{ display:"flex", gap:8 }}>
+                    {PLATFORMS.map(pl=>(
+                      <button key={pl.id} onClick={()=>setPlatform(pl.id)} className="tahoe-chip" style={{
+                        flex:1, padding:"10px 0", borderRadius:T.r2, fontSize:12, cursor:"pointer", fontFamily:FONT,
+                        border:`1px solid ${platform===pl.id ? g.color+"60" : T.border2}`,
+                        background: platform===pl.id ? `${g.color}20` : "rgba(255,255,255,0.06)",
+                        color: platform===pl.id ? g.color : T.textMuted,
+                        transition:"all 0.18s ease", fontWeight: platform===pl.id ? 600 : 400,
+                        boxShadow: platform===pl.id ? `0 0 20px ${g.glow}` : "none",
+                        display:"flex", flexDirection:"column", alignItems:"center", gap:3,
                       }}>
-                        <span style={{ fontSize: 14 }}>{pl.icon}</span>
+                        <span style={{ fontSize:16 }}>{pl.icon}</span>
                         <span>{pl.label}</span>
                       </button>
                     ))}
                   </div>
-                </GlassCard>
+                </TahoeCard>
 
-                <GlassCard style={{ padding: "20px 20px", flex: 1 }}>
-                  <Label style={{ marginBottom: 10 }}>Algorithm Goals</Label>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 5 }}>
-                    {ALGO_GOALS.map(m => {
-                      const on = algoGoals.includes(m.key);
+                {/* Algo goals */}
+                <TahoeCard style={{ padding:"22px 24px", flex:1 }}>
+                  <PillLabel style={{ marginBottom:12 }}>Algorithm Goals</PillLabel>
+                  <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                    {ALGO_GOALS.map(m=>{
+                      const on=algoGoals.includes(m.key);
                       return (
-                        <button key={m.key} onClick={() => setAlgoGoals(p => on ? p.filter(x => x !== m.key) : [...p, m.key])} className="algo-goal" style={{
-                          padding: "8px 10px", borderRadius: 8, cursor: "pointer", textAlign: "left",
-                          fontFamily: FONT,
-                          border: on ? `1px solid ${m.color}50` : `1px solid ${G.borderSubtle}`,
-                          background: on ? `${m.color}10` : "rgba(255,255,255,0.35)",
-                          transition: "all 0.15s ease",
+                        <button key={m.key} onClick={()=>setAlgoGoals(p=>on?p.filter(x=>x!==m.key):[...p,m.key])} className="tahoe-chip" style={{
+                          padding:"10px 12px", borderRadius:T.r1, cursor:"pointer", textAlign:"left", fontFamily:FONT,
+                          border:`1px solid ${on?m.color+"50":T.border2}`,
+                          background: on?`${m.color}18`:"rgba(255,255,255,0.06)",
+                          transition:"all 0.18s ease",
+                          boxShadow: on?`0 0 16px ${m.color}30`:"none",
                         }}>
-                          <div style={{ fontSize: 13, marginBottom: 2 }}>{m.icon}</div>
-                          <div style={{ fontSize: 11, color: on ? m.color : G.inkSub, fontWeight: on ? 500 : 400 }}>{m.label}</div>
-                          <div style={{ fontSize: 10, color: G.inkFaint, marginTop: 1, lineHeight: 1.3 }}>{m.desc}</div>
+                          <div style={{ fontSize:14, marginBottom:2 }}>{m.icon}</div>
+                          <div style={{ fontSize:11, color:on?m.color:T.textMuted, fontWeight:on?600:400 }}>{m.label}</div>
                         </button>
                       );
                     })}
                   </div>
-                </GlassCard>
+                </TahoeCard>
               </div>
             </div>
 
             {/* Generate CTA */}
-            <button
-              onClick={generateEpisode}
-              disabled={!topic.trim() || loading === "episode"}
-              className="cta-btn"
-              style={{
-                width: "100%", padding: "16px 0",
-                background: !topic.trim() || loading === "episode"
-                  ? "rgba(180,178,200,0.35)"
-                  : `linear-gradient(135deg, ${g.color}E8, ${g.color}AA)`,
-                border: "none", borderRadius: 14,
-                color: !topic.trim() || loading === "episode" ? G.inkDim : "#fff",
-                fontSize: 14, fontWeight: 500, letterSpacing: "-0.01em",
-                cursor: !topic.trim() || loading === "episode" ? "not-allowed" : "pointer",
-                transition: "all 0.2s ease",
-                boxShadow: !topic.trim() || loading === "episode" ? "none" : `0 4px 24px ${g.color}40, inset 0 1px 0 rgba(255,255,255,0.25)`,
-                fontFamily: FONT,
-              }}
-            >
-              {loading === "episode" ? (
-                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                  <span className="spinner" style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.3)", borderTopColor: "#fff" }} />
-                  Building episode…
-                </span>
-              ) : (
-                `Generate Episode ${prevEpisodes.length + 1}`
-              )}
+            <button onClick={generateEpisode} disabled={!topic.trim()||loading==="episode"} className="cta-main" style={{
+              width:"100%", padding:"18px 0",
+              background:!topic.trim()||loading==="episode"
+                ? "rgba(255,255,255,0.08)"
+                : `linear-gradient(135deg, ${g.color}, ${g.color}88)`,
+              border:"none", borderRadius:T.r3,
+              color:!topic.trim()||loading==="episode"?T.textMuted:"#fff",
+              fontSize:15, fontWeight:600, letterSpacing:"-0.01em",
+              cursor:!topic.trim()||loading==="episode"?"not-allowed":"pointer",
+              transition:"all 0.25s ease",
+              boxShadow:!topic.trim()||loading==="episode"?"none":`0 8px 32px ${g.glow}, inset 0 1px 0 rgba(255,255,255,0.25)`,
+              fontFamily:FONT,
+            }}>
+              {loading==="episode"
+                ? <span style={{ display:"flex",alignItems:"center",justifyContent:"center",gap:10 }}><span className="spin" style={{ width:16,height:16,borderRadius:"50%",border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"#fff" }} />Building episode…</span>
+                : `Generate Episode ${prevEpisodes.length+1}`}
             </button>
           </div>
         )}
 
         {/* ── TIMELINE ── */}
-        {tab === "timeline" && episode && (
-          <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px" }}>
+        {tab==="timeline" && episode && (
+          <div style={{ maxWidth:920, margin:"0 auto", padding:"28px 24px" }}>
 
             {/* Episode header */}
-            <GlassCard style={{ padding: "24px 28px", marginBottom: 20, borderLeft: `3px solid ${g.color}` }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 14, marginBottom: 16 }}>
+            <TahoeCard style={{ padding:"28px 32px", marginBottom:20, boxShadow:`${T.shadowLg}, 0 0 60px ${g.glow}` }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:14, marginBottom:18 }}>
                 <div>
-                  <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.06em", color: g.color, textTransform: "uppercase", marginBottom: 6 }}>
-                    Episode {episode.episodeNumber} · {genre} · {platform} · {episode.totalDuration}
+                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+                    <span style={{ fontSize:18 }}>{g.emoji}</span>
+                    <span style={{ fontSize:10, fontWeight:700, letterSpacing:"0.08em", color:g.color, textTransform:"uppercase", padding:"3px 10px", borderRadius:T.pill, background:`${g.color}18`, border:`1px solid ${g.color}40` }}>
+                      EP{episode.episodeNumber} · {genre} · {platform} · {episode.totalDuration}
+                    </span>
                   </div>
-                  <h1 style={{ fontSize: 22, fontWeight: 600, letterSpacing: "-0.02em", color: G.ink, margin: 0, lineHeight: 1.2 }}>
+                  <h1 style={{ fontSize:26, fontWeight:700, letterSpacing:"-0.03em", color:T.textPrimary, margin:0, lineHeight:1.15, fontFamily:FONT_ROUND }}>
                     {episode.episodeTitle}
                   </h1>
                 </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <GhostBtn onClick={generateAlgo} disabled={!!loading} style={{ color: G.sky }}>
-                    {loading === "algo" ? "…" : "◑ Algorithm"}
-                  </GhostBtn>
-                  <GhostBtn onClick={() => switchTab("export")} style={{ color: g.color }}>
+                <div style={{ display:"flex", gap:8 }}>
+                  <TahoeBtn onClick={generateAlgo} disabled={!!loading} accent={T.cyan}>
+                    {loading==="algo"?"…":"◑ Algorithm"}
+                  </TahoeBtn>
+                  <TahoeBtn onClick={()=>switchTab("export")} accent={g.color}>
                     ↑ Export
-                  </GhostBtn>
+                  </TahoeBtn>
                 </div>
               </div>
 
-              {/* Logline */}
-              <div style={{ fontSize: 14, color: G.inkMid, fontStyle: "italic", lineHeight: 1.65, marginBottom: 14, borderLeft: `2px solid ${G.borderMid}`, paddingLeft: 14 }}>
+              <div style={{ fontSize:14, color:T.textSecondary, fontStyle:"italic", lineHeight:1.7, marginBottom:14, borderLeft:`2px solid ${g.color}50`, paddingLeft:16 }}>
                 "{episode.logline}"
               </div>
+              <div style={{ fontSize:12, color:T.textMuted, lineHeight:1.7, marginBottom:16 }}>{episode.overallStorybeatSummary}</div>
 
-              {/* Arc summary */}
-              <div style={{ fontSize: 12, color: G.inkSub, lineHeight: 1.7, marginBottom: 16 }}>
-                {episode.overallStorybeatSummary}
-              </div>
-
-              {/* Emotional journey tag */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: `${g.color}0E`, border: `1px solid ${g.color}28`, borderRadius: 8, padding: "6px 12px", marginBottom: 16 }}>
-                <span style={{ fontSize: 10, fontWeight: 500, color: g.color, letterSpacing: "0.05em" }}>EMOTIONAL ARC</span>
-                <span style={{ fontSize: 12, color: G.inkSub }}>{episode.emotionalJourney}</span>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:`${g.color}12`, border:`1px solid ${g.color}30`, borderRadius:T.pill, padding:"6px 14px", marginBottom:18 }}>
+                <span style={{ fontSize:10, fontWeight:600, color:g.color, letterSpacing:"0.06em" }}>EMOTIONAL ARC</span>
+                <span style={{ fontSize:12, color:T.textSecondary }}>{episode.emotionalJourney}</span>
               </div>
 
               {/* Act bars */}
               {episode.arcBreakdown && (
-                <div style={{ display: "flex", gap: 4, marginBottom: 14 }}>
-                  {(["Act I", "Act II", "Act III"] as const).map((act, i) => {
-                    const colors = [G.rose, G.gold, G.sage];
-                    const widths = [
-                      episode.arcBreakdown.act1End,
-                      episode.arcBreakdown.act2End - episode.arcBreakdown.act1End,
-                      scenes.length - episode.arcBreakdown.act2End,
-                    ];
+                <div style={{ display:"flex", gap:5, marginBottom:16 }}>
+                  {(["Act I","Act II","Act III"] as const).map((act,i)=>{
+                    const colors=[T.pink,T.orange,T.mint];
+                    const glows=[`rgba(255,55,95,0.3)`,`rgba(255,159,10,0.3)`,`rgba(48,209,88,0.3)`];
+                    const widths=[episode.arcBreakdown.act1End, episode.arcBreakdown.act2End-episode.arcBreakdown.act1End, scenes.length-episode.arcBreakdown.act2End];
                     return (
-                      <div key={i} style={{
-                        flex: widths[i] || 1, height: 24, borderRadius: 6,
-                        background: `${colors[i]}14`,
-                        border: `1px solid ${colors[i]}30`,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: 10, fontWeight: 500, color: colors[i], letterSpacing: "0.04em",
-                      }}>
+                      <div key={i} style={{ flex:widths[i]||1, height:28, borderRadius:T.pill, background:`${colors[i]}15`, border:`1px solid ${colors[i]}35`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, fontWeight:600, color:colors[i], letterSpacing:"0.04em", boxShadow:`0 0 12px ${glows[i]}` }}>
                         {act}
                       </div>
                     );
@@ -672,99 +497,84 @@ Return ONLY JSON:
               )}
 
               {/* Timeline scrubber */}
-              <div style={{ display: "flex", gap: 3, height: 20, alignItems: "stretch" }}>
-                {scenes.map((s, i) => {
-                  const meta = SCENE_TYPE_META[s.type] || { color: G.inkDim, bg: G.glassSubtle, dot: G.inkDim };
-                  return (
-                    <div key={i} title={`${s.type}: ${s.title}`} style={{
-                      flex: parseInt(s.duration) || 4,
-                      background: meta.color,
-                      borderRadius: i === 0 ? "5px 2px 2px 5px" : i === scenes.length - 1 ? "2px 5px 5px 2px" : 2,
-                      opacity: 0.55,
-                    }} />
-                  );
+              <div style={{ display:"flex", gap:3, height:16, alignItems:"stretch", borderRadius:T.pill, overflow:"hidden" }}>
+                {scenes.map((s,i)=>{
+                  const sc=SCENE_COLORS[s.type]||{color:T.textMuted,glow:"rgba(255,255,255,0.1)"};
+                  return <div key={i} title={`${s.type}: ${s.title}`} style={{ flex:parseInt(s.duration)||4, background:sc.color, opacity:0.55 }} />;
                 })}
               </div>
 
-              {/* Style prompt expandable */}
-              <details style={{ marginTop: 14 }}>
-                <summary style={{ fontSize: 11, color: G.inkDim, cursor: "pointer", userSelect: "none", letterSpacing: "-0.01em", listStyle: "none", display: "flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ fontSize: 10 }}>◈</span> Master Style Prompt
+              <details style={{ marginTop:16 }}>
+                <summary style={{ fontSize:11, color:T.textDim, cursor:"pointer", userSelect:"none", listStyle:"none", display:"flex", alignItems:"center", gap:5 }}>
+                  <span style={{ fontSize:10 }}>◈</span> Master Style Prompt
                 </summary>
-                <div style={{ marginTop: 10, padding: "12px 14px", background: "rgba(0,0,0,0.03)", borderRadius: 8, fontSize: 12, color: G.inkSub, lineHeight: 1.7, border: `1px solid ${G.borderSubtle}` }}>
+                <div style={{ marginTop:10, padding:"14px 16px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:12, color:T.textMuted, lineHeight:1.7, border:`1px solid ${T.border2}` }}>
                   {episode.stylePrompt}
-                  <CopyBtn text={episode.stylePrompt} style={{ marginTop: 8 }} />
+                  <CopyBtn text={episode.stylePrompt} style={{ marginTop:8 }} />
                 </div>
               </details>
-            </GlassCard>
+            </TahoeCard>
 
-            {/* Scene cards */}
-            {scenes.map((scene, idx) => (
+            {scenes.map((scene,idx)=>(
               <SceneCard key={`${scene.id}-${idx}`} scene={scene} idx={idx} total={scenes.length}
-                genreColor={g.color} loading={loading === `scene-${idx}`}
+                genreColor={g.color} genreGlow={g.glow} loading={loading===`scene-${idx}`}
                 onRegen={regenScene}
               />
             ))}
           </div>
         )}
 
-        {tab === "timeline" && !episode && (
-          <EmptyState msg="No episode generated yet." cta="Go to Setup" onCta={() => switchTab("setup")} />
-        )}
+        {tab==="timeline" && !episode && <EmptyState msg="No episode generated yet." cta="Go to Setup" onCta={()=>switchTab("setup")} />}
 
         {/* ── ALGORITHM ── */}
-        {tab === "algo" && algoLayer && (
-          <div style={{ maxWidth: 900, margin: "0 auto", padding: "28px 24px" }}>
+        {tab==="algo" && algoLayer && (
+          <div style={{ maxWidth:920, margin:"0 auto", padding:"28px 24px" }}>
 
-            {/* Score banner */}
-            <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 16, marginBottom: 16 }}>
-              <GlassCard style={{ padding: "24px 20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ fontSize: 11, fontWeight: 500, color: G.inkDim, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8 }}>Score</div>
-                <div style={{
-                  fontSize: 56, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.04em",
-                  color: algoLayer.overallScore >= 75 ? G.sage : algoLayer.overallScore >= 55 ? G.gold : G.rose,
-                  fontFamily: FONT_ROUND,
-                }}>
-                  {algoLayer.overallScore}
-                </div>
-                <div style={{ fontSize: 11, color: G.inkFaint, marginTop: 2 }}>/100</div>
-                <div style={{ marginTop: 10, fontSize: 13, fontWeight: 600, color: G.sky }}>{algoLayer.viralProbability}</div>
-                <div style={{ fontSize: 10, color: G.inkDim }}>viral probability</div>
-              </GlassCard>
+            {/* Score */}
+            <div style={{ display:"grid", gridTemplateColumns:"180px 1fr", gap:16, marginBottom:16 }}>
+              <TahoeCard style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"28px 20px" }}>
+                <div style={{ fontSize:10, fontWeight:600, color:T.textDim, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:8 }}>Score</div>
+                <div style={{ fontSize:62, fontWeight:800, lineHeight:1, letterSpacing:"-0.05em", fontFamily:FONT_ROUND,
+                  color:algoLayer.overallScore>=75?T.mint:algoLayer.overallScore>=55?T.orange:T.pink,
+                  textShadow:algoLayer.overallScore>=75?`0 0 30px rgba(48,209,88,0.5)`:algoLayer.overallScore>=55?`0 0 30px rgba(255,159,10,0.5)`:`0 0 30px rgba(255,55,95,0.5)`,
+                }}>{algoLayer.overallScore}</div>
+                <div style={{ fontSize:11, color:T.textDim, marginTop:2 }}>/100</div>
+                <div style={{ marginTop:12, fontSize:15, fontWeight:700, color:T.cyan, textShadow:`0 0 20px rgba(90,200,250,0.5)` }}>{algoLayer.viralProbability}</div>
+                <div style={{ fontSize:10, color:T.textDim }}>viral probability</div>
+              </TahoeCard>
 
-              <GlassCard style={{ padding: "22px 24px" }}>
-                <Label style={{ marginBottom: 8 }}>Platform Fit — {platform.toUpperCase()}</Label>
-                <div style={{ fontSize: 13, color: G.inkMid, lineHeight: 1.7, marginBottom: 14 }}>{algoLayer.platformFit}</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-                  <InfoPill label="Hook Strength" value={`${algoLayer.firstThreeSeconds?.strengthScore}/10`} color={G.gold} />
-                  <InfoPill label="Best Post Time" value={algoLayer.bestPostTime} color={G.sage} />
+              <TahoeCard style={{ padding:"24px 28px" }}>
+                <PillLabel style={{ marginBottom:10 }}>Platform Fit — {platform.toUpperCase()}</PillLabel>
+                <div style={{ fontSize:13, color:T.textSecondary, lineHeight:1.7, marginBottom:14 }}>{algoLayer.platformFit}</div>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:12 }}>
+                  <AlgoPill label="Hook Strength" value={`${algoLayer.firstThreeSeconds?.strengthScore}/10`} color={T.orange} />
+                  <AlgoPill label="Best Post Time" value={algoLayer.bestPostTime} color={T.mint} />
                 </div>
                 {algoLayer.firstThreeSeconds?.upgrade && (
-                  <div style={{ padding: "10px 12px", background: `${G.gold}0C`, border: `1px solid ${G.gold}28`, borderRadius: 8, fontSize: 12, color: G.gold, lineHeight: 1.6 }}>
-                    <span style={{ fontWeight: 500 }}>Hook upgrade: </span>{algoLayer.firstThreeSeconds.upgrade}
+                  <div style={{ padding:"10px 14px", background:`${T.orange}12`, border:`1px solid ${T.orange}25`, borderRadius:T.r2, fontSize:12, color:T.orange, lineHeight:1.6 }}>
+                    <span style={{ fontWeight:600 }}>Hook upgrade: </span>{algoLayer.firstThreeSeconds.upgrade}
                   </div>
                 )}
-              </GlassCard>
+              </TahoeCard>
             </div>
 
             {/* Retention curve */}
             <AlgoSection title="Retention Curve" sub="Predicted watch-time % per scene">
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {algoLayer.retentionCurve?.map((r: any, i: number) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ fontSize: 11, color: G.inkDim, width: 44, flexShrink: 0, textAlign: "right" }}>SC {r.sceneId}</div>
-                    <div style={{ flex: 1, height: 18, background: "rgba(0,0,0,0.04)", borderRadius: 4, overflow: "hidden", position: "relative" }}>
-                      <div style={{
-                        position: "absolute", inset: 0, width: `${r.predictedRetention}%`,
-                        background: r.predictedRetention >= 80 ? `linear-gradient(90deg, ${G.sage}80, ${G.sage})` : r.predictedRetention >= 60 ? `linear-gradient(90deg, ${G.gold}80, ${G.gold})` : `linear-gradient(90deg, ${G.rose}80, ${G.rose})`,
-                        borderRadius: 4, transition: "width 0.8s ease",
-                        display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: 6,
+              <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
+                {algoLayer.retentionCurve?.map((r: any, i: number)=>(
+                  <div key={i} style={{ display:"flex", alignItems:"center", gap:12 }}>
+                    <div style={{ fontSize:11, color:T.textDim, width:44, textAlign:"right", flexShrink:0 }}>SC {r.sceneId}</div>
+                    <div style={{ flex:1, height:20, background:"rgba(255,255,255,0.06)", borderRadius:T.pill, overflow:"hidden" }}>
+                      <div style={{ width:`${r.predictedRetention}%`, height:"100%", borderRadius:T.pill, transition:"width 0.9s cubic-bezier(0.34,1.56,0.64,1)",
+                        background:r.predictedRetention>=80?`linear-gradient(90deg,${T.mint}80,${T.mint})`:r.predictedRetention>=60?`linear-gradient(90deg,${T.orange}80,${T.orange})`:`linear-gradient(90deg,${T.pink}80,${T.pink})`,
+                        boxShadow:r.predictedRetention>=80?`0 0 12px rgba(48,209,88,0.5)`:r.predictedRetention>=60?`0 0 12px rgba(255,159,10,0.5)`:`0 0 12px rgba(255,55,95,0.5)`,
+                        display:"flex", alignItems:"center", justifyContent:"flex-end", paddingRight:8,
                       }}>
-                        <span style={{ fontSize: 10, color: "#fff", fontWeight: 500 }}>{r.predictedRetention}%</span>
+                        <span style={{ fontSize:10, color:"#fff", fontWeight:700 }}>{r.predictedRetention}%</span>
                       </div>
                     </div>
-                    <div style={{ fontSize: 11, color: G.inkSub, flex: 1, lineHeight: 1.4 }}>{r.tactic}</div>
-                    <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 4, background: r.dropRisk === "low" ? `${G.sage}15` : `${G.rose}15`, color: r.dropRisk === "low" ? G.sage : G.rose }}>
+                    <div style={{ fontSize:11, color:T.textMuted, flex:1 }}>{r.tactic}</div>
+                    <span style={{ fontSize:10, padding:"2px 9px", borderRadius:T.pill, background:r.dropRisk==="low"?`${T.mint}18`:`${T.pink}18`, color:r.dropRisk==="low"?T.mint:T.pink, border:`1px solid ${r.dropRisk==="low"?T.mint+"30":T.pink+"30"}` }}>
                       {r.dropRisk}
                     </span>
                   </div>
@@ -774,167 +584,133 @@ Return ONLY JSON:
 
             {/* Engagement breakdown */}
             <AlgoSection title="Engagement Breakdown" sub="Algorithm triggers mapped to specific moments">
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 10 }}>
-                {algoLayer.engagementBreakdown?.map((e: any, i: number) => {
-                  const m = ALGO_GOALS.find(x => x.key === e.metric) || { color: G.inkSub, icon: "•" };
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))", gap:10 }}>
+                {algoLayer.engagementBreakdown?.map((e: any, i: number)=>{
+                  const m=ALGO_GOALS.find(x=>x.key===e.metric)||{color:T.textMuted,icon:"•"};
                   return (
-                    <div key={i} style={{ padding: "14px 16px", background: "rgba(0,0,0,0.025)", borderRadius: 10, border: `1px solid ${G.borderSubtle}` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                        <span style={{ fontSize: 10, fontWeight: 500, color: m.color, letterSpacing: "0.04em", textTransform: "uppercase" }}>{m.icon} {e.metric} · SC{e.sceneId}</span>
-                        <span style={{ fontSize: 10, color: G.sage, background: `${G.sage}15`, padding: "1px 7px", borderRadius: 4, fontWeight: 500 }}>{e.expectedLift}</span>
+                    <div key={i} style={{ padding:"16px 18px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, border:`1px solid ${T.border2}`, boxShadow:`0 0 20px ${m.color}15` }}>
+                      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:9 }}>
+                        <span style={{ fontSize:10, fontWeight:600, color:m.color, letterSpacing:"0.06em", textTransform:"uppercase" }}>{m.icon} {e.metric} · SC{e.sceneId}</span>
+                        <span style={{ fontSize:10, color:T.mint, background:`${T.mint}15`, padding:"2px 8px", borderRadius:T.pill, fontWeight:600, border:`1px solid ${T.mint}30` }}>{e.expectedLift}</span>
                       </div>
-                      <div style={{ fontSize: 12, color: G.gold, fontStyle: "italic", marginBottom: 6, lineHeight: 1.5 }}>"{e.trigger}"</div>
-                      <div style={{ fontSize: 11, color: G.inkSub, marginBottom: 6, lineHeight: 1.5 }}>{e.psychologicalMechanism}</div>
-                      {e.optimisedLine && (
-                        <div style={{ fontSize: 11, color: G.sage, background: `${G.sage}0C`, padding: "5px 9px", borderRadius: 6, lineHeight: 1.5 }}>
-                          ✦ {e.optimisedLine}
-                        </div>
-                      )}
+                      <div style={{ fontSize:12, color:T.orange, fontStyle:"italic", marginBottom:7, lineHeight:1.5 }}>"{e.trigger}"</div>
+                      <div style={{ fontSize:11, color:T.textMuted, marginBottom:7, lineHeight:1.5 }}>{e.psychologicalMechanism}</div>
+                      {e.optimisedLine && <div style={{ fontSize:11, color:T.mint, background:`${T.mint}0C`, padding:"6px 10px", borderRadius:T.r1, lineHeight:1.5 }}>✦ {e.optimisedLine}</div>}
                     </div>
                   );
                 })}
               </div>
             </AlgoSection>
 
-            {/* Hidden optimisations */}
-            <AlgoSection title="Hidden Optimisations" sub="Invisible tactics baked into the structure">
-              {algoLayer.hiddenOptimisations?.map((h: any, i: number) => (
-                <div key={i} style={{ display: "flex", gap: 14, padding: "12px 14px", background: "rgba(0,0,0,0.025)", borderRadius: 8, marginBottom: 7, border: `1px solid ${G.borderSubtle}` }}>
-                  <span style={{ color: G.violet, fontSize: 12, fontWeight: 500, minWidth: 110, flexShrink: 0 }}>SC{h.sceneId} · {h.type}</span>
-                  <div>
-                    <div style={{ fontSize: 12, color: G.inkSub, lineHeight: 1.6 }}>{h.description}</div>
-                    <div style={{ fontSize: 11, color: G.inkDim, marginTop: 4 }}>Amplify: {h.howToAmplify}</div>
-                  </div>
-                </div>
-              ))}
-            </AlgoSection>
-
             {/* Caption upgrades */}
             <AlgoSection title="Caption Upgrades" sub="Optimised on-screen text per scene">
-              {algoLayer.captionUpgrades?.map((c: any, i: number) => (
-                <div key={i} style={{ display: "grid", gridTemplateColumns: "40px 1fr 1fr", gap: 12, padding: "12px 14px", background: "rgba(0,0,0,0.025)", borderRadius: 8, marginBottom: 7, border: `1px solid ${G.borderSubtle}`, alignItems: "start" }}>
-                  <span style={{ fontSize: 11, color: G.inkDim, paddingTop: 2 }}>SC{c.sceneId}</span>
+              {algoLayer.captionUpgrades?.map((c: any, i: number)=>(
+                <div key={i} style={{ display:"grid", gridTemplateColumns:"40px 1fr 1fr", gap:12, padding:"12px 16px", background:"rgba(255,255,255,0.04)", borderRadius:T.r2, marginBottom:8, border:`1px solid ${T.border2}`, alignItems:"start" }}>
+                  <span style={{ fontSize:11, color:T.textDim, paddingTop:2 }}>SC{c.sceneId}</span>
                   <div>
-                    <div style={{ fontSize: 9, fontWeight: 500, color: G.inkFaint, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Original</div>
-                    <div style={{ fontSize: 11, color: G.inkDim, fontStyle: "italic", lineHeight: 1.5 }}>{c.original}</div>
+                    <div style={{ fontSize:9, fontWeight:600, color:T.textDim, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:4 }}>Original</div>
+                    <div style={{ fontSize:11, color:T.textDim, fontStyle:"italic", lineHeight:1.5 }}>{c.original}</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: 9, fontWeight: 500, color: G.sage, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Upgraded ✓</div>
-                    <div style={{ fontSize: 11, color: G.inkMid, lineHeight: 1.5 }}>{c.upgraded}</div>
-                    <div style={{ fontSize: 10, color: G.inkDim, marginTop: 3 }}>{c.reason}</div>
+                    <div style={{ fontSize:9, fontWeight:600, color:T.mint, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:4 }}>Upgraded ✓</div>
+                    <div style={{ fontSize:11, color:T.textSecondary, lineHeight:1.5 }}>{c.upgraded}</div>
+                    <div style={{ fontSize:10, color:T.textDim, marginTop:3 }}>{c.reason}</div>
                   </div>
                 </div>
               ))}
             </AlgoSection>
 
-            {/* Bottom three-col */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 16 }}>
+            {/* Bottom 3-col */}
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:16 }}>
               <AlgoSection title="Comment Seeds" compact>
-                {algoLayer.commentSeedLines?.map((l: string, i: number) => (
-                  <div key={i} style={{ padding: "8px 10px", background: "rgba(0,0,0,0.025)", borderRadius: 6, fontSize: 11, color: G.gold, fontStyle: "italic", marginBottom: 5, lineHeight: 1.5 }}>"{l}"</div>
+                {algoLayer.commentSeedLines?.map((l: string, i: number)=>(
+                  <div key={i} style={{ padding:"9px 12px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:11, color:T.orange, fontStyle:"italic", marginBottom:6, lineHeight:1.5, border:`1px solid ${T.border2}` }}>"{l}"</div>
                 ))}
               </AlgoSection>
               <AlgoSection title="Profile Visits" compact>
-                {algoLayer.profileVisitMoments?.map((h: any, i: number) => (
-                  <div key={i} style={{ padding: "8px 10px", background: "rgba(0,0,0,0.025)", borderRadius: 6, fontSize: 11, color: G.violet, marginBottom: 5, lineHeight: 1.5 }}>
-                    <span style={{ fontSize: 10, color: G.inkDim }}>SC{h.sceneId}: </span>{h.mechanism}
-                    {h.suggestion && <div style={{ fontSize: 10, color: G.inkDim, marginTop: 3 }}>→ {h.suggestion}</div>}
+                {algoLayer.profileVisitMoments?.map((h: any, i: number)=>(
+                  <div key={i} style={{ padding:"9px 12px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:11, color:T.purple, marginBottom:6, lineHeight:1.5, border:`1px solid ${T.border2}` }}>
+                    <span style={{ fontSize:10, color:T.textDim }}>SC{h.sceneId}: </span>{h.mechanism}
                   </div>
                 ))}
               </AlgoSection>
               <AlgoSection title="Share & Save" compact>
                 {algoLayer.shareableMoment && (
-                  <div style={{ padding: "8px 10px", background: "rgba(0,0,0,0.025)", borderRadius: 6, fontSize: 11, color: G.sky, marginBottom: 5, lineHeight: 1.5 }}>
-                    <span style={{ fontSize: 10, color: G.inkDim }}>SC{algoLayer.shareableMoment.sceneId}: </span>{algoLayer.shareableMoment.reason}
-                    {algoLayer.shareableMoment.optimisation && <div style={{ fontSize: 10, color: G.inkDim, marginTop: 3 }}>→ {algoLayer.shareableMoment.optimisation}</div>}
+                  <div style={{ padding:"9px 12px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:11, color:T.cyan, marginBottom:6, lineHeight:1.5, border:`1px solid ${T.border2}` }}>
+                    <span style={{ fontSize:10, color:T.textDim }}>SC{algoLayer.shareableMoment.sceneId}: </span>{algoLayer.shareableMoment.reason}
                   </div>
                 )}
                 {algoLayer.saveMechanism && (
-                  <div style={{ padding: "8px 10px", background: "rgba(0,0,0,0.025)", borderRadius: 6, fontSize: 11, color: G.rose, lineHeight: 1.5 }}>
-                    <span style={{ fontSize: 10, color: G.inkDim }}>SC{algoLayer.saveMechanism.sceneId}: </span>{algoLayer.saveMechanism.reason}
+                  <div style={{ padding:"9px 12px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:11, color:T.pink, lineHeight:1.5, border:`1px solid ${T.border2}` }}>
+                    <span style={{ fontSize:10, color:T.textDim }}>SC{algoLayer.saveMechanism.sceneId}: </span>{algoLayer.saveMechanism.reason}
                   </div>
                 )}
               </AlgoSection>
             </div>
 
-            {/* Weakest scene */}
             {algoLayer.weakestScene && (
-              <GlassCard style={{ padding: "18px 22px", marginBottom: 14, border: `1px solid ${G.rose}28`, borderLeft: `3px solid ${G.rose}` }}>
-                <div style={{ fontSize: 11, fontWeight: 500, color: G.rose, letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 8 }}>⚠ Weakest Scene — SC{algoLayer.weakestScene.sceneId}</div>
-                <div style={{ fontSize: 13, color: G.inkSub, marginBottom: 8 }}>{algoLayer.weakestScene.issue}</div>
-                <div style={{ fontSize: 13, color: G.sage }}>Fix: {algoLayer.weakestScene.fix}</div>
-                <GhostBtn onClick={() => switchTab("timeline")} style={{ marginTop: 12, color: G.rose }}>↩ Go fix it</GhostBtn>
-              </GlassCard>
+              <TahoeCard style={{ padding:"20px 24px", marginBottom:14, borderLeft:`3px solid ${T.pink}`, boxShadow:`${T.shadowMd}, 0 0 30px rgba(255,55,95,0.15)` }}>
+                <div style={{ fontSize:11, fontWeight:600, color:T.pink, letterSpacing:"0.06em", textTransform:"uppercase", marginBottom:8 }}>⚠ Weakest Scene — SC{algoLayer.weakestScene.sceneId}</div>
+                <div style={{ fontSize:13, color:T.textMuted, marginBottom:8 }}>{algoLayer.weakestScene.issue}</div>
+                <div style={{ fontSize:13, color:T.mint }}>Fix: {algoLayer.weakestScene.fix}</div>
+                <TahoeBtn onClick={()=>switchTab("timeline")} style={{ marginTop:12 }} accent={T.pink} small>↩ Go fix it</TahoeBtn>
+              </TahoeCard>
             )}
 
-            {/* Series retention */}
-            <GlassCard style={{ padding: "18px 22px", borderLeft: `3px solid ${G.sage}` }}>
-              <div style={{ fontSize: 11, fontWeight: 500, color: G.sage, letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 8 }}>Series Retention Strategy</div>
-              <div style={{ fontSize: 13, color: G.inkSub, lineHeight: 1.7 }}>{algoLayer.seriesRetentionStrategy}</div>
-            </GlassCard>
+            <TahoeCard style={{ padding:"20px 24px", borderLeft:`3px solid ${T.mint}`, boxShadow:`${T.shadowMd}, 0 0 30px rgba(48,209,88,0.12)` }}>
+              <div style={{ fontSize:11, fontWeight:600, color:T.mint, letterSpacing:"0.06em", textTransform:"uppercase", marginBottom:8 }}>Series Retention Strategy</div>
+              <div style={{ fontSize:13, color:T.textMuted, lineHeight:1.7 }}>{algoLayer.seriesRetentionStrategy}</div>
+            </TahoeCard>
           </div>
         )}
 
-        {tab === "algo" && !algoLayer && (
-          <EmptyState msg="Run algorithm analysis from the Timeline tab." cta="Go to Timeline" onCta={() => switchTab("timeline")} />
-        )}
+        {tab==="algo" && !algoLayer && <EmptyState msg="Run algorithm analysis from the Timeline tab." cta="Go to Timeline" onCta={()=>switchTab("timeline")} />}
 
         {/* ── EXPORT ── */}
-        {tab === "export" && (
-          <div style={{ maxWidth: 680, margin: "0 auto", padding: "36px 24px" }}>
+        {tab==="export" && (
+          <div style={{ maxWidth:700, margin:"0 auto", padding:"36px 24px" }}>
             {episode ? (
               <>
-                <GlassCard style={{ padding: "24px 28px", marginBottom: 16 }}>
-                  <div style={{ fontSize: 10, fontWeight: 500, color: g.color, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>
+                <TahoeCard style={{ padding:"28px 32px", marginBottom:16 }}>
+                  <div style={{ fontSize:10, fontWeight:700, color:g.color, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:6, padding:"3px 10px", background:`${g.color}18`, borderRadius:T.pill, display:"inline-block", border:`1px solid ${g.color}40` }}>
                     EP{episode.episodeNumber} · {episode.totalDuration}
                   </div>
-                  <h2 style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.02em", color: G.ink, margin: "0 0 22px" }}>
+                  <h2 style={{ fontSize:20, fontWeight:700, letterSpacing:"-0.02em", color:T.textPrimary, margin:"10px 0 22px", fontFamily:FONT_ROUND }}>
                     {episode.episodeTitle}
                   </h2>
                   {[
-                    { icon: "↓", label: "Download full script + prompts (.txt)", color: G.sage, fn: exportTxt, btn: "Download" },
-                    { icon: "◈", label: "Copy master style prompt", color: G.violet, fn: () => navigator.clipboard.writeText(episode.stylePrompt), btn: "Copy" },
-                    { icon: "◈", label: "Copy all image prompts", color: G.gold, fn: () => navigator.clipboard.writeText(scenes.map(s => `SCENE ${s.id} [${s.type}]:\n${s.imagePrompt}`).join("\n\n---\n\n")), btn: "Copy" },
-                    { icon: "◈", label: "Copy all hashtags", color: G.sky, fn: () => navigator.clipboard.writeText(episode.hashtags?.join(" ") || ""), btn: "Copy" },
-                    { icon: "◈", label: "Copy all captions", color: G.rose, fn: () => navigator.clipboard.writeText(scenes.map(s => `SC${s.id}: ${s.caption}`).join("\n")), btn: "Copy" },
-                  ].map((row, i) => <ExportRow key={i} {...row} />)}
-                </GlassCard>
+                    { icon:"↓", label:"Download full script + prompts (.txt)", color:T.mint, fn:exportTxt, btn:"Download" },
+                    { icon:"◈", label:"Copy master style prompt", color:T.purple, fn:()=>navigator.clipboard.writeText(episode.stylePrompt), btn:"Copy" },
+                    { icon:"◈", label:"Copy all image prompts", color:T.orange, fn:()=>navigator.clipboard.writeText(scenes.map(s=>`SCENE ${s.id} [${s.type}]:\n${s.imagePrompt}`).join("\n\n---\n\n")), btn:"Copy" },
+                    { icon:"◈", label:"Copy all hashtags", color:T.cyan, fn:()=>navigator.clipboard.writeText(episode.hashtags?.join(" ")||""), btn:"Copy" },
+                    { icon:"◈", label:"Copy all captions", color:T.pink, fn:()=>navigator.clipboard.writeText(scenes.map(s=>`SC${s.id}: ${s.caption}`).join("\n")), btn:"Copy" },
+                  ].map((row,i)=><ExportRow key={i} {...row} />)}
+                </TahoeCard>
 
-                {/* Sequel launcher */}
-                <GlassCard style={{ padding: "24px 28px", borderLeft: `3px solid ${G.sage}` }}>
-                  <div style={{ fontSize: 11, fontWeight: 500, color: G.sage, letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 8 }}>
-                    Generate Episode {episode.episodeNumber + 1}
-                  </div>
-                  <p style={{ fontSize: 13, color: G.inkSub, lineHeight: 1.7, marginBottom: 16 }}>
-                    The Enhancement Engine compresses this episode into a structured context object. Characters remember. Unresolved threads carry forward. Returning viewers are rewarded.
-                  </p>
-                  <Label style={{ marginBottom: 8 }}>Episode summary — editable</Label>
+                <TahoeCard style={{ padding:"28px 32px", borderLeft:`3px solid ${T.mint}`, boxShadow:`${T.shadowLg}, 0 0 40px rgba(48,209,88,0.12)` }}>
+                  <div style={{ fontSize:11, fontWeight:600, color:T.mint, letterSpacing:"0.06em", textTransform:"uppercase", marginBottom:8 }}>Generate Episode {episode.episodeNumber+1}</div>
+                  <p style={{ fontSize:13, color:T.textMuted, lineHeight:1.7, marginBottom:16 }}>The Enhancement Engine compresses this episode into a structured context object. Characters remember. Unresolved threads carry forward.</p>
+                  <PillLabel style={{ marginBottom:8 }}>Episode summary — editable</PillLabel>
                   <textarea
-                    value={ep2Draft || `EP${episode.episodeNumber} "${episode.episodeTitle}": ${episode.overallStorybeatSummary} Series hook: ${episode.seriesHook}`}
-                    onChange={e => setEp2Draft(e.target.value)}
+                    value={ep2Draft || `EP${episode.episodeNumber} "${episode.episodeTitle}": ${episode.overallStorybeatSummary} Hook: ${episode.seriesHook}`}
+                    onChange={e=>setEp2Draft(e.target.value)}
                     rows={4}
-                    style={{
-                      width: "100%", background: G.glassInput, border: `1px solid ${G.borderMid}`,
-                      borderRadius: 10, color: G.sage, fontSize: 12, lineHeight: 1.7,
-                      padding: "12px 14px", resize: "vertical", marginBottom: 14,
-                      fontFamily: FONT, outline: "none",
-                    }}
+                    style={{ width:"100%", background:"rgba(255,255,255,0.07)", border:`1px solid ${T.border2}`, borderRadius:T.r2, color:T.mint, fontSize:12, lineHeight:1.7, padding:"14px 16px", resize:"vertical", marginBottom:16, fontFamily:FONT, outline:"none" }}
                   />
-                  <button onClick={loadSequel} className="cta-btn" style={{
-                    width: "100%", padding: "14px 0",
-                    background: `linear-gradient(135deg, ${G.sage}D8, ${G.sky}AA)`,
-                    border: "none", borderRadius: 12,
-                    color: "#fff", fontSize: 14, fontWeight: 500, letterSpacing: "-0.01em",
-                    cursor: "pointer", fontFamily: FONT,
-                    boxShadow: `0 4px 20px ${G.sage}30, inset 0 1px 0 rgba(255,255,255,0.2)`,
-                    transition: "all 0.2s ease",
+                  <button onClick={loadSequel} className="cta-main" style={{
+                    width:"100%", padding:"16px 0",
+                    background:`linear-gradient(135deg, ${T.mint}CC, ${T.cyan}99)`,
+                    border:"none", borderRadius:T.r2, color:"#fff",
+                    fontSize:14, fontWeight:600, letterSpacing:"-0.01em",
+                    cursor:"pointer", fontFamily:FONT,
+                    boxShadow:`0 8px 32px rgba(48,209,88,0.3), inset 0 1px 0 rgba(255,255,255,0.25)`,
                   }}>
-                    Continue Story — Episode {episode.episodeNumber + 1}
+                    Continue Story — Episode {episode.episodeNumber+1}
                   </button>
-                </GlassCard>
+                </TahoeCard>
               </>
             ) : (
-              <EmptyState msg="No episode generated yet." cta="Go to Setup" onCta={() => switchTab("setup")} />
+              <EmptyState msg="No episode generated yet." cta="Go to Setup" onCta={()=>switchTab("setup")} />
             )}
           </div>
         )}
@@ -944,127 +720,99 @@ Return ONLY JSON:
 }
 
 // ─── Scene Card ────────────────────────────────────────────────
-function SceneCard({ scene, idx, total, genreColor, loading, onRegen }: any) {
+function SceneCard({ scene, idx, total, genreColor, genreGlow, loading, onRegen }: any) {
   const [custom, setCustom]     = useState("");
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied]     = useState(false);
-  const meta = SCENE_TYPE_META[scene.type] || { color: G.inkDim, bg: "rgba(0,0,0,0.04)", dot: G.inkDim };
-
-  const copyPrompt = () => {
-    navigator.clipboard.writeText(scene.imagePrompt);
-    setCopied(true); setTimeout(() => setCopied(false), 1600);
-  };
+  const sc = SCENE_COLORS[scene.type] || { color:T.textMuted, glow:"rgba(255,255,255,0.1)" };
 
   return (
     <div className="scene-card" style={{
-      background: G.glass, backdropFilter: "blur(20px) saturate(180%)",
-      WebkitBackdropFilter: "blur(20px) saturate(180%)",
-      border: `1px solid ${G.borderMid}`,
-      borderLeft: `3px solid ${meta.color}`,
-      borderRadius: "0 12px 12px 0",
-      padding: "18px 22px",
-      marginBottom: 10,
-      boxShadow: G.s2,
-      opacity: loading ? 0.45 : 1,
-      transition: "opacity 0.2s ease, box-shadow 0.2s ease",
+      background:T.glass2,
+      backdropFilter:"blur(48px) saturate(200%)",
+      WebkitBackdropFilter:"blur(48px) saturate(200%)",
+      border:`1px solid ${T.border1}`,
+      borderLeft:`3px solid ${sc.color}`,
+      borderRadius:`0 ${T.r3} ${T.r3} 0`,
+      padding:"20px 26px", marginBottom:12,
+      boxShadow:`${T.shadowMd}, 0 0 30px ${sc.glow}22`,
+      opacity:loading?0.4:1,
+      transition:"opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
     }}>
 
-      {/* Header row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 14 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{
-            background: `${meta.color}18`, color: meta.color,
-            fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 5,
-            letterSpacing: "0.06em", textTransform: "uppercase",
-            border: `1px solid ${meta.color}30`,
-          }}>{scene.type}</span>
-          <span style={{ fontSize: 14, color: G.ink, fontWeight: 500, letterSpacing: "-0.01em" }}>{scene.title}</span>
-          <span style={{ fontSize: 11, color: G.inkDim }}>{scene.duration}</span>
-          <span style={{ fontSize: 11, color: G.inkFaint, borderLeft: `1px solid ${G.borderMid}`, paddingLeft: 8 }}>{scene.arcPosition}</span>
+      {/* Header */}
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:8, marginBottom:14 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+          <span style={{ background:`${sc.color}20`, color:sc.color, fontSize:10, fontWeight:700, padding:"4px 10px", borderRadius:T.pill, letterSpacing:"0.08em", textTransform:"uppercase", border:`1px solid ${sc.color}40`, boxShadow:`0 0 12px ${sc.glow}` }}>
+            {scene.type}
+          </span>
+          <span style={{ fontSize:14, color:T.textPrimary, fontWeight:600, letterSpacing:"-0.01em" }}>{scene.title}</span>
+          <span style={{ fontSize:11, color:T.textDim }}>{scene.duration}</span>
+          <span style={{ fontSize:11, color:T.textDim, borderLeft:`1px solid ${T.border2}`, paddingLeft:8 }}>{scene.arcPosition}</span>
         </div>
-        <button onClick={() => setExpanded(e => !e)} className="ghost-mini" style={{
-          background: "rgba(0,0,0,0.04)", border: `1px solid ${G.borderSubtle}`,
-          borderRadius: 6, color: G.inkSub, fontSize: 11, padding: "4px 10px",
-          cursor: "pointer", fontFamily: FONT, transition: "all 0.15s",
-        }}>
-          {expanded ? "↑ Less" : "↓ More"}
+        <button onClick={()=>setExpanded(e=>!e)} className="ghost-pill" style={{ background:"rgba(255,255,255,0.08)", border:`1px solid ${T.border2}`, borderRadius:T.pill, color:T.textMuted, fontSize:11, padding:"5px 12px", cursor:"pointer", fontFamily:FONT }}>
+          {expanded?"↑ Less":"↓ More"}
         </button>
       </div>
 
-      {/* Core fields */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 12 }}>
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:12 }}>
         <SceneField label="Visual" value={scene.visual} />
         <SceneField label="Dialogue" value={scene.dialogue} italic />
       </div>
 
-      {/* Caption pill */}
-      <div style={{ padding: "8px 12px", background: "rgba(0,0,0,0.03)", borderRadius: 8, fontSize: 12, color: G.inkSub, marginBottom: 12, border: `1px solid ${G.borderSubtle}` }}>
-        <span style={{ color: G.inkFaint, marginRight: 6 }}>📱</span>{scene.caption}
+      <div style={{ padding:"9px 14px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, fontSize:12, color:T.textMuted, marginBottom:12, border:`1px solid ${T.border2}` }}>
+        <span style={{ color:T.textDim, marginRight:6 }}>📱</span>{scene.caption}
       </div>
 
-      {/* Algo tactic tag */}
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: `${G.violet}0E`, border: `1px solid ${G.violet}20`, borderRadius: 6, padding: "4px 10px", marginBottom: expanded ? 14 : 0 }}>
-        <span style={{ fontSize: 9, color: G.violet }}>⚡</span>
-        <span style={{ fontSize: 11, color: G.violet }}>{scene.algoTactic}</span>
+      <div style={{ display:"inline-flex", alignItems:"center", gap:6, background:`${T.purple}15`, border:`1px solid ${T.purple}30`, borderRadius:T.pill, padding:"4px 12px", marginBottom:expanded?14:0, boxShadow:`0 0 12px rgba(191,90,242,0.2)` }}>
+        <span style={{ fontSize:9, color:T.purple }}>⚡</span>
+        <span style={{ fontSize:11, color:T.purple }}>{scene.algoTactic}</span>
       </div>
 
-      {/* Expanded fields */}
       {expanded && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 14, paddingTop: 14, borderTop: `1px solid ${G.borderSubtle}` }}>
+        <div style={{ display:"flex", flexDirection:"column", gap:12, marginTop:16, paddingTop:16, borderTop:`1px solid ${T.border2}` }}>
           <SceneField label="Engagement Hook" value={scene.engagementHook} />
           <SceneField label="Story Role" value={scene.storyRole} />
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
             <SceneField label="🎞 Animation" value={scene.animationNote} />
             <SceneField label="🎙 Voice" value={scene.voiceNote} />
           </div>
-          {/* Image prompt */}
-          <div style={{ background: "rgba(0,0,0,0.03)", border: `1px solid ${G.borderMid}`, borderRadius: 10, padding: "14px 16px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 10, fontWeight: 500, color: G.inkDim, letterSpacing: "0.06em", textTransform: "uppercase" }}>Image Prompt → Midjourney / DALL·E</span>
-              <button onClick={copyPrompt} style={{
-                background: "none", border: `1px solid ${copied ? G.sage : G.borderMid}`,
-                borderRadius: 5, color: copied ? G.sage : G.inkDim,
-                fontSize: 10, padding: "3px 9px", cursor: "pointer", fontFamily: FONT,
-                transition: "all 0.15s",
-              }}>
-                {copied ? "✓ Copied" : "Copy"}
+          <div style={{ background:"rgba(255,255,255,0.05)", border:`1px solid ${T.border1}`, borderRadius:T.r2, padding:"16px 18px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:9 }}>
+              <span style={{ fontSize:10, fontWeight:600, color:T.textDim, letterSpacing:"0.08em", textTransform:"uppercase" }}>Image Prompt → Midjourney / DALL·E</span>
+              <button onClick={()=>{ navigator.clipboard.writeText(scene.imagePrompt); setCopied(true); setTimeout(()=>setCopied(false),1600); }} style={{ background:"none", border:`1px solid ${copied?T.mint:T.border1}`, borderRadius:T.pill, color:copied?T.mint:T.textDim, fontSize:10, padding:"3px 10px", cursor:"pointer", fontFamily:FONT, transition:"all 0.15s" }}>
+                {copied?"✓ Copied":"Copy"}
               </button>
             </div>
-            <div style={{ fontSize: 12, color: G.inkSub, lineHeight: 1.7 }}>{scene.imagePrompt}</div>
+            <div style={{ fontSize:12, color:T.textMuted, lineHeight:1.7 }}>{scene.imagePrompt}</div>
           </div>
         </div>
       )}
 
       {/* Custom direction + regen */}
-      <div style={{ marginTop: 16, display: "flex", gap: 8, alignItems: "flex-end" }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: G.inkFaint, marginBottom: 6, letterSpacing: "0.04em" }}>
-            Direction — the Enhancement Engine will expand this to fit the full arc
-          </div>
+      <div style={{ marginTop:16, display:"flex", gap:8, alignItems:"flex-end" }}>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:10, color:T.textDim, marginBottom:6 }}>Direction — Enhancement Engine expands this to fit the full arc</div>
           <input
             value={custom}
-            onChange={e => setCustom(e.target.value)}
-            placeholder={'e.g. "make it darker" · "add a twist" · "change punchline to be about AI"'}
-            className="glass-input"
-            style={{
-              width: "100%", background: G.glassInput, border: `1px solid ${G.borderMid}`,
-              borderRadius: 8, color: G.ink, fontSize: 12, padding: "9px 12px",
-              fontFamily: FONT, outline: "none", transition: "border-color 0.15s, box-shadow 0.15s",
-            }}
-            onFocus={e => { e.target.style.borderColor = genreColor + "60"; e.target.style.boxShadow = `0 0 0 3px ${genreColor}14`; }}
-            onBlur={e => { e.target.style.borderColor = G.borderMid; e.target.style.boxShadow = "none"; }}
+            onChange={e=>setCustom(e.target.value)}
+            placeholder={'e.g. "make it darker" · "add a twist" · "change punchline"'}
+            className="tahoe-input"
+            style={{ width:"100%", background:"rgba(255,255,255,0.07)", border:`1px solid ${T.border2}`, borderRadius:T.r2, color:T.textPrimary, fontSize:12, padding:"10px 14px", fontFamily:FONT, outline:"none", transition:"border-color 0.15s, box-shadow 0.15s" }}
+            onFocus={e=>{ e.target.style.borderColor=genreColor+"70"; e.target.style.boxShadow=`0 0 0 4px ${genreGlow}`; }}
+            onBlur={e=>{ e.target.style.borderColor=T.border2; e.target.style.boxShadow="none"; }}
           />
         </div>
-        <button onClick={() => onRegen(idx, custom)} disabled={!!loading} style={{
-          padding: "9px 16px",
-          background: loading ? "rgba(0,0,0,0.04)" : `${genreColor}12`,
-          border: `1px solid ${loading ? G.borderSubtle : genreColor + "40"}`,
-          borderRadius: 8, color: loading ? G.inkFaint : genreColor,
-          fontSize: 11, fontWeight: 500, letterSpacing: "-0.01em",
-          cursor: loading ? "not-allowed" : "pointer",
-          whiteSpace: "nowrap", transition: "all 0.15s ease", fontFamily: FONT,
+        <button onClick={()=>onRegen(idx,custom)} disabled={!!loading} style={{
+          padding:"10px 18px", background:loading?"rgba(255,255,255,0.06)":`${genreColor}20`,
+          border:`1px solid ${loading?T.border2:genreColor+"50"}`,
+          borderRadius:T.r2, color:loading?T.textDim:genreColor,
+          fontSize:12, fontWeight:600, letterSpacing:"-0.01em",
+          cursor:loading?"not-allowed":"pointer", whiteSpace:"nowrap",
+          transition:"all 0.15s ease", fontFamily:FONT,
+          boxShadow:loading?"none":`0 0 16px ${genreGlow}`,
         }}>
-          {loading ? "…" : "↺ Regen"}
+          {loading?"…":"↺ Regen"}
         </button>
       </div>
     </div>
@@ -1072,38 +820,34 @@ function SceneCard({ scene, idx, total, genreColor, loading, onRegen }: any) {
 }
 
 // ─── Micro components ──────────────────────────────────────────
-function GlassCard({ children, style }: { children: ReactNode; style?: CSSProperties }) {
+function TahoeCard({ children, style }: { children: ReactNode; style?: CSSProperties }) {
   return (
     <div style={{
-      background: G.glass,
-      backdropFilter: "blur(20px) saturate(180%)",
-      WebkitBackdropFilter: "blur(20px) saturate(180%)",
-      border: `1px solid ${G.borderMid}`,
-      borderRadius: 14,
-      boxShadow: G.s2,
+      background:T.glass2,
+      backdropFilter:"blur(48px) saturate(200%)",
+      WebkitBackdropFilter:"blur(48px) saturate(200%)",
+      border:`1px solid ${T.border1}`,
+      borderRadius:T.r3,
+      boxShadow:T.shadowMd,
       ...style,
+      padding:(style as any)?.padding ?? "24px 28px",
     }}>
       {children}
     </div>
   );
 }
 
-function Label({ children, color, style: s }: { children: ReactNode; color?: string; style?: CSSProperties }) {
+function TahoeBtn({ children, onClick, disabled, accent, small, style: s }: { children:ReactNode; onClick?:()=>void; disabled?:boolean; accent?:string; small?:boolean; style?:CSSProperties }) {
+  const c=accent||T.textMuted;
   return (
-    <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: color || G.inkDim, ...s }}>
-      {children}
-    </div>
-  );
-}
-
-function GhostBtn({ children, onClick, disabled, style: s }: { children: ReactNode; onClick?: () => void; disabled?: boolean; style?: CSSProperties }) {
-  return (
-    <button onClick={onClick} disabled={disabled} className="ghost-mini" style={{
-      padding: "6px 12px", background: "rgba(0,0,0,0.04)",
-      border: `1px solid ${G.borderMid}`, borderRadius: 8,
-      color: G.inkSub, fontSize: 12, fontWeight: 400, letterSpacing: "-0.01em",
-      cursor: disabled ? "not-allowed" : "pointer", fontFamily: FONT,
-      transition: "all 0.15s ease", opacity: disabled ? 0.4 : 1,
+    <button onClick={onClick} disabled={disabled} className="ghost-pill" style={{
+      padding:small?"5px 12px":"8px 16px",
+      background:`${c}14`, border:`1px solid ${c}40`,
+      borderRadius:T.pill, color:c,
+      fontSize:small?11:12, fontWeight:500, letterSpacing:"-0.01em",
+      cursor:disabled?"not-allowed":"pointer", fontFamily:FONT,
+      transition:"all 0.15s ease", opacity:disabled?0.4:1,
+      boxShadow:`0 0 16px ${c}20`,
       ...s,
     }}>
       {children}
@@ -1111,116 +855,123 @@ function GhostBtn({ children, onClick, disabled, style: s }: { children: ReactNo
   );
 }
 
-function SceneField({ label, value, italic }: { label: string; value: string; italic?: boolean }) {
+function PillLabel({ children, color, style: s }: { children:ReactNode; color?:string; style?:CSSProperties }) {
+  return (
+    <div style={{ fontSize:10, fontWeight:700, letterSpacing:"0.08em", textTransform:"uppercase", color:color||T.textDim, ...s }}>
+      {children}
+    </div>
+  );
+}
+
+function SceneField({ label, value, italic }: { label:string; value:string; italic?:boolean }) {
   return (
     <div>
-      <div style={{ fontSize: 9, fontWeight: 600, color: G.inkFaint, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 12, color: italic ? G.gold : G.inkMid, lineHeight: 1.65, fontStyle: italic ? "italic" : "normal" }}>{value}</div>
+      <div style={{ fontSize:9, fontWeight:700, color:T.textDim, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:5 }}>{label}</div>
+      <div style={{ fontSize:12, color:italic?T.orange:T.textSecondary, lineHeight:1.65, fontStyle:italic?"italic":"normal" }}>{value}</div>
     </div>
   );
 }
 
-function AlgoSection({ title, sub, children, compact }: { title: string; sub?: string; children: ReactNode; compact?: boolean }) {
+function AlgoSection({ title, sub, children, compact }: { title:string; sub?:string; children:ReactNode; compact?:boolean }) {
   return (
-    <GlassCard style={{ padding: compact ? "14px 16px" : "18px 20px", marginBottom: compact ? 0 : 14 }}>
-      <div style={{ fontSize: compact ? 12 : 13, fontWeight: 600, letterSpacing: "-0.01em", color: G.ink, marginBottom: sub ? 3 : 12 }}>{title}</div>
-      {sub && <div style={{ fontSize: 11, color: G.inkDim, marginBottom: 12 }}>{sub}</div>}
+    <TahoeCard style={{ padding:compact?"16px 18px":"20px 22px", marginBottom:compact?0:14 }}>
+      <div style={{ fontSize:compact?12:13, fontWeight:700, letterSpacing:"-0.01em", color:T.textPrimary, marginBottom:sub?4:12, fontFamily:FONT_ROUND }}>{title}</div>
+      {sub && <div style={{ fontSize:11, color:T.textDim, marginBottom:12 }}>{sub}</div>}
       {children}
-    </GlassCard>
+    </TahoeCard>
   );
 }
 
-function InfoPill({ label, value, color }: { label: string; value: string; color: string }) {
+function AlgoPill({ label, value, color }: { label:string; value:string; color:string }) {
   return (
-    <div style={{ padding: "10px 12px", background: "rgba(0,0,0,0.03)", borderRadius: 8, border: `1px solid ${G.borderSubtle}` }}>
-      <div style={{ fontSize: 9, fontWeight: 600, color: G.inkFaint, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 13, fontWeight: 500, color, letterSpacing: "-0.01em" }}>{value}</div>
+    <div style={{ padding:"10px 14px", background:"rgba(255,255,255,0.05)", borderRadius:T.r2, border:`1px solid ${T.border2}`, boxShadow:`0 0 16px ${color}20` }}>
+      <div style={{ fontSize:9, fontWeight:700, color:T.textDim, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:5 }}>{label}</div>
+      <div style={{ fontSize:13, fontWeight:600, color, textShadow:`0 0 16px ${color}60` }}>{value}</div>
     </div>
   );
 }
 
-function CopyBtn({ text, style: s }: { text: string; style?: CSSProperties }) {
-  const [done, setDone] = useState(false);
+function CopyBtn({ text, style: s }: { text:string; style?:CSSProperties }) {
+  const [done,setDone]=useState(false);
   return (
-    <button onClick={() => { navigator.clipboard.writeText(text); setDone(true); setTimeout(() => setDone(false), 1500); }} style={{
-      display: "inline-flex", alignItems: "center", gap: 4,
-      padding: "4px 10px", background: "none", border: `1px solid ${done ? G.sage : G.borderMid}`,
-      borderRadius: 5, color: done ? G.sage : G.inkDim, fontSize: 11, fontFamily: FONT,
-      cursor: "pointer", transition: "all 0.15s", ...s,
-    }}>
-      {done ? "✓ Copied" : "Copy"}
+    <button onClick={()=>{ navigator.clipboard.writeText(text); setDone(true); setTimeout(()=>setDone(false),1500); }} style={{ display:"inline-flex",alignItems:"center",gap:4,padding:"4px 12px",background:"none",border:`1px solid ${done?T.mint:T.border1}`,borderRadius:T.pill,color:done?T.mint:T.textDim,fontSize:11,fontFamily:FONT,cursor:"pointer",transition:"all 0.15s",...s }}>
+      {done?"✓ Copied":"Copy"}
     </button>
   );
 }
 
 function ExportRow({ icon, label, color, fn, btn }: any) {
-  const [done, setDone] = useState(false);
+  const [done,setDone]=useState(false);
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "rgba(0,0,0,0.025)", borderRadius: 9, marginBottom: 7, border: `1px solid ${G.borderSubtle}` }}>
-      <div style={{ fontSize: 13, color: G.inkMid }}>
-        <span style={{ marginRight: 8, color: G.inkFaint }}>{icon}</span>{label}
-      </div>
-      <button onClick={() => { fn(); setDone(true); setTimeout(() => setDone(false), 1800); }} style={{
-        padding: "6px 14px", background: done ? `${G.sage}14` : `${color}10`,
-        border: `1px solid ${done ? G.sage : color}40`,
-        borderRadius: 7, color: done ? G.sage : color,
-        fontSize: 11, fontWeight: 500, letterSpacing: "-0.01em",
-        fontFamily: FONT, cursor: "pointer", transition: "all 0.15s ease",
-      }}>
-        {done ? "✓ Done" : btn}
+    <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"13px 16px",background:"rgba(255,255,255,0.04)",borderRadius:T.r2,marginBottom:8,border:`1px solid ${T.border2}` }}>
+      <div style={{ fontSize:13,color:T.textSecondary }}><span style={{ marginRight:8,color:T.textDim }}>{icon}</span>{label}</div>
+      <button onClick={()=>{ fn(); setDone(true); setTimeout(()=>setDone(false),1800); }} style={{ padding:"7px 16px",background:done?`${T.mint}14`:`${color}14`,border:`1px solid ${done?T.mint:color}40`,borderRadius:T.pill,color:done?T.mint:color,fontSize:11,fontWeight:600,letterSpacing:"-0.01em",fontFamily:FONT,cursor:"pointer",transition:"all 0.15s",boxShadow:`0 0 14px ${done?`rgba(48,209,88,0.3)`:`${color}25`}` }}>
+        {done?"✓ Done":btn}
       </button>
     </div>
   );
 }
 
-function EmptyState({ msg, cta, onCta }: { msg: string; cta: string; onCta: () => void }) {
+function EmptyState({ msg,cta,onCta }:{ msg:string;cta:string;onCta:()=>void }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 300, gap: 16 }}>
-      <div style={{ fontSize: 13, color: G.inkDim, letterSpacing: "-0.01em" }}>{msg}</div>
-      <GhostBtn onClick={onCta}>{cta}</GhostBtn>
+    <div style={{ display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:320,gap:18 }}>
+      <div style={{ fontSize:13,color:T.textMuted }}>{msg}</div>
+      <TahoeBtn onClick={onCta}>{cta}</TahoeBtn>
     </div>
   );
 }
 
-// ─── Global styles ─────────────────────────────────────────────
-function Style() {
+// ─── Global styles + animated background ──────────────────────
+function TahoeStyles({ accentColor, accentGlow }: { accentColor:string; accentGlow:string }) {
   return (
     <style>{`
       * { box-sizing: border-box; }
-      ::-webkit-scrollbar { width: 5px; height: 5px; }
+      ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 100px; }
+
+      /* Animated fluid background */
+      .fluid-bg {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 20%, rgba(10,132,255,0.28) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 80% at 80% 80%, rgba(94,92,230,0.25) 0%, transparent 60%),
+          radial-gradient(ellipse 70% 50% at 60% 10%, rgba(90,200,250,0.18) 0%, transparent 55%),
+          radial-gradient(ellipse 50% 70% at 10% 80%, rgba(191,90,242,0.15) 0%, transparent 55%),
+          linear-gradient(160deg, #060A18 0%, #0D1428 40%, #080E20 100%);
+        background-size: 200% 200%, 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+        animation: fluidShift 20s ease-in-out infinite;
+      }
+      @keyframes fluidShift {
+        0%   { background-position: 0% 0%, 100% 100%, 50% 0%, 0% 100%, center; }
+        25%  { background-position: 50% 25%, 50% 75%, 100% 50%, 50% 50%, center; }
+        50%  { background-position: 100% 50%, 0% 50%, 0% 100%, 100% 0%, center; }
+        75%  { background-position: 50% 75%, 50% 25%, 50% 50%, 50% 100%, center; }
+        100% { background-position: 0% 0%, 100% 100%, 50% 0%, 0% 100%, center; }
+      }
+
+      /* Ensure content is above background */
+      nav, .fluid-bg ~ div { position: relative; z-index: 1; }
 
       @keyframes spin { to { transform: rotate(360deg); } }
-      .spinner { animation: spin 0.75s linear infinite; display: inline-block; }
+      .spin { animation: spin 0.7s linear infinite; display: inline-block; }
 
-      @keyframes tabEnter {
-        from { opacity: 0; transform: translateY(6px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes tabExit {
-        from { opacity: 1; transform: translateY(0); }
-        to   { opacity: 0; transform: translateY(-4px); }
-      }
-      .tab-enter { animation: tabEnter 0.22s cubic-bezier(0.34, 1.2, 0.64, 1) both; }
-      .tab-exit  { animation: tabExit  0.14s ease both; }
+      @keyframes tabEnter { from { opacity:0; transform:translateY(8px) scale(0.99); } to { opacity:1; transform:translateY(0) scale(1); } }
+      @keyframes tabExit  { from { opacity:1; transform:translateY(0); } to { opacity:0; transform:translateY(-5px); } }
+      .tab-enter { animation: tabEnter 0.25s cubic-bezier(0.34,1.2,0.64,1) both; }
+      .tab-exit  { animation: tabExit  0.15s ease both; }
 
       .scene-card:hover {
-        box-shadow: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.85) !important;
-        transform: translateY(-1px);
-        transition: all 0.2s ease !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.22), 0 0 40px ${accentGlow} !important;
       }
 
-      .tab-pill:hover { background: rgba(255,255,255,0.55) !important; color: #2A2848 !important; }
-      .genre-chip:hover { opacity: 0.85; transform: translateY(-1px); }
-      .algo-goal:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-      .ghost-mini:hover { background: rgba(0,0,0,0.07) !important; }
-      .cta-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
-      .cta-btn:active { transform: translateY(0); }
+      .tahoe-chip:hover { transform: translateY(-1px); filter: brightness(1.1); }
+      .ghost-pill:hover { filter: brightness(1.2); transform: translateY(-1px); }
+      .cta-main:hover   { transform: translateY(-2px); filter: brightness(1.08); }
+      .cta-main:active  { transform: translateY(0); }
 
-      .glass-input:focus {
-        outline: none;
-      }
+      .tahoe-input::placeholder { color: rgba(255,255,255,0.22); }
 
       details > summary { list-style: none; }
       details > summary::-webkit-details-marker { display: none; }
