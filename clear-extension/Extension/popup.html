@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+  <title>Clear</title>
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="logo-text">Clear</span>
+      </div>
+      <label class="toggle" title="Auto-neutralize dark patterns">
+        <input type="checkbox" id="neutralize-toggle" checked>
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </header>
+
+    <!-- Score ring -->
+    <section class="score-section">
+      <div class="score-ring-wrap">
+        <svg class="score-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg"   cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50" id="ring-fill"/>
+        </svg>
+        <div class="score-inner">
+          <div class="score-number" id="score-number">—</div>
+          <div class="score-label"  id="score-label">Scanning…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Findings list -->
+    <section class="findings-section">
+      <div class="section-header" id="section-header" style="display:none">
+        <span class="section-title">Detected patterns</span>
+        <span class="count-chip" id="count-chip">0</span>
+      </div>
+
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="empty-icon">✓</div>
+        <div class="empty-title">No dark patterns found</div>
+        <div class="empty-sub">This page looks clean.</div>
+      </div>
+
+      <ul class="findings-list" id="findings-list"></ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <button class="share-btn" id="share-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
+        </svg>
+        Share scan
+      </button>
+      <a class="settings-link" id="settings-link" href="#">Settings</a>
+    </footer>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
