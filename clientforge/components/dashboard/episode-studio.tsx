@@ -102,7 +102,7 @@ async function claude(system: string, user: string, search = false): Promise<any
     messages: [{ role: "user", content: user }],
   };
   if (search) body.tools = [{ type: "web_search_20250305", name: "web_search" }];
-  const r = await fetch("https://api.anthropic.com/v1/messages", {
+  const r = await fetch("/api/claude", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
