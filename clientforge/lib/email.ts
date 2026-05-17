@@ -6,7 +6,7 @@ import { PaymentFailedEmail } from "@/emails/payment-failed"
 import { UpgradeConfirmationEmail } from "@/emails/upgrade-confirmation"
 import { absoluteUrl } from "@/lib/utils"
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
+const resend = new Resend(process.env.RESEND_API_KEY ?? "re_placeholder")
 const FROM = "ClientForge <noreply@clientforge.io>"
 
 export async function sendWelcomeEmail({ to, name }: { to: string; name: string }) {
