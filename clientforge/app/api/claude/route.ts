@@ -1,21 +1,34 @@
 import { NextResponse } from "next/server";
 
+const SAMBANOVA_URL = "https://api.sambanova.ai/v1/chat/completions";
+const SAMBANOVA_MODEL = "Meta-Llama-3.3-70B-Instruct";
+
 export async function POST(req: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.SAMBANOVA_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured" }, { status: 500 });
+    return NextResponse.json({ error: "SAMBANOVA_API_KEY not configured" }, { status: 500 });
   }
 
   const body = await req.json();
 
-  const upstream = await fetch("https://api.anthropic.com/v1/messages", {
+  // Convert Anthropic request format → OpenAI format
+  const messages: { role: string; content: string }[] = [];
+  if (body.system) messages.push({ role: "system", content: body.system });
+  for (const msg of body.messages ?? []) {
+    messages.push({ role: msg.role, content: msg.content });
+  }
+
+  const upstream = await fetch(SAMBANOVA_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
+      "Authorization": `Bearer ${apiKey}`,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      model: SAMBANOVA_MODEL,
+      max_tokens: body.max_tokens ?? 1000,
+      messages,
+    }),
   });
 
   const data = await upstream.json();
@@ -24,5 +37,7 @@ export async function POST(req: Request) {
     return NextResponse.json(data, { status: upstream.status });
   }
 
-  return NextResponse.json(data);
+  // Convert OpenAI response → Anthropic format (client code unchanged)
+  const text = data.choices?.[0]?.message?.content ?? "";
+  return NextResponse.json({ content: [{ type: "text", text }] });
 }
