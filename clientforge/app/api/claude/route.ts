@@ -26,7 +26,8 @@ export async function POST(req: Request) {
     },
     body: JSON.stringify({
       model: SAMBANOVA_MODEL,
-      max_tokens: body.max_tokens ?? 1000,
+      max_tokens: Math.max(body.max_tokens ?? 4096, 4096),
+      response_format: { type: "json_object" },
       messages,
     }),
   });

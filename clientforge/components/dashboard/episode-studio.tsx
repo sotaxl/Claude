@@ -97,7 +97,7 @@ const SCENE_COLORS: Record<string, { color: string; glow: string }> = {
 async function claude(system: string, user: string, search = false): Promise<any> {
   const body: any = {
     model: "claude-sonnet-4-20250514",
-    max_tokens: 1000,
+    max_tokens: 4096,
     system,
     messages: [{ role: "user", content: user }],
   };
