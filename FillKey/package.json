@@ -1,0 +1,18 @@
+{
+  "name": "fillkey-safari-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript sources for FillKey Safari Web Extension",
+  "scripts": {
+    "build": "npm run build:content && npm run build:background && npm run build:popup",
+    "build:content": "esbuild FillKeySafari/Resources/content.ts --bundle --outfile=FillKeySafari/Resources/content.js --platform=browser --target=safari17",
+    "build:background": "esbuild FillKeySafari/Resources/background.ts --bundle --outfile=FillKeySafari/Resources/background.js --platform=browser --target=safari17",
+    "build:popup": "esbuild FillKeySafari/Resources/popup/popup.ts --bundle --outfile=FillKeySafari/Resources/popup/popup.js --platform=browser --target=safari17",
+    "watch": "concurrently \"npm run build:content -- --watch\" \"npm run build:background -- --watch\" \"npm run build:popup -- --watch\""
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "concurrently": "^9.0.0",
+    "@types/firefox-webext-browser": "^120.0.0"
+  }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FillKey</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif;
+      width: 320px;
+      min-height: 200px;
+      background: #1c1c1e;
+      color: #fff;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px 10px;
+      border-bottom: 0.5px solid #38383a;
+    }
+    header h1 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .icon { font-size: 20px; }
+    .domain-badge {
+      font-size: 11px;
+      color: #8e8e93;
+      padding: 0 16px 8px;
+      border-bottom: 0.5px solid #38383a;
+    }
+    .empty {
+      padding: 32px 16px;
+      text-align: center;
+      color: #636366;
+      font-size: 13px;
+    }
+    ul { list-style: none; }
+    li {
+      padding: 10px 16px;
+      border-bottom: 0.5px solid #2c2c2e;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.1s;
+    }
+    li:hover { background: #2c2c2e; }
+    .cred-icon { font-size: 16px; width: 24px; text-align: center; }
+    .cred-info { flex: 1; }
+    .cred-label { font-size: 13px; font-weight: 500; }
+    .cred-sub { font-size: 11px; color: #8e8e93; }
+    footer {
+      padding: 10px 16px;
+      border-top: 0.5px solid #38383a;
+      text-align: center;
+    }
+    footer button {
+      font-size: 12px;
+      color: #ffd60a;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="icon">🔑</span>
+    <h1>FillKey</h1>
+  </header>
+  <div class="domain-badge" id="domainBadge">Loading…</div>
+  <ul id="credList"></ul>
+  <div class="empty" id="emptyState" style="display:none">
+    No credentials for this site.<br>Add them in the FillKey app.
+  </div>
+  <footer>
+    <button id="openApp">Open FillKey App ↗</button>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>
