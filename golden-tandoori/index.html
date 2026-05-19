@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Tandoori | Authentic Indian Restaurant Newport</title>
+  <meta name="description" content="Golden Tandoori – Award-winning authentic Indian cuisine in the heart of Newport. Dine in or takeaway. 50 Clarence Place, Newport NP19 0AH. Open until 11pm." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crimson:   #8B1A1A;
+      --crimson-d: #6B1212;
+      --gold:      #C9A84C;
+      --gold-l:    #E8C96B;
+      --cream:     #FDF6ED;
+      --cream-d:   #F5EBD8;
+      --charcoal:  #1C1C1C;
+      --mid:       #5A4A3A;
+      --light:     #7A6A58;
+      --white:     #FFFFFF;
+      --shadow:    0 4px 30px rgba(0,0,0,.12);
+      --shadow-lg: 0 12px 50px rgba(0,0,0,.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+
+    img { display: block; max-width: 100%; }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 72px;
+      background: rgba(28, 28, 28, .92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,.2);
+      transition: background .3s;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .nav-logo .flame {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: .03em;
+    }
+
+    .nav-logo-sub {
+      font-size: .65rem;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      display: block;
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,.8);
+      font-size: .875rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--crimson);
+      color: var(--white) !important;
+      padding: .55rem 1.3rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      transition: background .2s !important;
+    }
+
+    .nav-cta:hover { background: var(--crimson-d) !important; color: var(--white) !important; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: .3s;
+    }
+
+    /* ── Hero ────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    /* layered decorative background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 70% 50%, rgba(139,26,26,.55) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(201,168,76,.15) 0%, transparent 60%),
+        linear-gradient(135deg, #0e0a08 0%, #1a100a 40%, #0f0707 100%);
+    }
+
+    /* decorative pattern overlay */
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: .06;
+      background-image:
+        repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+      background-size: 20px 20px;
+    }
+
+    /* decorative circles */
+    .hero-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,.15);
+    }
+    .hero-ring-1 { width: 600px; height: 600px; top: -100px; right: -100px; }
+    .hero-ring-2 { width: 400px; height: 400px; bottom: -60px; left: -60px; }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      padding: 2rem;
+      max-width: 820px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(201,168,76,.15);
+      border: 1px solid rgba(201,168,76,.35);
+      color: var(--gold);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .4rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--white);
+      margin-bottom: .4rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,.5);
+    }
+
+    .hero h1 span { color: var(--gold); }
+
+    .hero-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: rgba(255,255,255,.65);
+      margin-bottom: 2rem;
+      letter-spacing: .02em;
+    }
+
+    .hero-stars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-stars .stars { color: var(--gold); font-size: 1.1rem; letter-spacing: .1em; }
+    .hero-stars .rating { color: var(--white); font-weight: 600; font-size: 1rem; }
+    .hero-stars .count { color: rgba(255,255,255,.5); font-size: .875rem; }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .875rem 2rem;
+      border-radius: 4px;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      transition: all .25s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--crimson);
+      color: var(--white);
+    }
+    .btn-primary:hover {
+      background: var(--crimson-d);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139,26,26,.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,.4);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      color: rgba(255,255,255,.4);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+
+    /* ── Info bar ─────────────────────────────────────────── */
+    .info-bar {
+      background: var(--crimson);
+      color: var(--white);
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .875rem;
+      font-weight: 500;
+    }
+
+    .info-icon { font-size: 1rem; opacity: .85; }
+
+    /* ── Section scaffolding ─────────────────────────────── */
+    section { padding: 6rem 2rem; }
+
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1rem;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--crimson);
+    }
+
+    .section-label::before, .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+      opacity: .4;
+      max-width: 40px;
+    }
+
+    .section-label::before { display: none; }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--light);
+      font-size: 1.05rem;
+      max-width: 580px;
+      line-height: 1.75;
+    }
+
+    /* ── About ───────────────────────────────────────────── */
+    #about {
+      background: var(--white);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-image-main {
+      width: 100%;
+      aspect-ratio: 4/5;
+      border-radius: 8px;
+      object-fit: cover;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(139,26,26,.6), transparent 60%),
+        radial-gradient(circle at 75% 70%, rgba(201,168,76,.4), transparent 50%),
+        linear-gradient(135deg, #2a1010, #1a0a00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .about-image-main .img-placeholder {
+      font-size: 6rem;
+      opacity: .4;
+    }
+
+    .about-image-accent {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 60%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 40% 60%, rgba(201,168,76,.5), transparent 60%),
+        linear-gradient(135deg, #3a1a00, #2a1000);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .about-image-accent .img-placeholder { font-size: 3.5rem; opacity: .5; }
+
+    .about-badge-stat {
+      position: absolute;
+      top: 2rem;
+      left: -1.5rem;
+      background: var(--crimson);
+      color: var(--white);
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--gold);
+    }
+
+    .stat-label { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; opacity: .8; margin-top: .3rem; }
+
+    .about-text .section-title { margin-top: .5rem; }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+
+    .about-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+    }
+
+    .about-feature-icon {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      border-radius: 6px;
+      background: var(--cream-d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .about-feature-text strong {
+      display: block;
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: .15rem;
+    }
+
+    .about-feature-text span {
+      font-size: .8rem;
+      color: var(--light);
+    }
+
+    /* ── Menu ────────────────────────────────────────────── */
+    #menu { background: var(--cream); }
+
+    .menu-tabs {
+      display: flex;
+      gap: .5rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .menu-tab {
+      padding: .55rem 1.4rem;
+      border-radius: 50px;
+      font-size: .875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--cream-d);
+      color: var(--mid);
+      background: var(--white);
+      transition: all .2s;
+    }
+
+    .menu-tab.active,
+    .menu-tab:hover {
+      background: var(--crimson);
+      border-color: var(--crimson);
+      color: var(--white);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .menu-card {
+      background: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .menu-card-emoji {
+      font-size: 2.5rem;
+      min-width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: var(--cream-d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-card-body { flex: 1; }
+
+    .menu-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+      margin-bottom: .25rem;
+    }
+
+    .menu-card-desc {
+      font-size: .8rem;
+      color: var(--light);
+      line-height: 1.5;
+    }
+
+    .menu-card-price {
+      font-weight: 700;
+      color: var(--crimson);
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .menu-card-badge {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: .2rem .55rem;
+      border-radius: 4px;
+      margin-left: .5rem;
+    }
+
+    .menu-note {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--light);
+      font-size: .9rem;
+    }
+
+    .menu-note a {
+      color: var(--crimson);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* ── Specials banner ─────────────────────────────────── */
+    .specials {
+      background: linear-gradient(135deg, var(--crimson-d), var(--crimson));
+      color: var(--white);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .specials-inner { max-width: 700px; margin: 0 auto; }
+
+    .specials h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .specials h2 span { color: var(--gold); }
+
+    .specials p {
+      color: rgba(255,255,255,.75);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .specials .btn-outline {
+      border-color: rgba(255,255,255,.5);
+    }
+
+    .specials-cards {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .special-card {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      padding: 1.5rem 2rem;
+      min-width: 200px;
+    }
+
+    .special-card-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .4rem;
+    }
+
+    .special-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: .3rem;
+    }
+
+    .special-card-price {
+      font-size: .9rem;
+      color: rgba(255,255,255,.7);
+    }
+
+    /* ── Gallery ─────────────────────────────────────────── */
+    #gallery { background: var(--white); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 260px 260px;
+      gap: 12px;
+      margin-top: 3rem;
+    }
+
+    .gallery-item {
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+    }
+
+    .gallery-item:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .gallery-item:nth-child(5) { grid-column: span 2; }
+
+    .gi-1 { background: linear-gradient(135deg, #3a1008, #8b1a1a); }
+    .gi-2 { background: linear-gradient(135deg, #2a1800, #c9a84c80); }
+    .gi-3 { background: linear-gradient(135deg, #1a0800, #5a3010); }
+    .gi-4 { background: linear-gradient(135deg, #100810, #4a1a20); }
+    .gi-5 { background: linear-gradient(135deg, #081818, #1a4a40); }
+    .gi-6 { background: linear-gradient(135deg, #180810, #6b1212); }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: .5rem;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+    .gallery-item-overlay span {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      font-size: 1rem;
+      font-size: 0;
+    }
+
+    /* ── Reviews ─────────────────────────────────────────── */
+    #reviews { background: var(--cream); }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .reviews-score {
+      text-align: right;
+    }
+
+    .reviews-score-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--crimson);
+      line-height: 1;
+    }
+
+    .reviews-score-stars { color: var(--gold); font-size: 1.2rem; letter-spacing: .1em; }
+    .reviews-score-count { font-size: .85rem; color: var(--light); margin-top: .3rem; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 1.75rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      position: relative;
+    }
+
+    .review-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--crimson);
+      opacity: .12;
+      line-height: 1;
+    }
+
+    .review-stars { color: var(--gold); font-size: .9rem; margin-bottom: 1rem; letter-spacing: .08em; }
+
+    .review-text {
+      font-size: .9rem;
+      color: var(--mid);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .review-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--white);
+    }
+
+    .av-1 { background: #8B1A1A; }
+    .av-2 { background: #1A6B3C; }
+    .av-3 { background: #1A3A8B; }
+    .av-4 { background: #6B3A1A; }
+
+    .review-author-name { font-weight: 600; font-size: .875rem; }
+    .review-date { font-size: .75rem; color: var(--light); }
+
+    /* ── Contact ─────────────────────────────────────────── */
+    #contact { background: var(--charcoal); color: var(--white); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    #contact .section-label { color: var(--gold); }
+    #contact .section-title { color: var(--white); }
+    #contact .section-desc { color: rgba(255,255,255,.55); }
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      margin-top: 2.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 8px;
+      background: rgba(201,168,76,.12);
+      border: 1px solid rgba(201,168,76,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .contact-item-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .3rem;
+    }
+
+    .contact-item-value {
+      font-size: .95rem;
+      color: rgba(255,255,255,.8);
+      line-height: 1.5;
+    }
+
+    .contact-item-value a { color: rgba(255,255,255,.8); }
+    .contact-item-value a:hover { color: var(--gold); }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem .25rem;
+      margin-top: .5rem;
+    }
+
+    .hours-row { display: contents; }
+    .hours-day { font-size: .85rem; color: rgba(255,255,255,.5); }
+    .hours-time { font-size: .85rem; color: rgba(255,255,255,.8); font-weight: 500; }
+
+    .contact-map {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1);
+      background: #2a2a2a;
+      height: 100%;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map-placeholder {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .map-placeholder-icon { font-size: 3rem; }
+
+    .map-placeholder-text {
+      font-size: .9rem;
+      color: rgba(255,255,255,.5);
+    }
+
+    .map-actions {
+      padding: 1.25rem;
+      background: rgba(255,255,255,.05);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      gap: .75rem;
+    }
+
+    .map-btn {
+      flex: 1;
+      padding: .7rem;
+      border-radius: 6px;
+      font-size: .8rem;
+      font-weight: 600;
+      text-align: center;
+      transition: background .2s;
+      cursor: pointer;
+    }
+
+    .map-btn-primary {
+      background: var(--crimson);
+      color: var(--white);
+    }
+
+    .map-btn-primary:hover { background: var(--crimson-d); }
+
+    .map-btn-secondary {
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .map-btn-secondary:hover { background: rgba(255,255,255,.12); }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    footer {
+      background: #111;
+      color: rgba(255,255,255,.5);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-inner { max-width: 700px; margin: 0 auto; }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: .5rem;
+    }
+
+    .footer-tagline {
+      font-style: italic;
+      font-size: .875rem;
+      color: rgba(255,255,255,.35);
+      margin-bottom: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: .8rem;
+      letter-spacing: .04em;
+      transition: color .2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: .3;
+      margin: 1.5rem auto;
+    }
+
+    .footer-copy { font-size: .75rem; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .about-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+
+      .about-image-wrap { display: none; }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+
+      .gallery-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+      .gallery-item:nth-child(5) { grid-column: span 1; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 4rem 1.25rem; }
+      .info-bar { gap: 1.5rem; }
+      .reviews-header { flex-direction: column; align-items: flex-start; }
+      .reviews-score { text-align: left; }
+      nav { padding: 0 1.25rem; }
+    }
+
+    /* ── Mobile nav (open state) ─────────────────────────── */
+    nav.open .nav-links {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: rgba(20,20,20,.97);
+      padding: 1.5rem 2rem;
+      gap: 1.25rem;
+    }
+
+    nav.open .nav-links a { font-size: 1rem; }
+
+    /* ── Decorative spice divider ────────────────────────── */
+    .spice-divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: .9rem;
+      letter-spacing: .6em;
+      padding: .5rem 0;
+      opacity: .5;
+    }
+
+    /* ── Fade-in on scroll ───────────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <svg class="flame" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 3C18 3 12 10 12 17C12 20.3 14.7 23 18 23C21.3 23 24 20.3 24 17C24 10 18 3 18 3Z" fill="#C9A84C"/>
+      <path d="M18 11C18 11 15 15 15 19C15 20.7 16.3 22 18 22C19.7 22 21 20.7 21 19C21 15 18 11 18 11Z" fill="#8B1A1A"/>
+      <ellipse cx="18" cy="30" rx="8" ry="3" fill="#C9A84C" opacity="0.3"/>
+    </svg>
+    <div>
+      <span class="nav-logo-text">Golden Tandoori</span>
+      <span class="nav-logo-sub">Newport</span>
+    </div>
+  </div>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Reserve a Table</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-ring hero-ring-1"></div>
+  <div class="hero-ring hero-ring-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Now open · Closes 11 pm
+    </div>
+    <h1>Golden<br /><span>Tandoori</span></h1>
+    <p class="hero-tagline">Authentic Indian Cuisine · Newport, Wales</p>
+    <div class="hero-stars">
+      <span class="stars">★★★★★</span>
+      <span class="rating">4.3</span>
+      <span class="count">· 42 reviews on Google</span>
+    </div>
+    <div class="hero-actions">
+      <a href="tel:01633262033" class="btn btn-primary">
+        📞 Call to Book
+      </a>
+      <a href="#menu" class="btn btn-outline">
+        View Menu
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── Info Bar ─────────────────────────────────────────── -->
+<div class="info-bar">
+  <div class="info-item">
+    <span class="info-icon">📍</span>
+    50 Clarence Place, Newport NP19 0AH
+  </div>
+  <div class="info-item">
+    <span class="info-icon">📞</span>
+    01633 262033
+  </div>
+  <div class="info-item">
+    <span class="info-icon">🕐</span>
+    Open · Closes 11 pm Daily
+  </div>
+  <div class="info-item">
+    <span class="info-icon">💷</span>
+    £10 – £20 per person
+  </div>
+</div>
+
+<!-- ── About ────────────────────────────────────────────── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-image-wrap fade-in">
+        <div class="about-image-main">
+          <span class="img-placeholder">🍛</span>
+        </div>
+        <div class="about-image-accent">
+          <span class="img-placeholder">🌶️</span>
+        </div>
+        <div class="about-badge-stat">
+          <div class="stat-num">30+</div>
+          <div class="stat-label">Years Serving Newport</div>
+        </div>
+      </div>
+
+      <div class="about-text fade-in">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">A Taste of India<br />in the Heart of Newport</h2>
+        <p class="section-desc">
+          Nestled on Clarence Place, Golden Tandoori has been a beloved fixture in Newport's dining scene for decades. We bring the rich, aromatic traditions of subcontinental cooking — slow-cooked curries, tandoor-fired breads and freshly blended spices — to your table every evening.
+        </p>
+        <p class="section-desc" style="margin-top:1rem;">
+          Every dish is crafted with care, using authentic recipes and the finest halal ingredients. Whether you're sharing a family feast or enjoying a quiet dinner for two, we promise a warm welcome and unforgettable flavours.
+        </p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="about-feature-icon">🔥</div>
+            <div class="about-feature-text">
+              <strong>Tandoor Oven</strong>
+              <span>Traditional clay oven — perfect naans every time</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🌿</div>
+            <div class="about-feature-text">
+              <strong>Fresh Spices</strong>
+              <span>Ground in-house daily for maximum flavour</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🥩</div>
+            <div class="about-feature-text">
+              <strong>Halal Meat</strong>
+              <span>Certified halal, sourced from trusted suppliers</span>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="about-feature-icon">🚗</div>
+            <div class="about-feature-text">
+              <strong>Dine In &amp; Takeaway</strong>
+              <span>Enjoy here or take the flavours home</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Menu ─────────────────────────────────────────────── -->
+<section id="menu">
+  <div class="section-inner">
+    <div class="section-label fade-in">Our Menu</div>
+    <h2 class="section-title fade-in">Explore Our Dishes</h2>
+    <p class="section-desc fade-in">A selection of our most-loved dishes, from smoky starters to indulgent mains. Every item is prepared fresh to order.</p>
+
+    <div class="menu-tabs fade-in" style="margin-top:2rem;">
+      <button class="menu-tab active" onclick="filterMenu('starters', this)">Starters</button>
+      <button class="menu-tab" onclick="filterMenu('mains', this)">Mains</button>
+      <button class="menu-tab" onclick="filterMenu('tandoori', this)">Tandoori</button>
+      <button class="menu-tab" onclick="filterMenu('sides', this)">Sides &amp; Breads</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid"></div>
+
+    <p class="menu-note">
+      Full menu available on request. Allergen info &amp; vegetarian/vegan options available — just ask our team or
+      <a href="tel:01633262033">call us</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ── Specials Banner ──────────────────────────────────── -->
+<div class="specials">
+  <div class="specials-inner">
+    <div class="section-label" style="justify-content:center; color:var(--gold);">Chef's Specials</div>
+    <h2>This Week's <span>Highlights</span></h2>
+    <div class="specials-cards">
+      <div class="special-card">
+        <div class="special-card-label">Monday &amp; Tuesday</div>
+        <div class="special-card-title">Set Meal for Two</div>
+        <div class="special-card-price">2 mains + rice + naan · from £22</div>
+      </div>
+      <div class="special-card">
+        <div class="special-card-label">All Week</div>
+        <div class="special-card-title">Takeaway Deal</div>
+        <div class="special-card-price">10% off orders over £20</div>
+      </div>
+      <div class="special-card">
+        <div class="special-card-label">Sunday Lunch</div>
+        <div class="special-card-title">Family Feast</div>
+        <div class="special-card-price">4 mains + sides + drinks · from £50</div>
+      </div>
+    </div>
+    <a href="tel:01633262033" class="btn btn-outline">Call to Enquire</a>
+  </div>
+</div>
+
+<!-- ── Gallery ──────────────────────────────────────────── -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-label fade-in">Gallery</div>
+    <h2 class="section-title fade-in">A Feast for the Eyes</h2>
+    <p class="section-desc fade-in">Every dish that leaves our kitchen is a work of art. Here's a glimpse of what awaits you.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item gi-1" style="font-size:5rem;">
+        🍛
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item gi-2">
+        🍗
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item gi-3">
+        🧅
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item gi-4">
+        🫓
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item gi-5" style="font-size:3.5rem;">
+        🥘
+        <div class="gallery-item-overlay"></div>
+      </div>
+      <div class="gallery-item gi-6">
+        🌶️
+        <div class="gallery-item-overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Reviews ──────────────────────────────────────────── -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="reviews-header">
+      <div class="fade-in">
+        <div class="section-label">Google Reviews</div>
+        <h2 class="section-title">What Our Guests Say</h2>
+      </div>
+      <div class="reviews-score fade-in">
+        <div class="reviews-score-num">4.3</div>
+        <div class="reviews-score-stars">★★★★★</div>
+        <div class="reviews-score-count">Based on 42 reviews</div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Absolutely delicious chicken balti — the sauce was rich and perfectly spiced. The naan bread was fluffy and fresh from the tandoor. One of the best Indian restaurants in Newport, we'll definitely be back!"</p>
+        <div class="review-author">
+          <div class="review-avatar av-1">S</div>
+          <div>
+            <div class="review-author-name">Sarah M.</div>
+            <div class="review-date">2 weeks ago · Google</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The lamb biryani is outstanding — beautifully fragrant rice with tender meat. Friendly service and great value for money. My go-to spot for a proper Indian meal in Newport."</p>
+        <div class="review-author">
+          <div class="review-avatar av-2">J</div>
+          <div>
+            <div class="review-author-name">James T.</div>
+            <div class="review-date">1 month ago · Google</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Reliable, tasty and quick. We ordered a takeaway and the food arrived hot and well-packaged. The tikka masala was creamy and flavourful. Good portion sizes too — well worth the price."</p>
+        <div class="review-author">
+          <div class="review-avatar av-3">P</div>
+          <div>
+            <div class="review-author-name">Priya K.</div>
+            <div class="review-date">3 weeks ago · Google</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Been coming here for years and it never disappoints. The staff are warm and welcoming, the food is consistently excellent. The mixed grill platter is a must-try — enough for two!"</p>
+        <div class="review-author">
+          <div class="review-avatar av-4">R</div>
+          <div>
+            <div class="review-author-name">Robert W.</div>
+            <div class="review-date">1 month ago · Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ──────────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="fade-in">
+        <div class="section-label">Find Us</div>
+        <h2 class="section-title">Come Visit Us</h2>
+        <p class="section-desc">Walk in or give us a call to reserve your table. We're open every day until 11 pm and can't wait to welcome you.</p>
+
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Address</div>
+              <div class="contact-item-value">50 Clarence Place<br />Newport, NP19 0AH<br />South Wales</div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-value"><a href="tel:01633262033">01633 262033</a></div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div>
+              <div class="contact-item-label">Opening Hours</div>
+              <div class="contact-item-value">
+                <div class="hours-grid">
+                  <span class="hours-day">Monday – Thursday</span>
+                  <span class="hours-time">5:00 pm – 11:00 pm</span>
+                  <span class="hours-day">Friday – Saturday</span>
+                  <span class="hours-time">5:00 pm – 11:30 pm</span>
+                  <span class="hours-day">Sunday</span>
+                  <span class="hours-time">4:30 pm – 11:00 pm</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">🌐</div>
+            <div>
+              <div class="contact-item-label">Website</div>
+              <div class="contact-item-value">
+                <a href="https://goldentandoorinewport.co.uk" target="_blank" rel="noopener">goldentandoorinewport.co.uk</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-map fade-in">
+        <div class="map-placeholder">
+          <div class="map-placeholder-icon">🗺️</div>
+          <div class="map-placeholder-text">
+            <strong style="color:rgba(255,255,255,.8);display:block;margin-bottom:.4rem;">50 Clarence Place, Newport</strong>
+            Free street parking available nearby.<br />
+            Approx. 5 minutes from Newport City Centre.
+          </div>
+        </div>
+        <div class="map-actions">
+          <a class="map-btn map-btn-primary" href="https://www.google.com/maps/search/Golden+Tandoori+50+Clarence+Place+Newport" target="_blank" rel="noopener">Get Directions</a>
+          <a class="map-btn map-btn-secondary" href="tel:01633262033">Call Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Golden Tandoori</div>
+    <div class="footer-tagline">Authentic Indian Cuisine · Newport, Wales</div>
+    <div class="footer-links">
+      <a href="#about">Our Story</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+      <a href="tel:01633262033">01633 262033</a>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-copy">
+      &copy; 2026 Golden Tandoori, Newport. 50 Clarence Place, Newport NP19 0AH.
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ──────────────────────────────────────────── -->
+<script>
+  /* ── Menu data ─────────────────────────────────────────── */
+  const menuData = {
+    starters: [
+      { emoji: '🥗', name: 'Onion Bhaji', desc: 'Crispy golden fritters with onion, coriander & spices', price: '£4.95' },
+      { emoji: '🍢', name: 'Chicken Tikka', desc: 'Tender marinated chicken cooked in the tandoor', price: '£6.95', badge: 'Popular' },
+      { emoji: '🫓', name: 'Samosa (2 pcs)', desc: 'Crisp pastry filled with spiced potatoes & peas', price: '£4.50' },
+      { emoji: '🍤', name: 'King Prawn Puri', desc: 'Juicy prawns in a tangy sauce on deep-fried bread', price: '£7.95' },
+      { emoji: '🥩', name: 'Seekh Kebab', desc: 'Minced lamb with herbs on skewers, mint chutney', price: '£6.95' },
+      { emoji: '🥬', name: 'Aloo Tikki', desc: 'Spiced potato cakes with tamarind chutney (v)', price: '£4.50' },
+    ],
+    mains: [
+      { emoji: '🍛', name: 'Chicken Balti', desc: 'Tender chicken in a rich, aromatic balti sauce', price: '£11.95', badge: 'Signature' },
+      { emoji: '🥘', name: 'Lamb Mutton Biryani', desc: 'Slow-cooked mutton with fragrant basmati rice', price: '£13.95', badge: 'Chef\'s Pick' },
+      { emoji: '🍲', name: 'Butter Chicken', desc: 'Creamy tomato & fenugreek sauce — mild & indulgent', price: '£11.95' },
+      { emoji: '🌿', name: 'Saag Paneer', desc: 'Fresh spinach with home-made paneer cheese (v)', price: '£10.50' },
+      { emoji: '🐟', name: 'Prawn Madras', desc: 'King prawns in a hot, tangy South Indian sauce', price: '£13.95' },
+      { emoji: '🫛', name: 'Vegetable Jalfrezi', desc: 'Mixed vegetables stir-fried with peppers & spices (v)', price: '£9.95' },
+    ],
+    tandoori: [
+      { emoji: '🍗', name: 'Tandoori Chicken (half)', desc: 'Marinated whole leg & breast, charred in clay oven', price: '£11.50', badge: 'Classic' },
+      { emoji: '🥩', name: 'Lamb Chop Tikka', desc: 'Succulent marinated lamb chops from the tandoor', price: '£14.95' },
+      { emoji: '🍢', name: 'Mixed Grill Platter', desc: 'Chicken tikka, seekh kebab, lamb chop & naan', price: '£16.95', badge: 'Sharing' },
+      { emoji: '🦐', name: 'Tandoori King Prawns', desc: 'Jumbo prawns marinated with lemon & spices', price: '£15.95' },
+      { emoji: '🌱', name: 'Paneer Tikka', desc: 'Cottage cheese cubes with peppers & onions (v)', price: '£10.95' },
+      { emoji: '🍗', name: 'Chicken Shashlik', desc: 'Chicken tikka with onions, peppers on a skewer', price: '£12.50' },
+    ],
+    sides: [
+      { emoji: '🫓', name: 'Plain Naan', desc: 'Soft, pillowy bread baked in the tandoor', price: '£2.95' },
+      { emoji: '🧄', name: 'Garlic Naan', desc: 'Buttered naan with fresh garlic & coriander', price: '£3.50', badge: 'Popular' },
+      { emoji: '🍚', name: 'Pilau Rice', desc: 'Fragrant basmati rice with whole spices', price: '£3.50' },
+      { emoji: '🥣', name: 'Dal Tarka', desc: 'Yellow lentils with fried cumin & garlic (v)', price: '£4.50' },
+      { emoji: '🥒', name: 'Raita', desc: 'Cooling yoghurt with cucumber & mint', price: '£2.50' },
+      { emoji: '🥗', name: 'Side Salad', desc: 'Fresh salad with mint dressing', price: '£2.95' },
+    ],
+  };
+
+  function filterMenu(category, btn) {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    const grid = document.getElementById('menu-grid');
+    const items = menuData[category];
+
+    grid.innerHTML = items.map(item => `
+      <div class="menu-card">
+        <div class="menu-card-emoji">${item.emoji}</div>
+        <div class="menu-card-body">
+          <div class="menu-card-name">${item.name}${item.badge ? `<span class="menu-card-badge">${item.badge}</span>` : ''}</div>
+          <div class="menu-card-desc">${item.desc}</div>
+        </div>
+        <div class="menu-card-price">${item.price}</div>
+      </div>
+    `).join('');
+  }
+
+  /* init with starters */
+  filterMenu('starters', document.querySelector('.menu-tab'));
+
+  /* ── Mobile nav toggle ─────────────────────────────────── */
+  function toggleNav() {
+    document.getElementById('navbar').classList.toggle('open');
+  }
+
+  /* close nav on link click */
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navbar').classList.remove('open');
+    });
+  });
+
+  /* ── Scroll fade-in ─────────────────────────────────────── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  /* ── Navbar scroll effect ───────────────────────────────── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background =
+      window.scrollY > 60
+        ? 'rgba(15,10,8,.97)'
+        : 'rgba(28,28,28,.92)';
+  });
+</script>
+</body>
+</html>
