@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" width="400" height="520">
+  <defs>
+    <!-- Body gradient -->
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f0f0"/>
+      <stop offset="100%" style="stop-color:#d0d0d0"/>
+    </linearGradient>
+    <!-- Head gradient -->
+    <linearGradient id="headGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5"/>
+      <stop offset="100%" style="stop-color:#dcdcdc"/>
+    </linearGradient>
+    <!-- Visor gradient (toggle) -->
+    <linearGradient id="visorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5aff3a"/>
+      <stop offset="100%" style="stop-color:#2db800"/>
+    </linearGradient>
+    <!-- Visor gloss -->
+    <radialGradient id="visorGloss" cx="65%" cy="30%" r="40%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    <!-- White circle gloss -->
+    <radialGradient id="circleGloss" cx="35%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#e8e8e8;stop-opacity:1"/>
+    </radialGradient>
+    <!-- Ear gradient -->
+    <linearGradient id="earGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e0e0e0"/>
+      <stop offset="100%" style="stop-color:#b0b0b0"/>
+    </linearGradient>
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="4" stdDeviation="5" flood-color="#00000033"/>
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-color="#00000022"/>
+    </filter>
+  </defs>
+
+  <!-- ── LEGS ── -->
+  <!-- Left leg -->
+  <rect x="130" y="400" width="55" height="75" rx="18" fill="url(#bodyGrad)" stroke="#b0b0b0" stroke-width="2" filter="url(#shadow)"/>
+  <!-- Left foot -->
+  <rect x="118" y="455" width="72" height="28" rx="14" fill="#c8c8c8" stroke="#a0a0a0" stroke-width="2"/>
+
+  <!-- Right leg -->
+  <rect x="215" y="400" width="55" height="75" rx="18" fill="url(#bodyGrad)" stroke="#b0b0b0" stroke-width="2" filter="url(#shadow)"/>
+  <!-- Right foot -->
+  <rect x="210" y="455" width="72" height="28" rx="14" fill="#c8c8c8" stroke="#a0a0a0" stroke-width="2"/>
+
+  <!-- ── ARMS ── -->
+  <!-- Left arm -->
+  <rect x="62" y="225" width="52" height="120" rx="26" fill="url(#bodyGrad)" stroke="#b0b0b0" stroke-width="2" filter="url(#shadow)"/>
+  <!-- Left hand -->
+  <circle cx="88" cy="358" r="22" fill="#d8d8d8" stroke="#a0a0a0" stroke-width="2"/>
+  <!-- Peace fingers hint -->
+  <line x1="82" y1="340" x2="78" y2="326" stroke="#b0b0b0" stroke-width="5" stroke-linecap="round"/>
+  <line x1="90" y1="339" x2="90" y2="324" stroke="#b0b0b0" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- Right arm -->
+  <rect x="286" y="225" width="52" height="120" rx="26" fill="url(#bodyGrad)" stroke="#b0b0b0" stroke-width="2" filter="url(#shadow)"/>
+  <!-- Right hand -->
+  <circle cx="312" cy="358" r="22" fill="#d8d8d8" stroke="#a0a0a0" stroke-width="2"/>
+
+  <!-- ── BODY ── -->
+  <rect x="100" y="215" width="200" height="200" rx="40" fill="url(#bodyGrad)" stroke="#b8b8b8" stroke-width="2.5" filter="url(#shadow)"/>
+
+  <!-- Chest panel -->
+  <rect x="130" y="245" width="140" height="90" rx="16" fill="#e8e8e8" stroke="#c0c0c0" stroke-width="1.5"/>
+  <!-- Chest lights -->
+  <circle cx="160" cy="275" r="10" fill="#5aff3a" opacity="0.9"/>
+  <circle cx="160" cy="275" r="6" fill="#8fff70"/>
+  <circle cx="200" cy="275" r="10" fill="#ffb020" opacity="0.9"/>
+  <circle cx="200" cy="275" r="6" fill="#ffd070"/>
+  <circle cx="240" cy="275" r="10" fill="#ff4060" opacity="0.9"/>
+  <circle cx="240" cy="275" r="6" fill="#ff8090"/>
+  <!-- Chest bar -->
+  <rect x="148" y="305" width="104" height="16" rx="8" fill="#d0d0d0" stroke="#b8b8b8" stroke-width="1"/>
+  <rect x="148" y="305" width="62" height="16" rx="8" fill="#5aff3a" opacity="0.8"/>
+
+  <!-- Belly bolt details -->
+  <circle cx="130" cy="370" r="7" fill="#c8c8c8" stroke="#a8a8a8" stroke-width="1.5"/>
+  <circle cx="270" cy="370" r="7" fill="#c8c8c8" stroke="#a8a8a8" stroke-width="1.5"/>
+
+  <!-- ── NECK ── -->
+  <rect x="172" y="195" width="56" height="32" rx="10" fill="#d8d8d8" stroke="#b8b8b8" stroke-width="2"/>
+  <!-- Neck ridges -->
+  <line x1="172" y1="204" x2="228" y2="204" stroke="#c0c0c0" stroke-width="1.5"/>
+  <line x1="172" y1="213" x2="228" y2="213" stroke="#c0c0c0" stroke-width="1.5"/>
+  <line x1="172" y1="222" x2="228" y2="222" stroke="#c0c0c0" stroke-width="1.5"/>
+
+  <!-- ── HEAD ── -->
+  <rect x="90" y="80" width="220" height="125" rx="45" fill="url(#headGrad)" stroke="#b8b8b8" stroke-width="2.5" filter="url(#shadow)"/>
+
+  <!-- ── EARS ── -->
+  <!-- Left ear -->
+  <rect x="68" y="110" width="30" height="50" rx="12" fill="url(#earGrad)" stroke="#b0b0b0" stroke-width="2"/>
+  <circle cx="83" cy="135" r="7" fill="#5aff3a" opacity="0.85"/>
+  <circle cx="83" cy="135" r="4" fill="#8fff70"/>
+  <!-- Right ear -->
+  <rect x="302" y="110" width="30" height="50" rx="12" fill="url(#earGrad)" stroke="#b0b0b0" stroke-width="2"/>
+  <circle cx="317" cy="135" r="7" fill="#5aff3a" opacity="0.85"/>
+  <circle cx="317" cy="135" r="4" fill="#8fff70"/>
+
+  <!-- ── ANTENNAS ── -->
+  <!-- Left antenna -->
+  <line x1="155" y1="80" x2="140" y2="30" stroke="#c0c0c0" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="138" cy="24" r="10" fill="#ffb020" stroke="#e09000" stroke-width="2"/>
+  <circle cx="138" cy="24" r="5" fill="#ffd070"/>
+  <!-- Right antenna -->
+  <line x1="245" y1="80" x2="260" y2="30" stroke="#c0c0c0" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="262" cy="24" r="10" fill="#ffb020" stroke="#e09000" stroke-width="2"/>
+  <circle cx="262" cy="24" r="5" fill="#ffd070"/>
+
+  <!-- ── VISOR (toggle logo) ── -->
+  <!-- Visor background/shadow -->
+  <rect x="106" y="105" width="188" height="75" rx="37.5" fill="#1a8a00" opacity="0.3"/>
+  <!-- Main visor -->
+  <rect x="104" y="102" width="192" height="76" rx="38" fill="url(#visorGrad)" filter="url(#softShadow)"/>
+  <!-- Visor inner border -->
+  <rect x="107" y="105" width="186" height="70" rx="35" fill="none" stroke="#7fff50" stroke-width="1.5" opacity="0.5"/>
+  <!-- Visor gloss overlay -->
+  <rect x="104" y="102" width="192" height="76" rx="38" fill="url(#visorGloss)"/>
+  <!-- White circle (toggle dot) -->
+  <circle cx="218" cy="140" r="29" fill="url(#circleGloss)" filter="url(#softShadow)"/>
+  <!-- Circle inner ring -->
+  <circle cx="218" cy="140" r="23" fill="none" stroke="#e0e0e0" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- ── MOUTH ── -->
+  <rect x="148" y="188" width="104" height="14" rx="7" fill="#c8c8c8" stroke="#a8a8a8" stroke-width="1.5"/>
+  <!-- Teeth -->
+  <rect x="155" y="189" width="16" height="11" rx="3" fill="white" stroke="#d0d0d0" stroke-width="0.5"/>
+  <rect x="176" y="189" width="16" height="11" rx="3" fill="white" stroke="#d0d0d0" stroke-width="0.5"/>
+  <rect x="197" y="189" width="16" height="11" rx="3" fill="white" stroke="#d0d0d0" stroke-width="0.5"/>
+  <rect x="218" y="189" width="16" height="11" rx="3" fill="white" stroke="#d0d0d0" stroke-width="0.5"/>
+  <rect x="239" y="189" width="16" height="11" rx="3" fill="white" stroke="#d0d0d0" stroke-width="0.5"/>
+
+</svg>
