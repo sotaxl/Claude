@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Tandoori | Authentic Indian Restaurant Newport</title>
+  <meta name="description" content="Golden Tandoori – Authentic Indian cuisine in Newport. Dine in or takeaway. 50 Clarence Place, NP19 0AH. Open until 11pm." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --crimson:#8B1A1A;--crimson-d:#6B1212;--crimson-l:#a52020;
+      --gold:#C9A84C;--gold-l:#E8C96B;
+      --cream:#FDF6ED;--cream-d:#F5EBD8;
+      --charcoal:#1C1C1C;--mid:#5A4A3A;--light:#7A6A58;--white:#FFF;
+      --r:10px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.6;overflow-x:hidden}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;line-height:1.2}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:70px;background:rgba(15,8,4,.93);backdrop-filter:blur(14px);border-bottom:1px solid rgba(201,168,76,.18);transition:background .3s}
+    .nav-logo{display:flex;align-items:center;gap:.75rem}
+    .nav-logo svg{width:34px;height:34px}
+    .nav-logo-text{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gold);letter-spacing:.03em}
+    .nav-logo-sub{font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase;display:block;line-height:1}
+    .nav-links{display:flex;gap:1.75rem;list-style:none}
+    .nav-links a{color:rgba(255,255,255,.75);font-size:.84rem;font-weight:500;letter-spacing:.04em;transition:color .2s}
+    .nav-links a:hover{color:var(--gold)}
+    .nav-cta{background:var(--crimson);color:var(--white)!important;padding:.48rem 1.15rem;border-radius:4px;font-weight:600!important;transition:background .2s!important}
+    .nav-cta:hover{background:var(--crimson-d)!important}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+    .hamburger span{width:24px;height:2px;background:var(--gold);border-radius:2px}
+    nav.open .nav-links{display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(12,6,2,.97);padding:1.25rem 2rem;gap:1rem}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background-image:linear-gradient(to bottom,rgba(8,4,2,.6),rgba(8,4,2,.5) 50%,rgba(8,4,2,.78)),url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Chickentandoori.jpg/1200px-Chickentandoori.jpg'),linear-gradient(135deg,#1a0800,#0a0400);background-size:cover;background-position:center}
+    .hero-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:20px 20px}
+    .hero-content{position:relative;text-align:center;padding:2rem;max-width:820px}
+    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(201,168,76,.13);border:1px solid rgba(201,168,76,.35);color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.38rem 1rem;border-radius:50px;margin-bottom:1.5rem}
+    .hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+    .hero h1{font-size:clamp(3rem,8vw,6rem);color:var(--white);margin-bottom:.35rem;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+    .hero h1 span{color:var(--gold)}
+    .hero-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.9rem,2.5vw,1.3rem);color:rgba(255,255,255,.58);margin-bottom:2rem}
+    .hero-stars{display:flex;align-items:center;justify-content:center;gap:.4rem;margin-bottom:2.5rem}
+    .hero-stars .stars{color:var(--gold);font-size:1.1rem;letter-spacing:.1em}
+    .hero-stars .rating{color:var(--white);font-weight:600;font-size:1rem}
+    .hero-stars .count{color:rgba(255,255,255,.45);font-size:.875rem}
+    .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.9rem;border-radius:5px;font-size:.875rem;font-weight:600;letter-spacing:.04em;transition:all .25s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+    .btn-primary{background:var(--crimson);color:var(--white)}
+    .btn-primary:hover{background:var(--crimson-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,26,26,.4)}
+    .btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.35)}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+    .hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.3);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
+    .hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollLine 2s infinite}
+    @keyframes scrollLine{0%,100%{opacity:1}50%{opacity:.25}}
+
+    /* INFO BAR */
+    .info-bar{background:var(--crimson);color:var(--white);padding:.9rem 2rem;display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap}
+    .info-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:500}
+
+    /* SECTIONS */
+    section{padding:5.5rem 2rem}
+    .section-inner{max-width:1100px;margin:0 auto}
+    .section-label{display:flex;align-items:center;gap:.75rem;margin-bottom:.7rem;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--crimson)}
+    .section-label::after{content:'';flex:1;height:1px;background:var(--gold);opacity:.4;max-width:40px}
+    .section-title{font-size:clamp(1.8rem,4vw,2.8rem);color:var(--charcoal);margin-bottom:.7rem}
+    .section-desc{color:var(--light);font-size:.98rem;max-width:540px;line-height:1.75}
+
+    /* ABOUT */
+    #about{background:var(--white)}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .about-image-wrap{position:relative}
+    .about-img-main{width:100%;aspect-ratio:4/5;border-radius:var(--r);background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),linear-gradient(135deg,#2a0800,#4a1000);background-size:cover;background-position:center}
+    .about-img-accent{position:absolute;bottom:-1.5rem;right:-1.5rem;width:57%;aspect-ratio:1;border-radius:var(--r);background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/%22Hyderabadi_Dum_Biryani%22.jpg/400px-%22Hyderabadi_Dum_Biryani%22.jpg'),linear-gradient(135deg,#1a1000,#3a2000);background-size:cover;background-position:center;box-shadow:0 12px 50px rgba(0,0,0,.2)}
+    .about-stat{position:absolute;top:2rem;left:-1.5rem;background:var(--crimson);color:var(--white);padding:.9rem 1.1rem;border-radius:8px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+    .stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;line-height:1;color:var(--gold)}
+    .stat-label{font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;opacity:.8;margin-top:.25rem}
+    .about-features{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:2.25rem}
+    .about-feature{display:flex;align-items:flex-start;gap:.7rem}
+    .about-feature-icon{width:34px;height:34px;min-width:34px;border-radius:6px;background:var(--cream-d);display:flex;align-items:center;justify-content:center;font-size:.95rem}
+    .about-feature-text strong{display:block;font-size:.84rem;font-weight:600;color:var(--charcoal);margin-bottom:.1rem}
+    .about-feature-text span{font-size:.76rem;color:var(--light)}
+
+    /* MENU */
+    #menu{background:var(--cream)}
+    .menu-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin:1.75rem 0 1.5rem}
+    .menu-tab{padding:.48rem 1.1rem;border-radius:50px;font-size:.8rem;font-weight:600;cursor:pointer;border:1.5px solid var(--cream-d);color:var(--mid);background:var(--white);transition:all .18s;white-space:nowrap}
+    .menu-tab.active,.menu-tab:hover{background:var(--crimson);border-color:var(--crimson);color:var(--white)}
+
+    /* protein info bar shown for curries/biryani */
+    .protein-info{background:var(--white);border:1px solid var(--cream-d);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.5rem;display:none}
+    .protein-info.show{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+    .protein-info-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);white-space:nowrap}
+    .protein-chips{display:flex;gap:.4rem;flex-wrap:wrap}
+    .pchip{padding:.25rem .65rem;border-radius:50px;font-size:.75rem;font-weight:500;background:var(--cream);border:1px solid var(--cream-d);color:var(--mid)}
+    .pchip strong{color:var(--crimson)}
+
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+    .mc{background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;cursor:pointer}
+    .mc:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.12)}
+    .mc-img{height:196px;background-size:cover!important;background-position:center!important;position:relative}
+    .mc-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.48),transparent 50%)}
+    .mc-tags{position:absolute;top:.7rem;left:.7rem;display:flex;gap:.3rem;flex-wrap:wrap}
+    .tag{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;line-height:1.4}
+    .tg-pop{background:var(--gold);color:var(--charcoal)}
+    .tg-chef{background:var(--crimson);color:var(--white)}
+    .tg-v{background:#2d6a4f;color:var(--white)}
+    .tg-gf{background:#4a3a7a;color:var(--white)}
+    .tg-hot{background:#cc4400;color:var(--white)}
+    .heat-row{position:absolute;bottom:.65rem;right:.7rem;display:flex;gap:3px}
+    .hd{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25)}
+    .hd.on{background:#ff5500}
+    .mc-body{padding:1rem;flex:1;display:flex;flex-direction:column}
+    .mc-name{font-family:'Playfair Display',serif;font-size:1.02rem;color:var(--charcoal);margin-bottom:.28rem}
+    .mc-desc{font-size:.78rem;color:var(--light);line-height:1.5;flex:1}
+    .mc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem;gap:.5rem}
+    .mc-price{font-weight:700;color:var(--crimson);font-size:1rem}
+    .mc-from{font-size:.68rem;color:var(--light);font-weight:400}
+    .btn-cust{display:flex;align-items:center;gap:.3rem;background:var(--cream);color:var(--mid);border:1px solid var(--cream-d);padding:.42rem .85rem;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif}
+    .btn-cust:hover{background:var(--crimson);color:var(--white);border-color:var(--crimson)}
+    .menu-note{text-align:center;margin-top:2.25rem;color:var(--light);font-size:.85rem}
+    .menu-note a{color:var(--crimson);font-weight:600}
+
+    /* SPECIALS */
+    .specials{background:linear-gradient(135deg,var(--crimson-d),var(--crimson-l));color:var(--white);padding:4.5rem 2rem;text-align:center}
+    .specials-inner{max-width:720px;margin:0 auto}
+    .specials h2{font-size:clamp(1.8rem,4vw,2.7rem);margin-bottom:.7rem}
+    .specials h2 span{color:var(--gold)}
+    .specials p{color:rgba(255,255,255,.68);font-size:.95rem;margin-bottom:2rem;line-height:1.7}
+    .specials-cards{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.25rem}
+    .spec-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);padding:1.3rem 1.6rem;min-width:185px}
+    .spec-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+    .spec-title{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.2rem}
+    .spec-price{font-size:.82rem;color:rgba(255,255,255,.62)}
+    .btn-ol{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.4)}
+    .btn-ol:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+
+    /* GALLERY */
+    #gallery{background:var(--white)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:250px 250px;gap:10px;margin-top:2.5rem}
+    .gi{border-radius:8px;overflow:hidden;background-size:cover!important;background-position:center!important;position:relative;cursor:pointer}
+    .gi:nth-child(1){grid-column:span 2;grid-row:span 2}
+    .gi:nth-child(5){grid-column:span 2}
+    .gi-ov{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s;display:flex;align-items:center;justify-content:center;font-size:1.75rem;opacity:0;transition:all .3s}
+    .gi:hover .gi-ov{background:rgba(139,26,26,.4);opacity:1}
+
+    /* REVIEWS */
+    #reviews{background:var(--cream)}
+    .reviews-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.25rem;flex-wrap:wrap;gap:1.25rem}
+    .score-num{font-family:'Playfair Display',serif;font-size:3.5rem;color:var(--crimson);line-height:1}
+    .score-stars{color:var(--gold);font-size:1.1rem;letter-spacing:.1em}
+    .score-count{font-size:.78rem;color:var(--light);margin-top:.2rem}
+    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1.1rem}
+    .rv{background:var(--white);border-radius:var(--r);padding:1.4rem;box-shadow:0 2px 10px rgba(0,0,0,.05);position:relative}
+    .rv::before{content:'\201C';position:absolute;top:.6rem;right:1.1rem;font-family:'Playfair Display',serif;font-size:3.5rem;color:var(--crimson);opacity:.1;line-height:1}
+    .rv-stars{color:var(--gold);font-size:.82rem;margin-bottom:.8rem;letter-spacing:.08em}
+    .rv-text{font-size:.85rem;color:var(--mid);line-height:1.65;margin-bottom:1.1rem}
+    .rv-author{display:flex;align-items:center;gap:.6rem}
+    .rv-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--white)}
+    .av1{background:#8B1A1A}.av2{background:#1A6B3C}.av3{background:#1A3A8B}.av4{background:#6B3A1A}
+    .rv-name{font-weight:600;font-size:.82rem}
+    .rv-date{font-size:.7rem;color:var(--light)}
+
+    /* CONTACT */
+    #contact{background:var(--charcoal);color:var(--white)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+    #contact .section-label{color:var(--gold)}
+    #contact .section-title{color:var(--white)}
+    #contact .section-desc{color:rgba(255,255,255,.48)}
+    .contact-items{display:flex;flex-direction:column;gap:1.4rem;margin-top:2rem}
+    .ci{display:flex;align-items:flex-start;gap:.85rem}
+    .ci-icon{width:40px;height:40px;min-width:40px;border-radius:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:.95rem}
+    .ci-label{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.22rem}
+    .ci-val{font-size:.88rem;color:rgba(255,255,255,.72);line-height:1.5}
+    .ci-val a{color:rgba(255,255,255,.72)}
+    .ci-val a:hover{color:var(--gold)}
+    .hrs{display:grid;grid-template-columns:1fr auto;gap:.3rem 1.25rem;margin-top:.3rem}
+    .hday{font-size:.8rem;color:rgba(255,255,255,.45)}
+    .htime{font-size:.8rem;color:rgba(255,255,255,.72);font-weight:500;text-align:right}
+    .cmap{border-radius:var(--r);border:1px solid rgba(255,255,255,.1);background:#252525;min-height:320px;display:flex;flex-direction:column}
+    .cmap-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;padding:2rem;text-align:center}
+    .cmap-icon{font-size:2.5rem}
+    .cmap-text{font-size:.85rem;color:rgba(255,255,255,.42);line-height:1.6}
+    .cmap-actions{padding:.9rem 1.1rem;background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.08);display:flex;gap:.65rem}
+    .cmap-btn{flex:1;padding:.62rem;border-radius:6px;font-size:.78rem;font-weight:600;text-align:center;transition:background .2s;cursor:pointer;font-family:'Inter',sans-serif;border:none}
+    .cmap-p{background:var(--crimson);color:var(--white)}
+    .cmap-p:hover{background:var(--crimson-d)}
+    .cmap-s{background:rgba(255,255,255,.08);color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.12)}
+    .cmap-s:hover{background:rgba(255,255,255,.13)}
+
+    /* FOOTER */
+    footer{background:#0c0c0c;color:rgba(255,255,255,.4);padding:2.5rem 2rem;text-align:center}
+    .ft-logo{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);margin-bottom:.3rem}
+    .ft-tag{font-style:italic;font-size:.8rem;color:rgba(255,255,255,.28);margin-bottom:1.4rem}
+    .ft-links{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
+    .ft-links a{font-size:.76rem;letter-spacing:.04em;transition:color .2s}
+    .ft-links a:hover{color:var(--gold)}
+    .ft-div{width:34px;height:1px;background:var(--gold);opacity:.22;margin:1.1rem auto}
+    .ft-copy{font-size:.7rem}
+
+    /* MODAL */
+    .modal-bg{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
+    .modal-bg.open{background:rgba(0,0,0,.68);pointer-events:all}
+    .modal{position:fixed;bottom:-100%;left:50%;transform:translateX(-50%);z-index:501;width:100%;max-width:520px;background:var(--white);border-radius:18px 18px 0 0;box-shadow:0 -8px 40px rgba(0,0,0,.3);transition:bottom .38s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow-y:auto;overscroll-behavior:contain}
+    .modal.open{bottom:0}
+    .modal-handle{width:38px;height:4px;border-radius:4px;background:#ddd;margin:12px auto 0}
+    .modal-img{width:100%;height:210px;background-size:cover!important;background-position:center!important;position:relative}
+    .modal-img-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 55%)}
+    .modal-close{position:absolute;top:.85rem;right:.85rem;width:30px;height:30px;background:rgba(0,0,0,.5);border-radius:50%;border:none;cursor:pointer;color:var(--white);font-size:.9rem;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s;font-family:inherit}
+    .modal-close:hover{background:rgba(0,0,0,.75)}
+    .modal-body{padding:1.1rem 1.4rem}
+    .modal-title{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--charcoal);margin-bottom:.3rem}
+    .modal-desc{font-size:.82rem;color:var(--light);line-height:1.6;margin-bottom:.85rem}
+    .modal-heat-row{display:flex;align-items:center;gap:.5rem;margin-bottom:1.1rem;font-size:.75rem;color:var(--mid);font-weight:500}
+    .mhd{width:8px;height:8px;border-radius:50%;background:#e0d5c8}
+    .mhd.on{background:#ff5500}
+    .modal-divider{height:1px;background:var(--cream-d);margin:.85rem 0}
+    .modal-vg{margin-bottom:1.1rem}
+    .modal-vg-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:.55rem}
+    .modal-opts{display:flex;flex-wrap:wrap;gap:.38rem}
+    .mopt{display:flex;align-items:center;gap:.3rem;padding:.42rem .85rem;border-radius:8px;cursor:pointer;border:1.5px solid var(--cream-d);background:var(--cream);color:var(--mid);font-size:.8rem;font-weight:500;transition:all .16s;user-select:none;font-family:'Inter',sans-serif}
+    .mopt:hover{border-color:var(--crimson);color:var(--crimson)}
+    .mopt.sel{border-color:var(--crimson);background:var(--crimson);color:var(--white)}
+    .mopt .adj{font-size:.7rem;opacity:.72}
+    .modal-notes{margin-bottom:1.1rem}
+    .modal-notes label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:.4rem;display:block}
+    .modal-notes textarea{width:100%;padding:.6rem .85rem;border-radius:8px;border:1.5px solid var(--cream-d);background:var(--cream);color:var(--charcoal);font-family:'Inter',sans-serif;font-size:.82rem;resize:none;outline:none;transition:border-color .2s}
+    .modal-notes textarea:focus{border-color:var(--crimson)}
+    .modal-footer{padding:0 1.4rem 1.4rem}
+    .modal-price-row{display:flex;align-items:baseline;gap:.45rem;margin-bottom:.85rem}
+    .modal-price-label{font-size:.8rem;color:var(--light)}
+    .modal-price-val{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--crimson);font-weight:700}
+    .modal-cta{display:flex;width:100%;align-items:center;justify-content:center;gap:.55rem;padding:.95rem;border-radius:8px;background:var(--crimson);color:var(--white);font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:background .2s,transform .2s}
+    .modal-cta:hover{background:var(--crimson-d);transform:translateY(-1px)}
+
+    .fade-in{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+    .fade-in.visible{opacity:1;transform:none}
+
+    @media(max-width:900px){
+      .nav-links{display:none}
+      .hamburger{display:flex}
+      .about-grid,.contact-grid{grid-template-columns:1fr;gap:2.5rem}
+      .about-image-wrap{display:none}
+      .gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
+      .gi:nth-child(1),.gi:nth-child(5){grid-column:span 1;grid-row:span 1}
+      .gi{height:180px}
+    }
+    @media(max-width:600px){
+      section{padding:3.5rem 1.25rem}
+      .info-bar{gap:1rem}
+      .modal{border-radius:14px 14px 0 0}
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 34 34" fill="none"><path d="M17 3C17 3 11 10 11 17c0 3.3 2.7 6 6 6s6-2.7 6-6C23 10 17 3 17 3Z" fill="#C9A84C"/><path d="M17 11c0 0-2.5 4-2.5 7.5 0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5C19.5 15 17 11 17 11Z" fill="#8B1A1A"/></svg>
+    <div><span class="nav-logo-text">Golden Tandoori</span><span class="nav-logo-sub">Newport</span></div>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact" class="nav-cta">Reserve a Table</a></li>
+  </ul>
+  <div class="hamburger" onclick="document.getElementById('nav').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Now Open · Closes 11 pm</div>
+    <h1>Golden<br><span>Tandoori</span></h1>
+    <p class="hero-tagline">Authentic Indian Cuisine · Newport, Wales</p>
+    <div class="hero-stars">
+      <span class="stars">★★★★★</span>
+      <span class="rating">4.3</span>
+      <span class="count">· 42 reviews on Google</span>
+    </div>
+    <div class="hero-actions">
+      <a href="tel:01633262033" class="btn btn-primary">📞 Call to Book</a>
+      <a href="#menu" class="btn btn-outline">View Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="hero-scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<!-- INFO BAR -->
+<div class="info-bar">
+  <div class="info-item">📍 50 Clarence Place, Newport NP19 0AH</div>
+  <div class="info-item">📞 01633 262033</div>
+  <div class="info-item">✉️ info@goldentandoorinewport.co.uk</div>
+  <div class="info-item">🕐 Open · Closes 11 pm</div>
+  <div class="info-item">💷 £10–£20 per person</div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-image-wrap fade-in">
+        <div class="about-img-main"></div>
+        <div class="about-img-accent"></div>
+        <div class="about-stat"><div class="stat-num">30+</div><div class="stat-label">Years Serving Newport</div></div>
+      </div>
+      <div class="fade-in">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">A Taste of India in the Heart of Newport</h2>
+        <p class="section-desc">Nestled on Clarence Place, Golden Tandoori has been a beloved Newport institution for decades — bringing the rich, aromatic traditions of subcontinental cooking to your table every evening. Slow-cooked curries, tandoor-fired breads and freshly blended spices, crafted with care using quality British-sourced halal ingredients.</p>
+        <div class="about-features">
+          <div class="about-feature"><div class="about-feature-icon">🔥</div><div class="about-feature-text"><strong>Tandoor Oven</strong><span>Traditional clay oven, perfect naans every time</span></div></div>
+          <div class="about-feature"><div class="about-feature-icon">🌿</div><div class="about-feature-text"><strong>Fresh Spices</strong><span>Ground in-house daily for maximum flavour</span></div></div>
+          <div class="about-feature"><div class="about-feature-icon">🥩</div><div class="about-feature-text"><strong>Halal Meat</strong><span>Certified halal, sourced from trusted suppliers</span></div></div>
+          <div class="about-feature"><div class="about-feature-icon">🚗</div><div class="about-feature-text"><strong>Dine In & Takeaway</strong><span>Enjoy here or take the flavours home</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-inner">
+    <div class="fade-in">
+      <div class="section-label">Our Menu</div>
+      <h2 class="section-title">Explore Our Full Menu</h2>
+      <p class="section-desc">Every dish is prepared fresh to order with authentic recipes. Click any item to customise your choice.</p>
+    </div>
+    <div class="menu-tabs fade-in" id="menuTabs"></div>
+    <div class="protein-info" id="proteinInfo">
+      <span class="protein-info-label">Protein prices</span>
+      <div class="protein-chips">
+        <div class="pchip">🍗 Chicken <strong>from £10.95</strong></div>
+        <div class="pchip">🥩 Lamb <strong>+£1.00</strong></div>
+        <div class="pchip">🦐 Prawn <strong>+£1.50</strong></div>
+        <div class="pchip">🦞 King Prawn <strong>+£3.00</strong></div>
+        <div class="pchip">🥬 Veg <strong>−£1.50</strong></div>
+        <div class="pchip">🧀 Paneer <strong>±£0</strong></div>
+      </div>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+    <p class="menu-note">Allergen info & vegetarian/vegan options available — <a href="tel:01633262033">call us</a> or ask our team. All dishes can be adjusted for spice level.</p>
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<div class="specials">
+  <div class="specials-inner">
+    <div class="section-label" style="justify-content:center;color:var(--gold)">Chef's Specials</div>
+    <h2>This Week's <span>Highlights</span></h2>
+    <p>Ask about our weekly deals when you call. Great value for groups, couples and families.</p>
+    <div class="specials-cards">
+      <div class="spec-card"><div class="spec-label">Mon &amp; Tue</div><div class="spec-title">Set Meal for Two</div><div class="spec-price">2 mains + rice + naan · from £22</div></div>
+      <div class="spec-card"><div class="spec-label">All Week</div><div class="spec-title">Takeaway Deal</div><div class="spec-price">10% off orders over £20</div></div>
+      <div class="spec-card"><div class="spec-label">Sunday</div><div class="spec-title">Family Feast</div><div class="spec-price">4 mains + sides + drinks · from £50</div></div>
+    </div>
+    <a href="tel:01633262033" class="btn btn-ol">📞 Call to Enquire</a>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="fade-in"><div class="section-label">Gallery</div><h2 class="section-title">A Feast for the Eyes</h2><p class="section-desc">A glimpse of the dishes and atmosphere that await you.</p></div>
+    <div class="gallery-grid">
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Chickentandoori.jpg/800px-Chickentandoori.jpg'),linear-gradient(135deg,#3a1008,#8b1a1a)"><div class="gi-ov">🔥</div></div>
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),linear-gradient(135deg,#2a0800,#5a1000)"><div class="gi-ov">🍗</div></div>
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/%22Hyderabadi_Dum_Biryani%22.jpg/600px-%22Hyderabadi_Dum_Biryani%22.jpg'),linear-gradient(135deg,#1a1000,#3a2200)"><div class="gi-ov">🍚</div></div>
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Chicken_tikka_masala_%28cropped%29.jpg/600px-Chicken_tikka_masala_%28cropped%29.jpg'),linear-gradient(135deg,#2a0800,#4a1000)"><div class="gi-ov">🍛</div></div>
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Pakistani_Food_Beef_Kabobs.jpg/800px-Pakistani_Food_Beef_Kabobs.jpg'),linear-gradient(135deg,#1a0800,#3a1000)"><div class="gi-ov">🥩</div></div>
+      <div class="gi" style="background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Annapurna_Naan.jpg/600px-Annapurna_Naan.jpg'),linear-gradient(135deg,#181400,#302800)"><div class="gi-ov">🫓</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="reviews-hdr">
+      <div class="fade-in"><div class="section-label">Google Reviews</div><h2 class="section-title">What Our Guests Say</h2></div>
+      <div class="fade-in" style="text-align:right"><div class="score-num">4.3</div><div class="score-stars">★★★★★</div><div class="score-count">Based on 42 reviews</div></div>
+    </div>
+    <div class="reviews-grid">
+      <div class="rv fade-in"><div class="rv-stars">★★★★★</div><p class="rv-text">"Absolutely delicious chicken balti — the sauce was rich and perfectly spiced. The naan bread was fluffy and fresh from the tandoor. One of the best Indian restaurants in Newport, we'll definitely be back!"</p><div class="rv-author"><div class="rv-av av1">S</div><div><div class="rv-name">Sarah M.</div><div class="rv-date">2 weeks ago · Google</div></div></div></div>
+      <div class="rv fade-in"><div class="rv-stars">★★★★★</div><p class="rv-text">"The lamb biryani is outstanding — beautifully fragrant rice with tender meat. Friendly service and great value. My go-to spot for a proper Indian meal in Newport. Highly recommend!"</p><div class="rv-author"><div class="rv-av av2">J</div><div><div class="rv-name">James T.</div><div class="rv-date">1 month ago · Google</div></div></div></div>
+      <div class="rv fade-in"><div class="rv-stars">★★★★☆</div><p class="rv-text">"Reliable, tasty and quick. Ordered a takeaway and the food arrived hot and well-packaged. The tikka masala was creamy and flavourful. Good portion sizes — well worth the price."</p><div class="rv-author"><div class="rv-av av3">P</div><div><div class="rv-name">Priya K.</div><div class="rv-date">3 weeks ago · Google</div></div></div></div>
+      <div class="rv fade-in"><div class="rv-stars">★★★★★</div><p class="rv-text">"Been coming here for years and it never disappoints. Staff are warm and welcoming, food consistently excellent. The mixed grill platter is a must-try — enough for two people!"</p><div class="rv-author"><div class="rv-av av4">R</div><div><div class="rv-name">Robert W.</div><div class="rv-date">1 month ago · Google</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="fade-in">
+        <div class="section-label">Find Us</div>
+        <h2 class="section-title">Come Visit Us</h2>
+        <p class="section-desc">Walk in or give us a call to reserve your table. Open every day until 11 pm.</p>
+        <div class="contact-items">
+          <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-label">Address</div><div class="ci-val">50 Clarence Place<br>Newport, NP19 0AH, Wales</div></div></div>
+          <div class="ci"><div class="ci-icon">📞</div><div><div class="ci-label">Phone</div><div class="ci-val"><a href="tel:01633262033">01633 262033</a></div></div></div>
+          <div class="ci"><div class="ci-icon">✉️</div><div><div class="ci-label">Email</div><div class="ci-val"><a href="mailto:info@goldentandoorinewport.co.uk">info@goldentandoorinewport.co.uk</a></div></div></div>
+          <div class="ci"><div class="ci-icon">🕐</div><div><div class="ci-label">Opening Hours</div><div class="ci-val"><div class="hrs"><span class="hday">Monday – Thursday</span><span class="htime">5:00 – 11:00 pm</span><span class="hday">Friday – Saturday</span><span class="htime">5:00 – 11:30 pm</span><span class="hday">Sunday</span><span class="htime">4:30 – 11:00 pm</span></div></div></div></div>
+        </div>
+      </div>
+      <div class="cmap fade-in">
+        <div class="cmap-body">
+          <div class="cmap-icon">🗺️</div>
+          <div class="cmap-text"><strong style="color:rgba(255,255,255,.78);display:block;margin-bottom:.35rem">50 Clarence Place, Newport</strong>Free street parking nearby.<br>5 minutes from Newport City Centre.</div>
+        </div>
+        <div class="cmap-actions">
+          <a class="cmap-btn cmap-p" href="https://www.google.com/maps/search/Golden+Tandoori+50+Clarence+Place+Newport" target="_blank" rel="noopener">Get Directions</a>
+          <a class="cmap-btn cmap-s" href="tel:01633262033">Call Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:680px;margin:0 auto">
+    <div class="ft-logo">Golden Tandoori</div>
+    <div class="ft-tag">Authentic Indian Cuisine · Newport, Wales</div>
+    <div class="ft-links">
+      <a href="#about">Our Story</a><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a><a href="tel:01633262033">01633 262033</a>
+    </div>
+    <div class="ft-div"></div>
+    <div class="ft-copy">&copy; 2026 Golden Tandoori Newport · 50 Clarence Place, Newport NP19 0AH</div>
+  </div>
+</footer>
+
+<!-- VARIANT MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal()"></div>
+<div class="modal" id="modal">
+  <div class="modal-handle"></div>
+  <div class="modal-img" id="modalImg">
+    <div class="modal-img-ov"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-heat-row" id="modalHeat"></div>
+    <div class="modal-divider"></div>
+    <div id="modalVariants"></div>
+    <div class="modal-notes">
+      <label>Special requests (optional)</label>
+      <textarea id="modalNotes" rows="2" placeholder="e.g. extra mild, no onions, allergy info…"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="modal-price-row"><span class="modal-price-label">Total</span><span class="modal-price-val" id="modalPrice"></span></div>
+    <button class="modal-cta" onclick="window.location='tel:01633262033'">📞 Call to Order: 01633 262033</button>
+  </div>
+</div>
+
+<script>
+/* ─── IMAGE MAP ──────────────────────────────────────── */
+const W = f => `https://upload.wikimedia.org/wikipedia/commons/thumb/${f}`;
+
+/* Dish photos from Wikimedia Commons (free, no auth required) */
+const P = {
+  /* starters */
+  onionBhaji:    W('7/7b/Stuffed_mirchi_bajji_%2816164286908%29.jpg/600px-Stuffed_mirchi_bajji_%2816164286908%29.jpg'),
+  chickenTikka:  W('b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),
+  chickenTikka2: W('b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),
+  chickenTikka3: W('b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),
+  seekhKebab:    W('0/0c/Pakistani_Food_Beef_Kabobs.jpg/600px-Pakistani_Food_Beef_Kabobs.jpg'),
+  samosa:        W('c/c4/Samosas%2C_snack_food_at_Wikipedia%27s_16th_Birthday_celebration_in_Chittagong_%2801%29.jpg/600px-Samosas%2C_snack_food_at_Wikipedia%27s_16th_Birthday_celebration_in_Chittagong_%2801%29.jpg'),
+  samosa2:       W('c/c4/Samosas%2C_snack_food_at_Wikipedia%27s_16th_Birthday_celebration_in_Chittagong_%2801%29.jpg/600px-Samosas%2C_snack_food_at_Wikipedia%27s_16th_Birthday_celebration_in_Chittagong_%2801%29.jpg'),
+  prawnCurry:    W('4/42/Chicken_Jalfrezi_%282103956162%29.jpg/600px-Chicken_Jalfrezi_%282103956162%29.jpg'),
+  chaat:         W('b/bd/Tandoorimumbai.jpg/600px-Tandoorimumbai.jpg'),
+  mixedGrill:    W('0/0c/Pakistani_Food_Beef_Kabobs.jpg/600px-Pakistani_Food_Beef_Kabobs.jpg'),
+  /* tandoori */
+  tandooriChx:   W('e/e1/Chickentandoori.jpg/600px-Chickentandoori.jpg'),
+  tandooriChx2:  W('e/e1/Chickentandoori.jpg/600px-Chickentandoori.jpg'),
+  lambChops:     W('0/0c/Pakistani_Food_Beef_Kabobs.jpg/600px-Pakistani_Food_Beef_Kabobs.jpg'),
+  paneerTikka:   W('f/f2/Paneer_tikka.jpg/600px-Paneer_tikka.jpg'),
+  /* curries */
+  korma:         W('a/a8/Chicken_Korma.JPG/600px-Chicken_Korma.JPG'),
+  pasanda:       W('a/a8/Chicken_Korma.JPG/600px-Chicken_Korma.JPG'),
+  tikkaMasala:   W('0/00/Chicken_tikka_masala_%28cropped%29.jpg/600px-Chicken_tikka_masala_%28cropped%29.jpg'),
+  butter:        W('4/41/Butter_Chicken_%26_Butter_Naan_-_Home_-_Chandigarh_-_India_-_0006.jpg/600px-Butter_Chicken_%26_Butter_Naan_-_Home_-_Chandigarh_-_India_-_0006.jpg'),
+  roganJosh:     W('6/67/Rogan_Josh_Kashmiri.jpg/600px-Rogan_Josh_Kashmiri.jpg'),
+  dopiaza:       W('6/67/Rogan_Josh_Kashmiri.jpg/600px-Rogan_Josh_Kashmiri.jpg'),
+  jalfrezi:      W('4/42/Chicken_Jalfrezi_%282103956162%29.jpg/600px-Chicken_Jalfrezi_%282103956162%29.jpg'),
+  karahi:        W('4/42/Chicken_Jalfrezi_%282103956162%29.jpg/600px-Chicken_Jalfrezi_%282103956162%29.jpg'),
+  balti:         W('2/2b/Balti_gosht.jpg/600px-Balti_gosht.jpg'),
+  saag:          W('b/b2/Punjabi_Sarsoon_Ka_Saag.JPG/600px-Punjabi_Sarsoon_Ka_Saag.JPG'),
+  pathia:        W('4/4e/Madras_Curry.JPG/600px-Madras_Curry.JPG'),
+  madras:        W('4/4e/Madras_Curry.JPG/600px-Madras_Curry.JPG'),
+  vindaloo:      W('4/44/Beef_Vindaloo_-_Chilli_Mama%2C_Chadstone_%283014236693%29.jpg/600px-Beef_Vindaloo_-_Chilli_Mama%2C_Chadstone_%283014236693%29.jpg'),
+  phall:         W('4/44/Beef_Vindaloo_-_Chilli_Mama%2C_Chadstone_%283014236693%29.jpg/600px-Beef_Vindaloo_-_Chilli_Mama%2C_Chadstone_%283014236693%29.jpg'),
+  /* biryani */
+  bir1:          W('5/5a/%22Hyderabadi_Dum_Biryani%22.jpg/600px-%22Hyderabadi_Dum_Biryani%22.jpg'),
+  bir2:          'https://www.themealdb.com/images/media/meals/xrttsx1487339558.jpg',
+  bir3:          W('5/5a/%22Hyderabadi_Dum_Biryani%22.jpg/600px-%22Hyderabadi_Dum_Biryani%22.jpg'),
+  bir4:          'https://www.themealdb.com/images/media/meals/xrttsx1487339558.jpg',
+  bir5:          W('5/5a/%22Hyderabadi_Dum_Biryani%22.jpg/600px-%22Hyderabadi_Dum_Biryani%22.jpg'),
+  bir6:          'https://www.themealdb.com/images/media/meals/xrttsx1487339558.jpg',
+  /* breads */
+  naan:          W('4/4e/Annapurna_Naan.jpg/600px-Annapurna_Naan.jpg'),
+  naan2:         W('4/4e/Annapurna_Naan.jpg/600px-Annapurna_Naan.jpg'),
+  naan3:         W('4/4e/Annapurna_Naan.jpg/600px-Annapurna_Naan.jpg'),
+  chapati:       W('4/4e/Annapurna_Naan.jpg/600px-Annapurna_Naan.jpg'),
+  /* rice */
+  rice:          W('d/dd/Afghan_Palo.jpg/600px-Afghan_Palo.jpg'),
+  friedRice:     W('d/dd/Afghan_Palo.jpg/600px-Afghan_Palo.jpg'),
+  /* sides */
+  dal:           'https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg',
+  alooGobi:      W('a/a9/Aloo_Ghobi.jpg/600px-Aloo_Ghobi.jpg'),
+  bombayPot:     W('a/a9/Aloo_Ghobi.jpg/600px-Aloo_Ghobi.jpg'),
+  chanaMasala:   W('8/8e/Chana_masala.jpg/600px-Chana_masala.jpg'),
+  saagSide:      W('b/b2/Punjabi_Sarsoon_Ka_Saag.JPG/600px-Punjabi_Sarsoon_Ka_Saag.JPG'),
+  raita:         W('7/78/Cucumber-raita.jpg/600px-Cucumber-raita.jpg'),
+  /* desserts / drinks */
+  gulabJamun:    W('0/0f/Bowl_of_Gulab_Jamuns.jpg/600px-Bowl_of_Gulab_Jamuns.jpg'),
+  kulfi:         W('8/8a/Matka_kulfi.jpg/600px-Matka_kulfi.jpg'),
+  kheer:         W('4/46/Kheer.jpg/600px-Kheer.jpg'),
+  lassi:         W('f/f1/Salt_lassi.jpg/600px-Salt_lassi.jpg'),
+  lassi2:        W('f/f1/Salt_lassi.jpg/600px-Salt_lassi.jpg'),
+  beer:          W('2/2b/Balti_gosht.jpg/600px-Balti_gosht.jpg'),
+};
+const FB = (col1, col2) => `linear-gradient(135deg, ${col1}, ${col2})`;
+
+/* ─── PROTEIN VARIANTS (curries & biryani) ───────────── */
+const PROTEINS = [
+  {label:'Chicken', emoji:'🍗', adj:0, default:true},
+  {label:'Lamb',    emoji:'🥩', adj:1.00},
+  {label:'Prawn',   emoji:'🦐', adj:1.50},
+  {label:'King Prawn', emoji:'🦞', adj:3.00},
+  {label:'Vegetable',  emoji:'🥬', adj:-1.50},
+  {label:'Paneer',  emoji:'🧀', adj:0},
+];
+const HEAT_LEVELS = ['Mild','Medium','Hot','Extra Hot'];
+
+/* ─── FULL MENU DATA ─────────────────────────────────── */
+const MENU = {
+  starters:{label:'Starters', proteinBar:false, items:[
+    {name:'Onion Bhaji',        desc:'Crispy golden fritters with onion, coriander & spices (v)',             price:4.95, heat:0, tags:['tg-v'],           img:P.onionBhaji,  fb:FB('#1a0a00','#3a1a00')},
+    {name:'Chicken Tikka',      desc:'Tender marinated chicken, charred in the tandoor, served with mint chutney', price:6.95, heat:2, tags:['tg-pop'],   img:P.chickenTikka, fb:FB('#2a0800','#5a1000')},
+    {name:'Seekh Kebab',        desc:'Spiced minced lamb on skewers, served with salad & raita',             price:6.95, heat:2, tags:[],                  img:P.seekhKebab,  fb:FB('#1a0800','#3a1000')},
+    {name:'Samosa (2 pcs)',     desc:'Crisp pastry filled with spiced potatoes & peas (v)',                  price:4.50, heat:1, tags:['tg-v'],            img:P.samosa,      fb:FB('#2a1800','#4a2800')},
+    {name:'Prawn Puri',         desc:'Juicy prawns in a tangy sauce served on deep-fried bread',            price:7.50, heat:2, tags:[],                  img:P.prawnCurry,  fb:FB('#0a0818','#1a1030')},
+    {name:'Chicken Chaat',      desc:'Tangy spiced chicken with pomegranate & fresh coriander',             price:5.95, heat:2, tags:['tg-new'],           img:P.chaat,       fb:FB('#2a0a00','#501200')},
+    {name:'Aloo Tikki',         desc:'Spiced potato cakes with tamarind & mint chutneys (v)',               price:4.50, heat:1, tags:['tg-v'],            img:P.samosa2,     fb:FB('#1a1400','#342800')},
+    {name:'Mixed Starter Platter', desc:'Chicken tikka, seekh kebab, onion bhaji & samosa — great for sharing', price:13.95, heat:2, tags:['tg-chef','tg-pop'], img:P.mixedGrill, fb:FB('#180800','#3a1800')},
+  ]},
+
+  tandoori:{label:'Tandoori & Grills', proteinBar:false, items:[
+    {name:'Tandoori Chicken (Half)', desc:'Marinated chicken leg & breast, clay-oven charred, served with salad & naan', price:11.95, heat:2, tags:['tg-pop'],      img:P.tandooriChx,  fb:FB('#2a0800','#4a1000')},
+    {name:'Tandoori Chicken (Full)', desc:'Whole marinated chicken from the tandoor — a true feast for two',             price:21.95, heat:2, tags:['tg-chef'],     img:P.tandooriChx2, fb:FB('#1a0800','#380e00')},
+    {name:'Chicken Tikka',           desc:'Boneless chicken marinated in spiced yoghurt, tandoor-cooked',               price:12.95, heat:2, tags:['tg-pop'],      img:P.chickenTikka2,fb:FB('#280a00','#501800')},
+    {name:'Lamb Tikka',              desc:'Tender lamb cubes marinated in spiced yoghurt, served with raita',           price:13.95, heat:2, tags:[],              img:P.seekhKebab,   fb:FB('#200800','#401000')},
+    {name:'Lamb Chop Tikka',         desc:'Succulent marinated lamb chops straight from the tandoor',                   price:14.95, heat:2, tags:['tg-chef'],     img:P.lambChops,    fb:FB('#180600','#360e00')},
+    {name:'Tandoori King Prawns',    desc:'Jumbo prawns with lemon & spice marinade, tandoor-grilled',                  price:16.95, heat:2, tags:[],              img:P.prawnCurry,   fb:FB('#0a0818','#1a1030')},
+    {name:'Paneer Tikka',            desc:'Cottage cheese with peppers & onions in yoghurt marinade (v)',               price:10.95, heat:1, tags:['tg-v'],        img:P.paneerTikka,  fb:FB('#1a1200','#342800')},
+    {name:'Chicken Shashlik',        desc:'Chicken tikka on skewers with onions, peppers & tomatoes',                   price:12.95, heat:2, tags:[],              img:P.chickenTikka3,fb:FB('#200a00','#401800')},
+    {name:'Mixed Grill Platter',     desc:'Chicken tikka, lamb tikka, seekh kebab & lamb chop — a true feast',         price:19.95, heat:2, tags:['tg-pop','tg-chef'], img:P.mixedGrill, fb:FB('#180600','#360e00')},
+  ]},
+
+  curries:{label:'House Curries', proteinBar:true, items:[
+    {name:'Korma',       desc:'Mild, creamy sauce with ground almonds, coconut and cream',         price:10.95, heat:1, tags:['tg-pop'], img:P.korma,      fb:FB('#1a1200','#3a2800'), variants:{protein:true, heat:true}},
+    {name:'Pasanda',     desc:'Mild, silky sauce with almonds, sultanas and fresh cream',          price:10.95, heat:1, tags:[],         img:P.pasanda,    fb:FB('#1a1400','#382800'), variants:{protein:true, heat:true}},
+    {name:'Tikka Masala',desc:'Medium, creamy tomato & pepper sauce — a British classic',          price:10.95, heat:2, tags:['tg-pop'], img:P.tikkaMasala,fb:FB('#2a0800','#5a1a00'), variants:{protein:true, heat:true}},
+    {name:'Butter',      desc:'Rich, buttery tomato sauce with fenugreek and cream',               price:10.95, heat:2, tags:['tg-pop'], img:P.butter,     fb:FB('#1a0800','#3a1000'), variants:{protein:true, heat:true}},
+    {name:'Rogan Josh',  desc:'Aromatic Kashmiri curry with whole spices and tomatoes',            price:10.95, heat:2, tags:[],         img:P.roganJosh,  fb:FB('#200a00','#440e00'), variants:{protein:true, heat:true}},
+    {name:'Dopiaza',     desc:'Medium curry with a double portion of caramelised onions',          price:10.95, heat:2, tags:[],         img:P.dopiaza,    fb:FB('#1a1000','#3a2200'), variants:{protein:true, heat:true}},
+    {name:'Jalfrezi',    desc:'Stir-fried with green peppers, onions, tomatoes & green chillies', price:10.95, heat:3, tags:['tg-hot'], img:P.jalfrezi,   fb:FB('#1a0800','#3a0e00'), variants:{protein:true, heat:true}},
+    {name:'Karahi',      desc:'Traditional wok-cooked curry with ginger, garlic & tomatoes',      price:10.95, heat:3, tags:[],         img:P.karahi,     fb:FB('#1a0800','#3a1200'), variants:{protein:true, heat:true}},
+    {name:'Balti',       desc:'Aromatic curry with fresh herbs and spices in a balti bowl',        price:10.95, heat:3, tags:['tg-pop'], img:P.balti,      fb:FB('#180a00','#380e00'), variants:{protein:true, heat:true}},
+    {name:'Saag',        desc:'Freshly wilted spinach with garlic, ginger and spices',             price:10.95, heat:2, tags:['tg-v'],  img:P.saag,       fb:FB('#081810','#12301a'), variants:{protein:true, heat:true}},
+    {name:'Pathia',      desc:'Sweet and sour sauce with lemon juice and sugar — medium-hot',     price:10.95, heat:3, tags:[],         img:P.pathia,     fb:FB('#1a1000','#362000'), variants:{protein:true, heat:true}},
+    {name:'Madras',      desc:'Hot, tangy South Indian-style curry with tamarind',                 price:10.95, heat:4, tags:['tg-hot'], img:P.madras,     fb:FB('#1a0600','#3a0a00'), variants:{protein:true, heat:true}},
+    {name:'Vindaloo',    desc:'Very hot Goan-style curry with potatoes and vinegar',               price:10.95, heat:5, tags:['tg-hot'], img:P.vindaloo,   fb:FB('#180400','#380800'), variants:{protein:true, heat:true}},
+    {name:'Phall',       desc:'Extremely hot — the hottest curry on our menu. Not for the faint-hearted!', price:10.95, heat:5, tags:['tg-hot'], img:P.phall, fb:FB('#100200','#2a0400'), variants:{protein:true, heat:true}},
+  ]},
+
+  biryani:{label:'Biryani', proteinBar:false, items:[
+    {name:'Chicken Biryani',    desc:'Fragrant basmati rice layered with marinated chicken, fried onions and whole spices. Served with raita & salad', price:12.95, heat:2, tags:['tg-pop'],      img:P.bir1, fb:FB('#1a1000','#3a2200'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+    {name:'Lamb Biryani',       desc:'Slow-cooked tender lamb with aromatic basmati, saffron and fried onions. Served with raita & salad',             price:13.95, heat:2, tags:['tg-chef'],     img:P.bir2, fb:FB('#1a0800','#3a1200'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+    {name:'Prawn Biryani',      desc:'Juicy prawns with fragrant rice, fresh coriander and whole spices. Served with raita & salad',                   price:13.95, heat:2, tags:[],              img:P.bir3, fb:FB('#0a1018','#1a2030'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+    {name:'King Prawn Biryani', desc:'Jumbo king prawns layered with saffron basmati and spiced onions. Served with raita & salad',                    price:16.95, heat:2, tags:['tg-chef'],     img:P.bir4, fb:FB('#081420','#102030'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+    {name:'Vegetable Biryani',  desc:'Mixed seasonal vegetables with fragrant basmati and aromatic spices (v). Served with raita & salad',             price:11.50, heat:2, tags:['tg-v'],        img:P.bir5, fb:FB('#081808','#102818'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+    {name:'Mixed Meat Biryani', desc:'Chicken, lamb and prawn layered with saffron basmati — the ultimate biryani. Served with raita & salad',        price:15.95, heat:2, tags:['tg-pop','tg-chef'], img:P.bir6, fb:FB('#1a0a00','#3a1800'), variants:{protein:['Chicken','Lamb','Prawn','King Prawn','Vegetable']}},
+  ]},
+
+  breads:{label:'Breads & Rice', proteinBar:false, items:[
+    {name:'Plain Naan',          desc:'Soft, pillowy bread baked in the clay tandoor oven',      price:2.95, heat:0, tags:[],        img:P.naan,     fb:FB('#1a1000','#3a2800'), variants:{bread:['Plain Naan','Garlic Naan','Peshwari Naan','Keema Naan','Cheese Naan','Cheese & Garlic Naan']}},
+    {name:'Garlic Naan',         desc:'Buttered naan with fresh garlic and coriander',           price:3.50, heat:0, tags:['tg-pop'], img:P.naan2,    fb:FB('#1a1200','#382800')},
+    {name:'Peshwari Naan',       desc:'Sweet naan filled with coconut, almonds and sultanas',    price:3.75, heat:0, tags:[],        img:P.naan3,    fb:FB('#1a1400','#342800')},
+    {name:'Keema Naan',          desc:'Naan stuffed with spiced minced lamb',                    price:4.25, heat:1, tags:[],        img:P.naan,     fb:FB('#1a0800','#381000')},
+    {name:'Cheese & Garlic Naan',desc:'Melted cheese with fresh garlic on a pillowy naan',      price:4.25, heat:0, tags:['tg-pop'], img:P.naan2,    fb:FB('#1a1200','#342800')},
+    {name:'Chapati',             desc:'Thin wholemeal bread, freshly cooked on the tawa',       price:2.25, heat:0, tags:[],        img:P.chapati,  fb:FB('#181800','#302800')},
+    {name:'Paratha',             desc:'Layered flaky flatbread, buttery and crisp',             price:3.50, heat:0, tags:[],        img:P.naan3,    fb:FB('#181800','#302800')},
+    {name:'Pilau Rice',          desc:'Fragrant basmati rice with whole spices and onion',      price:3.25, heat:0, tags:[],        img:P.rice,     fb:FB('#0a1200','#182000')},
+    {name:'Boiled Rice',         desc:'Plain steamed basmati rice',                              price:2.95, heat:0, tags:[],        img:P.rice,     fb:FB('#0a1000','#182000')},
+    {name:'Special Fried Rice',  desc:'Basmati fried with egg, peas, herbs and spices',        price:4.25, heat:1, tags:[],        img:P.friedRice,fb:FB('#0a1008','#182018')},
+    {name:'Egg Fried Rice',      desc:'Basmati fried with egg and spring onions',               price:3.75, heat:0, tags:[],        img:P.friedRice,fb:FB('#0a1008','#182018')},
+    {name:'Mushroom Rice',       desc:'Basmati cooked with mushrooms and fresh herbs',           price:3.75, heat:0, tags:[],        img:P.rice,     fb:FB('#0a1008','#182018')},
+  ]},
+
+  sides:{label:'Sides & Extras', proteinBar:false, items:[
+    {name:'Dal Tarka',      desc:'Yellow lentils tempered with cumin, garlic and tomatoes (v)',       price:4.25, heat:1, tags:['tg-v'],          img:P.dal,        fb:FB('#1a1200','#382800')},
+    {name:'Saag Aloo',      desc:'Potato and spinach with garlic and spices (v)',                     price:4.25, heat:1, tags:['tg-v'],          img:P.saagSide,   fb:FB('#081808','#142814')},
+    {name:'Aloo Gobi',      desc:'Potato and cauliflower with turmeric and spices (v)',               price:4.25, heat:1, tags:['tg-v'],          img:P.alooGobi,   fb:FB('#1a1400','#342800')},
+    {name:'Bombay Potatoes',desc:'Spiced potatoes with mustard seeds and tomatoes (v)',               price:4.25, heat:2, tags:['tg-v'],          img:P.bombayPot,  fb:FB('#1a1000','#3a2000')},
+    {name:'Chana Masala',   desc:'Chickpeas in a tangy tomato and onion sauce (v)',                   price:4.95, heat:2, tags:['tg-v'],          img:P.chanaMasala,fb:FB('#1a1200','#342200')},
+    {name:'Bhindi Masala',  desc:'Okra stir-fried with onions, tomatoes and spices (v)',             price:4.50, heat:2, tags:['tg-v'],          img:P.alooGobi,   fb:FB('#081808','#142818')},
+    {name:'Mixed Raita',    desc:'Cooling yoghurt with cucumber, mint and cumin',                    price:2.50, heat:0, tags:['tg-v','tg-gf'],  img:P.raita,      fb:FB('#0a0a10','#181820')},
+    {name:'Mango Chutney',  desc:'Sweet and tangy mango chutney',                                    price:1.50, heat:0, tags:['tg-v'],          img:P.lassi,      fb:FB('#1a1800','#382800')},
+    {name:'Papadom',        desc:'Crispy lentil wafers with pickle tray (2 pcs)',                    price:1.75, heat:0, tags:['tg-v'],          img:P.samosa2,    fb:FB('#181800','#302800')},
+    {name:'Side Salad',     desc:'Fresh garden salad with mint dressing',                            price:2.95, heat:0, tags:['tg-v','tg-gf'],  img:P.raita,      fb:FB('#081808','#182018')},
+    {name:'Chips',          desc:'Skin-on fries — great with a curry sauce',                         price:2.95, heat:0, tags:[],               img:P.bombayPot,  fb:FB('#1a1200','#362000')},
+  ]},
+
+  desserts:{label:'Desserts & Drinks', proteinBar:false, items:[
+    {name:'Gulab Jamun',       desc:'Soft milk-solid dumplings soaked in rose syrup, served warm',      price:4.50, heat:0, tags:['tg-pop'],       img:P.gulabJamun, fb:FB('#1a0800','#3a1000'), variants:{flavour:['Plain','Rose Syrup','Chocolate']}},
+    {name:'Kulfi Ice Cream',   desc:'Traditional Indian ice cream — denser and creamier than gelato',   price:4.95, heat:0, tags:['tg-v'],          img:P.kulfi,      fb:FB('#0a0a18','#181830'), variants:{flavour:['Mango','Pistachio','Rose','Saffron']}},
+    {name:'Rice Kheer',        desc:'Slow-cooked rice pudding with cardamom, saffron and almonds (v)',  price:4.25, heat:0, tags:['tg-v'],          img:P.kheer,      fb:FB('#181008','#2a1a10')},
+    {name:'Chocolate Brownie', desc:'Warm chocolate brownie with vanilla ice cream',                    price:4.50, heat:0, tags:[],               img:P.gulabJamun, fb:FB('#100808','#201010')},
+    {name:'Mango Lassi',       desc:'Fresh mango blended with yoghurt and a touch of cardamom',        price:3.50, heat:0, tags:['tg-v','tg-gf'],  img:P.lassi,      fb:FB('#1a1200','#382000'), variants:{flavour:['Mango','Sweet','Salt','Rose']}},
+    {name:'Cobra Beer (330ml)',desc:'Classic Indian lager — the perfect curry companion',              price:4.50, heat:0, tags:[],               img:P.beer,       fb:FB('#0a1400','#182800')},
+    {name:'Soft Drinks',       desc:'Pepsi, Diet Pepsi, 7UP, Lemonade or Mango',                      price:2.50, heat:0, tags:[],               img:P.lassi2,     fb:FB('#0a1018','#181828'), variants:{flavour:['Pepsi','Diet Pepsi','7UP','Lemonade','Mango']}},
+    {name:'Still Water',       desc:'500ml still mineral water',                                       price:1.50, heat:0, tags:[],               img:P.lassi2,     fb:FB('#0a1018','#181828')},
+  ]},
+};
+
+/* ─── CURRENT MODAL STATE ────────────────────────────── */
+let modalItem = null;
+let modalSelections = {};
+
+/* ─── RENDER TABS ────────────────────────────────────── */
+const tabsEl = document.getElementById('menuTabs');
+Object.entries(MENU).forEach(([key, cat], i) => {
+  const btn = document.createElement('button');
+  btn.className = 'menu-tab' + (i === 0 ? ' active' : '');
+  btn.textContent = cat.label;
+  btn.dataset.key = key;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.menu-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMenu(key);
+  });
+  tabsEl.appendChild(btn);
+});
+
+/* ─── RENDER MENU GRID ───────────────────────────────── */
+function renderMenu(key) {
+  const cat = MENU[key];
+  document.getElementById('proteinInfo').classList.toggle('show', !!cat.proteinBar);
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = '';
+  cat.items.forEach(item => {
+    const hasVariants = item.variants && Object.keys(item.variants).length > 0;
+    const heatDots = [1,2,3,4,5].map(n => `<div class="hd${n<=item.heat?' on':''}"></div>`).join('');
+    const tagsHtml = (item.tags||[]).map(t => {
+      const labels = {'tg-pop':'Popular','tg-chef':"Chef's Pick",'tg-v':'V','tg-gf':'GF','tg-hot':'Hot!','tg-new':'New'};
+      return `<span class="tag ${t}">${labels[t]||t}</span>`;
+    }).join('');
+    const fromLabel = cat.proteinBar ? '<span class="mc-from">from </span>' : '';
+    const card = document.createElement('div');
+    card.className = 'mc';
+    card.innerHTML = `
+      <div class="mc-img" style="background:url('${item.img}'),${item.fb};background-size:cover;background-position:center">
+        <div class="mc-img-overlay"></div>
+        <div class="mc-tags">${tagsHtml}</div>
+        <div class="heat-row">${heatDots}</div>
+      </div>
+      <div class="mc-body">
+        <div class="mc-name">${item.name}</div>
+        <div class="mc-desc">${item.desc}</div>
+        <div class="mc-footer">
+          <div class="mc-price">${fromLabel}£${item.price.toFixed(2)}</div>
+          ${hasVariants ? '<button class="btn-cust">Customise ›</button>' : ''}
+        </div>
+      </div>`;
+    if (hasVariants) {
+      card.querySelector('.btn-cust').addEventListener('click', e => { e.stopPropagation(); openModal(item); });
+      card.addEventListener('click', () => openModal(item));
+    }
+    grid.appendChild(card);
+  });
+}
+
+renderMenu('starters');
+
+/* ─── MODAL ──────────────────────────────────────────── */
+function openModal(item) {
+  modalItem = item;
+  modalSelections = {};
+
+  // defaults
+  if (item.variants?.protein === true) {
+    modalSelections.protein = 'Chicken';
+    modalSelections.heat = 'Medium';
+  }
+  if (Array.isArray(item.variants?.protein)) modalSelections.protein = item.variants.protein[0];
+  if (item.variants?.heat === true) modalSelections.heat = 'Medium';
+  if (item.variants?.bread) modalSelections.bread = item.variants.bread[0];
+  if (item.variants?.flavour) modalSelections.flavour = item.variants.flavour[0];
+
+  document.getElementById('modalImg').style.background =
+    `url('${item.img}'),${item.fb}`;
+  document.getElementById('modalImg').style.backgroundSize = 'cover';
+  document.getElementById('modalImg').style.backgroundPosition = 'center';
+  document.getElementById('modalTitle').textContent = item.name;
+  document.getElementById('modalDesc').textContent = item.desc;
+
+  // heat indicator
+  const heatLabels = ['','Mild','Mild-Medium','Medium','Hot','Very Hot','Extremely Hot'];
+  const dots = [1,2,3,4,5].map(n =>
+    `<div class="mhd${n<=item.heat?' on':''}"></div>`).join('');
+  document.getElementById('modalHeat').innerHTML =
+    item.heat > 0
+      ? `<span>Spice:</span><div style="display:flex;gap:4px">${dots}</div><span>${heatLabels[item.heat]||''}</span>`
+      : '<span style="color:var(--light)">No spice · suitable for all</span>';
+
+  renderVariants(item);
+  updatePrice();
+
+  document.getElementById('modalBg').classList.add('open');
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('open');
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderVariants(item) {
+  const container = document.getElementById('modalVariants');
+  container.innerHTML = '';
+  const v = item.variants;
+  if (!v) return;
+
+  if (v.protein === true) {
+    container.appendChild(buildGroup('protein', 'Choose Protein', PROTEINS.map(p => ({
+      label: p.label, emoji: p.emoji, adj: p.adj
+    }))));
+  }
+  if (Array.isArray(v.protein)) {
+    const opts = v.protein.map(name => {
+      const p = PROTEINS.find(x => x.label === name) || {label:name,emoji:'',adj:0};
+      return {label:p.label, emoji:p.emoji, adj:p.adj};
+    });
+    container.appendChild(buildGroup('protein', 'Choose Protein', opts));
+  }
+  if (v.heat === true) {
+    container.appendChild(buildGroup('heat', 'Heat Level', HEAT_LEVELS.map(h => ({label:h, emoji:'', adj:0}))));
+  }
+  if (v.bread) {
+    const breadPrices = {'Plain Naan':2.95,'Garlic Naan':3.50,'Peshwari Naan':3.75,'Keema Naan':4.25,'Cheese Naan':3.95,'Cheese & Garlic Naan':4.25};
+    const opts = v.bread.map(b => ({label:b, emoji:'🫓', price: breadPrices[b]||item.price}));
+    container.appendChild(buildGroup('bread', 'Choose Bread', opts, true));
+  }
+  if (v.flavour) {
+    container.appendChild(buildGroup('flavour', 'Choose Flavour', v.flavour.map(f => ({label:f, emoji:'', adj:0}))));
+  }
+}
+
+function buildGroup(groupId, label, options, isAbsolute=false) {
+  const div = document.createElement('div');
+  div.className = 'modal-vg';
+  const defaultVal = modalSelections[groupId] || options[0].label;
+  div.innerHTML = `<div class="modal-vg-label">${label}</div><div class="modal-opts" id="grp-${groupId}"></div><div class="modal-divider"></div>`;
+  const optsEl = div.querySelector('.modal-opts');
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'mopt' + (opt.label === defaultVal ? ' sel' : '');
+    const adjText = opt.adj != null && opt.adj !== 0 ? ` <span class="adj">${opt.adj>0?'+':'-'}£${Math.abs(opt.adj).toFixed(2)}</span>` : '';
+    const priceText = isAbsolute && opt.price ? ` <span class="adj">£${opt.price.toFixed(2)}</span>` : '';
+    btn.innerHTML = `${opt.emoji ? `<span>${opt.emoji}</span>` : ''}${opt.label}${adjText}${priceText}`;
+    btn.addEventListener('click', () => {
+      div.querySelectorAll('.mopt').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      modalSelections[groupId] = opt.label;
+      if (isAbsolute && opt.price) modalSelections[`${groupId}_price`] = opt.price;
+      updatePrice();
+    });
+    optsEl.appendChild(btn);
+  });
+  return div;
+}
+
+function updatePrice() {
+  if (!modalItem) return;
+  let price = modalItem.price;
+  const v = modalItem.variants;
+  if (!v) { document.getElementById('modalPrice').textContent = `£${price.toFixed(2)}`; return; }
+
+  if ((v.protein === true || Array.isArray(v.protein)) && modalSelections.protein) {
+    const p = PROTEINS.find(x => x.label === modalSelections.protein);
+    if (p) price += p.adj;
+  }
+  if (modalSelections.bread_price) price = modalSelections.bread_price;
+
+  document.getElementById('modalPrice').textContent = `£${price.toFixed(2)}`;
+}
+
+/* ─── SCROLL FADE ────────────────────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, {threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+/* ─── NAV scroll ─────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').style.background =
+    scrollY > 60 ? 'rgba(10,5,2,.97)' : 'rgba(15,8,4,.93)';
+});
+
+/* ─── Close nav on link click ────────────────────────── */
+document.querySelectorAll('.nav-links a').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('nav').classList.remove('open'))
+);
+</script>
+</body>
+</html>

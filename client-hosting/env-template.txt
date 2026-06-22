@@ -1,0 +1,98 @@
+# ============================================================
+# ENVIRONMENT VARIABLES — MASTER TEMPLATE
+# ============================================================
+# Copy this to .env.local in your project root.
+# Fill in all values before deploying.
+# NEVER commit .env.local to GitHub.
+# Add each variable to Vercel dashboard separately.
+# ============================================================
+
+# ------------------------------------------------------------
+# APP
+# ------------------------------------------------------------
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+# Production: https://yourclientdomain.com
+
+NODE_ENV=development
+# Production: production
+
+
+# ------------------------------------------------------------
+# SUPABASE
+# ------------------------------------------------------------
+# Get from: supabase.com → Project Settings → API
+
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+# WARNING: service role key bypasses RLS — server-side only!
+
+
+# ------------------------------------------------------------
+# STRIPE
+# ------------------------------------------------------------
+# Get from: dashboard.stripe.com → Developers → API keys
+# Use TEST keys for dev/preview, LIVE keys for production only
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+# Local dev: get from `stripe listen` CLI command
+# Production: get from Stripe Dashboard → Webhooks → Signing secret
+
+# Price IDs — get from Stripe Dashboard → Product catalogue
+STRIPE_PRICE_ID_PRO_MONTHLY=price_...
+STRIPE_PRICE_ID_PRO_ANNUAL=price_...
+STRIPE_PRICE_ID_AGENCY_MONTHLY=price_...
+STRIPE_PRICE_ID_AGENCY_ANNUAL=price_...
+
+
+# ------------------------------------------------------------
+# RESEND (Email)
+# ------------------------------------------------------------
+# Get from: resend.com → API Keys
+
+RESEND_API_KEY=re_...
+RESEND_FROM_EMAIL=hello@yourclientdomain.com
+
+
+# ------------------------------------------------------------
+# CLAUDE / ANTHROPIC API (optional — only if using AI)
+# ------------------------------------------------------------
+# Get from: console.anthropic.com → API Keys
+# Server-side only — never prefix with NEXT_PUBLIC_
+
+ANTHROPIC_API_KEY=sk-ant-...
+
+
+# ------------------------------------------------------------
+# NEXTAUTH (if using NextAuth instead of Supabase Auth)
+# ------------------------------------------------------------
+# Generate secret: openssl rand -base64 32
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-here
+
+# Google OAuth (console.cloud.google.com)
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+
+# Apple OAuth (developer.apple.com)
+APPLE_CLIENT_ID=...
+APPLE_CLIENT_SECRET=...
+
+
+# ============================================================
+# VERCEL ENVIRONMENT GUIDE
+# ============================================================
+# When adding to Vercel dashboard, set each variable to:
+#
+#   Production  = live site (use LIVE Stripe keys, prod Supabase)
+#   Preview     = PR previews (use TEST keys, dev Supabase)
+#   Development = local `vercel dev` (same as Preview usually)
+#
+# NEXT_PUBLIC_APP_URL:
+#   Production  = https://yourclientdomain.com
+#   Preview     = leave blank (Vercel fills it automatically)
+#   Development = http://localhost:3000
+# ============================================================
