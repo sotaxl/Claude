@@ -703,7 +703,6 @@ const OFFERINGS = [
 
 /* ── component ────────────────────────────────────────────────────────────── */
 
-/* ── Industry nav data ──────────────────────────────────────────────────── */
 const INDUSTRY_NAV = [
   { label: 'Salons & Beauty',       key: 'salon' },
   { label: 'Trades & Plumbing',     key: 'trades' },
@@ -712,16 +711,6 @@ const INDUSTRY_NAV = [
   { label: 'Health & Fitness',      key: 'health' },
   { label: 'Professional Services', key: 'professional' },
 ];
-
-const INDUSTRY_SUBHEADS = {
-  salon:        'AI handles your bookings, follows up with clients, and grows your reviews — 24/7.',
-  trades:       'Never miss an emergency call again. AI quotes, books, and follows up automatically.',
-  restaurant:   'Manage reservations, handle enquiries, and grow your reputation — fully automated.',
-  retail:       'AI answers product questions, manages orders, and sends follow-ups instantly.',
-  health:       'Fill your schedule, reduce no-shows, and keep members engaged on autopilot.',
-  professional: 'AI handles enquiries, books consultations, and nurtures leads while you work.',
-  default:      'We set up and manage AI for local businesses — bookings handled, messages answered, reviews growing.',
-};
 
 const INDUSTRY_TIMELINE = {
   salon: [
@@ -808,9 +797,6 @@ export default function Landing() {
   // ── 3. Live counter ──
   const [liveCount, setLiveCount] = useState(847000);
 
-  // ── 6. Industry nav / switcher ──
-  const [selectedIndustryNav, setSelectedIndustryNav] = useState('salon');
-  const [showIndustryNav, setShowIndustryNav] = useState(false);
 
   // ── 7. Tabbed features ──
   const [activeTab, setActiveTab] = useState(0);
@@ -828,6 +814,9 @@ export default function Landing() {
   // Booking sim animation
   const [simPhase, setSimPhase] = useState(0); // 0=idle,1=customer,2=typing,3=reply,4=confirmed
   const [simReply, setSimReply] = useState('');
+
+  // ── Industry Tour tab nav ──
+  const [selectedIndustryNav, setSelectedIndustryNav] = useState('salon');
 
   // ── 8e. Day-in-life timeline ──
   const [accordionOpen, setAccordionOpen] = useState(null);
@@ -957,8 +946,6 @@ export default function Landing() {
       setScrolled(window.scrollY > 20);
       const total = document.body.scrollHeight - window.innerHeight;
       setScrollProgress(total > 0 ? window.scrollY / total : 0);
-      // Show industry nav once hero is scrolled past (~80vh)
-      setShowIndustryNav(window.scrollY > window.innerHeight * 0.8);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -1313,12 +1300,14 @@ export default function Landing() {
         }
       `}</style>
 
-      {/* ── 6. INDUSTRY SWITCHER NAV ─────────────────────────────────────── */}
+
+      {/* ── INDUSTRY TOUR NAV — visible only on Industry Tour tab ── */}
       <div style={{
         position:'sticky',top:68,zIndex:90,
-        background:'rgba(255,255,255,.97)',backdropFilter:'blur(16px)',
-        borderBottom: showIndustryNav ? '1px solid #e5e7eb' : 'none',
-        maxHeight: showIndustryNav ? '80px' : '0',
+        background: isDark ? 'rgba(9,20,8,.97)' : 'rgba(255,255,255,.97)',
+        backdropFilter:'blur(16px)',
+        borderBottom: activeTab===1 ? `1px solid ${isDark?'#1e3d29':'#e5e7eb'}` : 'none',
+        maxHeight: activeTab===1 ? '80px' : '0',
         transition:'max-height .35s cubic-bezier(0.23,1,0.32,1), border-color .2s',
         overflow:'hidden',
       }}>
@@ -1326,9 +1315,9 @@ export default function Landing() {
           {INDUSTRY_NAV.map(ind => (
             <button key={ind.key} onClick={() => setSelectedIndustryNav(ind.key)}
               style={{flexShrink:0,padding:'7px 18px',borderRadius:100,border:'1.5px solid',cursor:'pointer',fontSize:13,fontWeight:600,transition:'all .18s',
-                borderColor: selectedIndustryNav===ind.key ? '#10b981' : '#e5e7eb',
+                borderColor: selectedIndustryNav===ind.key ? '#10b981' : (isDark?'#1e3d29':'#e5e7eb'),
                 background: selectedIndustryNav===ind.key ? '#10b981' : 'transparent',
-                color: selectedIndustryNav===ind.key ? 'white' : '#6b7280',
+                color: selectedIndustryNav===ind.key ? 'white' : dk.textMuted,
               }}>
               {ind.label}
             </button>
@@ -1380,10 +1369,10 @@ export default function Landing() {
 
           {/* Subheading — industry-aware */}
           <p className="animate-fade-up" style={{animationDelay:'140ms',fontSize:'clamp(15px,2vw,19px)',color:'rgba(255,255,255,.65)',maxWidth:540,margin:'0 auto 48px',lineHeight:1.75}}>
-            {INDUSTRY_SUBHEADS[selectedIndustryNav] || (geoCity
+            {geoCity
               ? `We set up and manage AI for local businesses across ${geoCity} — bookings handled, messages answered, reviews growing. Fully live in 48 hours.`
               : 'We introduce, configure, and manage AI for small local businesses — fully done for you in 48 hours. No tech skills, no jargon, just real results.'
-            )}
+            }
           </p>
 
           {/* ── GET STARTED BOX ── */}
