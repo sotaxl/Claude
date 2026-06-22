@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" fill="none">
+  <defs>
+    <!-- Outer lime glow ring -->
+    <linearGradient id="rimGrad" x1="120" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#d9ff85"/>
+      <stop offset="50%"  stop-color="#86f258"/>
+      <stop offset="100%" stop-color="#5de04a"/>
+    </linearGradient>
+    <!-- Body green -->
+    <linearGradient id="bodyGrad" x1="120" y1="8" x2="120" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#5be94a"/>
+      <stop offset="40%"  stop-color="#3ecf38"/>
+      <stop offset="100%" stop-color="#22a828"/>
+    </linearGradient>
+    <!-- Right ghost circle -->
+    <radialGradient id="ghostCircle" cx="50%" cy="40%" r="55%">
+      <stop offset="0%"   stop-color="#c8ffa0" stop-opacity="0.75"/>
+      <stop offset="70%"  stop-color="#a8f070" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#86e050" stop-opacity="0.1"/>
+    </radialGradient>
+    <!-- Top gloss on body -->
+    <linearGradient id="glossGrad" x1="120" y1="14" x2="120" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="white" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer rim (lime green pill) -->
+  <rect x="2" y="6" width="236" height="108" rx="54" fill="url(#rimGrad)"/>
+
+  <!-- Inner body (darker green pill) -->
+  <rect x="12" y="14" width="216" height="92" rx="46" fill="url(#bodyGrad)"/>
+
+  <!-- Top gloss streak -->
+  <ellipse cx="120" cy="30" rx="78" ry="14" fill="url(#glossGrad)"/>
+
+  <!-- Right ghost / indicator circle -->
+  <circle cx="165" cy="60" r="30" fill="url(#ghostCircle)"/>
+  <!-- Small right highlight -->
+  <ellipse cx="155" cy="47" rx="10" ry="7" fill="rgba(255,255,255,0.45)" transform="rotate(-20 155 47)"/>
+
+  <!-- Left knob shadow (depth under the white circle) -->
+  <circle cx="78" cy="62" r="36" fill="rgba(0,80,0,0.18)"/>
+
+  <!-- Left white knob -->
+  <circle cx="76" cy="60" r="36" fill="white"/>
+
+  <!-- Subtle inner shadow on knob edge -->
+  <circle cx="76" cy="60" r="36" fill="none" stroke="rgba(0,120,0,0.08)" stroke-width="3"/>
+</svg>

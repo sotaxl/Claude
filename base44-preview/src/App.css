@@ -1,0 +1,82 @@
+/* preview shim */
+
+/* ── 3D Emoji System ──────────────────────────────────────────────────────── */
+
+@keyframes e3d-float {
+  0%,100% { transform: translateY(0)      rotate(0deg)   }
+  30%     { transform: translateY(-9px)   rotate(4deg)   }
+  65%     { transform: translateY(-4px)   rotate(-2.5deg)}
+}
+@keyframes e3d-bounce {
+  0%,100% { transform: translateY(0)      scaleY(1)    }
+  14%     { transform: translateY(-16px)  scaleY(1.09) }
+  28%     { transform: translateY(0)      scaleY(.91)  }
+  42%     { transform: translateY(-8px)   scaleY(1.04) }
+  56%     { transform: translateY(0)      scaleY(.97)  }
+  70%     { transform: translateY(-4px)   scaleY(1.02) }
+  84%     { transform: translateY(0)      scaleY(.99)  }
+}
+@keyframes e3d-wiggle {
+  0%,100% { transform: rotate(0deg)   }
+  12%     { transform: rotate(-18deg) }
+  28%     { transform: rotate(15deg)  }
+  44%     { transform: rotate(-10deg) }
+  60%     { transform: rotate(7deg)   }
+  76%     { transform: rotate(-3deg)  }
+  90%     { transform: rotate(2deg)   }
+}
+@keyframes e3d-pulse {
+  0%,100% { transform: scale(1)    }
+  50%     { transform: scale(1.22) }
+}
+@keyframes e3d-shake {
+  0%,100% { transform: translateX(0)    rotate(0deg)  }
+  10%     { transform: translateX(-6px) rotate(-10deg)}
+  25%     { transform: translateX(6px)  rotate(10deg) }
+  40%     { transform: translateX(-5px) rotate(-7deg) }
+  55%     { transform: translateX(5px)  rotate(7deg)  }
+  70%     { transform: translateX(-3px) rotate(-4deg) }
+  85%     { transform: translateX(3px)  rotate(4deg)  }
+}
+@keyframes e3d-spin {
+  0%   { transform: rotateY(0deg)   }
+  100% { transform: rotateY(360deg) }
+}
+@keyframes e3d-pop {
+  0%   { transform: scale(1)    rotate(0deg)   }
+  25%  { transform: scale(1.75) rotate(16deg)  }
+  55%  { transform: scale(.82)  rotate(-9deg)  }
+  78%  { transform: scale(1.12) rotate(4deg)   }
+  100% { transform: scale(1)    rotate(0deg)   }
+}
+
+/* Base wrapper */
+.e3d {
+  display: inline-block;
+  line-height: 1;
+  will-change: transform, filter;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.22s cubic-bezier(.34,1.56,.64,1),
+    filter    0.15s ease;
+}
+
+/* Animation classes */
+.e3d.e3d-float  { animation: e3d-float  4.4s ease-in-out infinite; }
+.e3d.e3d-bounce { animation: e3d-bounce 2.7s ease-in-out infinite; }
+.e3d.e3d-wiggle { animation: e3d-wiggle 2.0s ease-in-out infinite; }
+.e3d.e3d-pulse  { animation: e3d-pulse  2.1s ease-in-out infinite; }
+.e3d.e3d-shake  { animation: e3d-shake  0.85s ease-in-out infinite; }
+.e3d.e3d-spin   { animation: e3d-spin   3.5s linear      infinite; }
+
+/* Pop burst — one-shot, overrides idle */
+.e3d.e3d-popping {
+  animation: e3d-pop 0.48s cubic-bezier(.34,1.56,.64,1) both !important;
+}
+
+/* Pause idle while hovered / pressed */
+.e3d.e3d-hovered,
+.e3d.e3d-pressed {
+  animation-play-state: paused;
+}
