@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
 import {
   LayoutDashboard, Users, FolderKanban, CreditCard,
-  Settings, LogOut, Zap, ChevronRight,
+  Settings, LogOut, Zap, ChevronRight, Clapperboard,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -12,6 +12,7 @@ const nav = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Clients", href: "/dashboard/clients", icon: Users },
   { label: "Projects", href: "/dashboard/projects", icon: FolderKanban },
+  { label: "Episode Studio", href: "/dashboard/episode-studio", icon: Clapperboard },
   { label: "Billing", href: "/dashboard/billing", icon: CreditCard },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ]

@@ -15,7 +15,7 @@ export function DiscountOfferEmail({ name, discountCode, discountPercent, upgrad
   return (
     <Html>
       <Head />
-      <Preview>🎁 {discountPercent}% off ClientForge Pro — exclusive offer for you</Preview>
+      <Preview>{`🎁 ${discountPercent}% off ClientForge Pro — exclusive offer for you`}</Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto py-12 px-4 max-w-xl">
